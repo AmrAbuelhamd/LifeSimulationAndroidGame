@@ -42,8 +42,11 @@ public class MainActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
         int width = displayMetrics.widthPixels;
-        Const.SCREEN_WIDTH = width;
-        Const.SCREEN_HEIGHT = height;
+        Const.SCREEN_WIDTH = 5000;
+        Const.SCREEN_HEIGHT = 5000;
+
+        Log.i("amro width: "," "+width);
+        Log.i("amro height: "," "+height);
     }
 
     boolean firstTime = true;

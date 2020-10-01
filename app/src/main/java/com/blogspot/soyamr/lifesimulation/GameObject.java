@@ -7,8 +7,8 @@ import android.graphics.Rect;
 import java.util.Random;
 
 public interface GameObject {
-    int width = Const.SCREEN_WIDTH / Const.N;
-    int height = Const.SCREEN_HEIGHT / Const.M;
+    int width = 10;//Const.SCREEN_WIDTH / Const.N;
+    int height = 10;//Const.SCREEN_HEIGHT / Const.M;
     Paint paint = new Paint();
     Random rand = new Random();
 

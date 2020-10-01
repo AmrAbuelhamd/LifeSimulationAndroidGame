@@ -33,7 +33,7 @@ public class Creature implements GameObject {
     public void update() {
 
         // Current time in nanoseconds
-//        long now = System.nanoTime();
+//        long now = System.nanoTime();AmrAbuelhamd
 
 //        // Never once did draw.
 //        if (lastDrawNanoTime == -1) {
