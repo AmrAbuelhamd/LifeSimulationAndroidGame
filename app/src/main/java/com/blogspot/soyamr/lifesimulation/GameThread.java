@@ -7,7 +7,7 @@ import android.view.SurfaceHolder;
 
 public class GameThread extends Thread {
 
-    public Matrix matrix;
+
     private boolean running;
     private GameSurface gameSurface;
     private SurfaceHolder surfaceHolder;
@@ -23,8 +23,6 @@ public class GameThread extends Thread {
 
         while (running) {
             Canvas canvas = null;
-//            Bitmap bufferBitmap = Bitmap.createBitmap(CONST.SCREEN_WIDTH, CONST.SCREEN_HEIGHT, Bitmap.Config.ARGB_8888);
-//            Canvas bufferCanvas = new Canvas(bufferBitmap);
             try {
                 // Get Canvas from Holder and lock it.
                 canvas = this.surfaceHolder.lockCanvas();
@@ -33,8 +31,6 @@ public class GameThread extends Thread {
                 synchronized (canvas) {
                     this.gameSurface.update();
                     this.gameSurface.draw(canvas);
-//                    canvas.drawBitmap(bufferBitmap, matrix, null);
-//                    canvas.restore();
                 }
 
             } catch (Exception e) {
@@ -52,16 +48,12 @@ public class GameThread extends Thread {
             if (waitTime < 10) {
                 waitTime = 10; // Millisecond.
             }
-            System.out.print(" Wait Time=" + waitTime);
-
             try {
                 // Sleep.
-                this.sleep(waitTime);
-            } catch (InterruptedException e) {
-
+                sleep(waitTime);
+            } catch (InterruptedException ignored) {
             }
             startTime = System.nanoTime();
-            System.out.print(".");
         }
     }
 

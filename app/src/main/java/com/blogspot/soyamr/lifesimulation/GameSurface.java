@@ -2,25 +2,24 @@ package com.blogspot.soyamr.lifesimulation;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread gameThread;
 
-//    @Override
-//    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-//        super.onSizeChanged(Const.SCREEN_WIDTH, Const.SCREEN_HEIGHT, oldw, oldh);
-//    }
 
     //    private final List<ChibiCharacter> chibiList = new ArrayList<>();
 //    private final List<Explosion> explosionList = new ArrayList<>();
@@ -44,8 +43,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     private float mLastTouchY;
     private int mActivePointerId = INVALID_POINTER_ID;
 
-    View currentView;
-
     private ScaleGestureDetector mScaleDetector;
     private float mScaleFactor = 1.f;
 
@@ -66,8 +63,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         // Set callback.
         this.getHolder().addCallback(this);
 
-
-        currentView = this;
         this.context = context;
         mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
 
@@ -165,7 +160,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //        for (ChibiCharacter chibi : chibiList) {
 //            chibi.update();
 //        }
-
         for (Creature creature : creatures) {
             creature.update();
         }
@@ -192,6 +186,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         canvas.scale(mScaleFactor, mScaleFactor, focusX, focusY);
         canvas.translate(mPosX, mPosY);
 
+//        drawHeart(canvas);
+//        drawName(canvas);
+
         for (Map.Entry<Integer, Cell> entry : cells.entrySet()) {
             entry.getValue().draw(canvas);
         }
@@ -199,11 +196,58 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         for (Creature creature : creatures) {
             creature.draw(canvas);
         }
+
         canvas.restore();
 //        for (Explosion explosion : this.explosionList) {
 //            explosion.draw(canvas);
 //        }
 
+    }
+
+    private void drawName(Canvas canvas) {
+        Paint paint = new Paint();
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(500);
+        canvas.drawText("Amr", (float) (CONST.SCREEN_WIDTH / 3.0), (float) (CONST.SCREEN_HEIGHT / 2.0), paint);
+    }
+
+    private void drawHeart(Canvas canvas) {
+        Path path;
+
+        Paint paint;
+        path = new Path();
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+        float width = CONST.SCREEN_WIDTH;
+        float height = CONST.SCREEN_HEIGHT;
+
+
+        // Starting point
+        path.moveTo(width / 2, height / 5);
+
+        // Upper left path
+        path.cubicTo(5 * width / 14, 0,
+                0, height / 15,
+                width / 28, 2 * height / 5);
+
+        // Lower left path
+        path.cubicTo(width / 14, 2 * height / 3,
+                3 * width / 7, 5 * height / 6,
+                width / 2, height);
+
+        // Lower right path
+        path.cubicTo(4 * width / 7, 5 * height / 6,
+                13 * width / 14, 2 * height / 3,
+                27 * width / 28, 2 * height / 5);
+
+        // Upper right path
+        path.cubicTo(width, height / 15,
+                9 * width / 14, 0,
+                width / 2, height / 5);
+
+        paint.setColor(Color.RED);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawPath(path, paint);
     }
 
     // Implements method of SurfaceHolder.Callback
@@ -214,11 +258,13 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //
 //        Bitmap chibiBitmap2 = BitmapFactory.decodeResource(this.getResources(), R.drawable.chibi2);
 //        ChibiCharacter chibi2 = new ChibiCharacter(this, chibiBitmap2, 300, 150);
+        //create creatures
         Cell.defineColors();
         for (int i = 0; i < 100; i++) {
             Creature creature = new Creature();
             creatures.add(creature);
         }
+        //create cells
         int ctr = 0;
         for (int i = 0; i < CONST.M; i++) {
             for (int j = 0; j < CONST.N; j++) {
@@ -231,10 +277,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //        lp.width = Const.SCREEN_WIDTH; // required width
 //        lp.height = Const.SCREEN_HEIGHT; // required height
 //        this.setLayoutParams(lp);
-
 //        this.chibiList.add(chibi1);
 //        this.chibiList.add(chibi2);
-
         resume();
     }
 
@@ -272,6 +316,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         // Let the ScaleGestureDetector inspect all events.
+        //updateScalingParameters(ev);
         mScaleDetector.onTouchEvent(ev);
 
         final int action = ev.getAction();
@@ -309,10 +354,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
                 break;
             }
 
-            case MotionEvent.ACTION_UP: {
-                mActivePointerId = INVALID_POINTER_ID;
-                break;
-            }
+            case MotionEvent.ACTION_UP:
 
             case MotionEvent.ACTION_CANCEL: {
                 mActivePointerId = INVALID_POINTER_ID;
@@ -334,8 +376,11 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
                 break;
             }
         }
-
         return true;
+    }
+
+    private void updateScalingParameters(MotionEvent ev) {
+
     }
 
     private class ScaleListener extends
@@ -376,6 +421,5 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
             invalidate();
             return true;
         }
-
     }
 }

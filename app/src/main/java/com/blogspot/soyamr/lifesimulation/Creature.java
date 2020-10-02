@@ -21,7 +21,6 @@ public class Creature implements GameObject {
         rect = new Rect(x, y, x + width, y + height);
         paint.setStyle(Paint.Style.FILL);
 //        paint.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
-
         paint.setColor(Color.WHITE);
     }
 
