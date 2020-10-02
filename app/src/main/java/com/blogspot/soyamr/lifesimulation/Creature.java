@@ -4,7 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
 
 
 public class Creature implements GameObject {
@@ -17,8 +16,8 @@ public class Creature implements GameObject {
     static String[] operator = {"+", "-"};
 
     Creature() {
-        x = getRandom(0, Const.N) * width;
-        y = getRandom(0, Const.M) * height;
+        x = getRandom(0, CONST.N) * width;
+        y = getRandom(0, CONST.M) * height;
         rect = new Rect(x, y, x + width, y + height);
         paint.setStyle(Paint.Style.FILL);
 //        paint.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
@@ -58,16 +57,16 @@ public class Creature implements GameObject {
         if (this.x < 0) {
             this.x = 0;
 //            this.movingVectorX = -this.movingVectorX;
-        } else if (this.x > Const.SCREEN_WIDTH - width) {
-            this.x = Const.SCREEN_WIDTH - width;
+        } else if (this.x > CONST.SCREEN_WIDTH - width) {
+            this.x = CONST.SCREEN_WIDTH - width;
 //            this.movingVectorX = -this.movingVectorX;
         }
 
         if (this.y < 0) {
             this.y = 0;
 //            this.movingVectorY = -this.movingVectorY;
-        } else if (this.y > Const.SCREEN_HEIGHT - height) {
-            this.y = Const.SCREEN_HEIGHT - height;
+        } else if (this.y > CONST.SCREEN_HEIGHT - height) {
+            this.y = CONST.SCREEN_HEIGHT - height;
 //            this.movingVectorY = -this.movingVectorY;
         }
         rect = new Rect(x, y, x + width, y + height);
@@ -84,7 +83,7 @@ public class Creature implements GameObject {
     }
 
     @Override
-    public String getKey() {
-        return null;
+    public int getKey() {
+        return 0;
     }
 }

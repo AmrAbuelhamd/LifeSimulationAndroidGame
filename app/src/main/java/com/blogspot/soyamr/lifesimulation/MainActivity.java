@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 
 public class MainActivity extends AppCompatActivity {
     GameSurface gameSurface;
@@ -13,10 +14,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        gameSurface = new GameSurface(this);
-        setContentView(gameSurface);
-        hideSystemUI();
-        getScreenSize();
+
+        GameSurface view = new GameSurface(this);
+        view.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+
+        setContentView(view);
+
+//        gameSurface = new GameSurface(this);
+//        setContentView(gameSurface);
+//        hideSystemUI();
+//        //getScreenSize();
+//
+//        Log.i("amro width: "," "+Const.SCREEN_WIDTH);
+//        Log.i("amro height: "," "+Const.SCREEN_HEIGHT);
     }
 
 
@@ -42,11 +54,11 @@ public class MainActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
         int width = displayMetrics.widthPixels;
-        Const.SCREEN_WIDTH = 5000;
-        Const.SCREEN_HEIGHT = 5000;
+        CONST.SCREEN_WIDTH = width;
+        CONST.SCREEN_HEIGHT = height;
 
-        Log.i("amro width: "," "+width);
-        Log.i("amro height: "," "+height);
+        Log.i("amro width: "," "+ CONST.SCREEN_WIDTH);
+        Log.i("amro height: "," "+ CONST.SCREEN_HEIGHT);
     }
 
     boolean firstTime = true;

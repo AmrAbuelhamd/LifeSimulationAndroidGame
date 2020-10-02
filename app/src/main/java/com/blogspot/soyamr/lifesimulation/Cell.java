@@ -12,6 +12,7 @@ import java.util.Random;
 public class Cell implements GameObject {
     Rect rect;
     int x, y;
+    int key;
 
     static void defineColors() {
         paint.setStyle(Paint.Style.STROKE);
@@ -19,10 +20,11 @@ public class Cell implements GameObject {
         paint.setColor(Color.GREEN);
     }
 
-    public Cell(int i, int j) {
+    public Cell(int i, int j, int cellNo) {
         x = j * width;
         y = i * height;
         rect = new Rect(x, y, x + width, y + height);
+        key = cellNo;
     }
 
     public void draw(Canvas canvas) {
@@ -31,8 +33,8 @@ public class Cell implements GameObject {
 
 
     @Override
-    public String getKey() {
-        return x + "" + y;
+    public int getKey() {
+        return key;
     }
 
     void setRandomColor() {

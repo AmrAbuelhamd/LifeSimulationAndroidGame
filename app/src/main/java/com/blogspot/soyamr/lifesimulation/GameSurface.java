@@ -2,23 +2,14 @@ package com.blogspot.soyamr.lifesimulation;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.media.AudioAttributes;
-import android.media.SoundPool;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.FrameLayout;
-
-import com.blogspot.soyamr.lifesimulation.tobeusedlater.ChibiCharacter;
-import com.blogspot.soyamr.lifesimulation.tobeusedlater.Explosion;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,10 +17,15 @@ import java.util.Map;
 public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread gameThread;
 
-//    private final List<ChibiCharacter> chibiList = new ArrayList<>();
+//    @Override
+//    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+//        super.onSizeChanged(Const.SCREEN_WIDTH, Const.SCREEN_HEIGHT, oldw, oldh);
+//    }
+
+    //    private final List<ChibiCharacter> chibiList = new ArrayList<>();
 //    private final List<Explosion> explosionList = new ArrayList<>();
 
-    private final Map<String, Cell> cells = new LinkedHashMap<>();
+    private final Map<Integer, Cell> cells = new LinkedHashMap<Integer, Cell>();
     private final List<Creature> creatures = new ArrayList<>();
 
 //    private static final int MAX_STREAMS = 100;
@@ -39,50 +35,41 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //    private boolean soundPoolLoaded;
 //    private SoundPool soundPool;
 
-    private ScaleGestureDetector SGD;
-    private Context context;
-    private boolean isSingleTouch;
-    private float width=0, height = 0;
-    private float scale = 1f;
-    private float minScale = 1f;
-    private float maxScale = 5f;
-    int left, top, right, bottom;
+    private static final int INVALID_POINTER_ID = -1;
 
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-        if (width == 0 && height == 0) {
-            width = 5000;
-            height = 5000;
-            this.left = left;
-            this.right = right;
-            this.top = top;
-            this.bottom = bottom;
-        }
+    private float mPosX;
+    private float mPosY;
 
-    }
+    private float mLastTouchX;
+    private float mLastTouchY;
+    private int mActivePointerId = INVALID_POINTER_ID;
 
-    private void init() {
-        setOnTouchListener(new MyTouchListeners());
-        SGD = new ScaleGestureDetector(context, new ScaleListener());
-        this.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
+    View currentView;
 
-            }
-        });
-    }
+    private ScaleGestureDetector mScaleDetector;
+    private float mScaleFactor = 1.f;
+
+    private float focusX;
+    private float focusY;
+
+    private float lastFocusX = -1;
+    private float lastFocusY = -1;
+
+    public Context context;
 
     public GameSurface(Context context) {
         super(context);
-        this.context = context;
+
         // Make Game Surface focusable so it can handle events.
         this.setFocusable(true);
 
         // Set callback.
         this.getHolder().addCallback(this);
-        init();
 
+
+        currentView = this;
+        this.context = context;
+        mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
 
 //        this.initSoundPool();
     }
@@ -139,11 +126,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
 //    @Override
 //    public boolean onTouchEvent(MotionEvent event) {
-//
-//        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//            scrollTo(505, 0);
-//            return true;
-//        }
+////        if (event.getAction() == MotionEvent.ACTION_DOWN) {
 ////
 ////            int x = (int) event.getX();
 ////            int y = (int) event.getY();
@@ -205,15 +188,18 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //        for (ChibiCharacter chibi : chibiList) {
 //            chibi.draw(canvas);
 //        }
+        canvas.save();
+        canvas.scale(mScaleFactor, mScaleFactor, focusX, focusY);
+        canvas.translate(mPosX, mPosY);
 
-        for (Map.Entry<String, Cell> entry : cells.entrySet()) {
+        for (Map.Entry<Integer, Cell> entry : cells.entrySet()) {
             entry.getValue().draw(canvas);
         }
 
         for (Creature creature : creatures) {
             creature.draw(canvas);
         }
-
+        canvas.restore();
 //        for (Explosion explosion : this.explosionList) {
 //            explosion.draw(canvas);
 //        }
@@ -229,18 +215,22 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //        Bitmap chibiBitmap2 = BitmapFactory.decodeResource(this.getResources(), R.drawable.chibi2);
 //        ChibiCharacter chibi2 = new ChibiCharacter(this, chibiBitmap2, 300, 150);
         Cell.defineColors();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 100; i++) {
             Creature creature = new Creature();
             creatures.add(creature);
         }
-        for (int i = 0; i < Const.M; i++) {
-            for (int j = 0; j < Const.N; j++) {
-                Cell cell = new Cell(i, j);
-                String key = cell.getKey();
-                cells.put(key, cell);
+        int ctr = 0;
+        for (int i = 0; i < CONST.M; i++) {
+            for (int j = 0; j < CONST.N; j++) {
+                Cell cell = new Cell(i, j, ctr++);
+                cells.put(ctr, cell);
+
             }
         }
-
+//        android.view.ViewGroup.LayoutParams lp = this.getLayoutParams();
+//        lp.width = Const.SCREEN_WIDTH; // required width
+//        lp.height = Const.SCREEN_HEIGHT; // required height
+//        this.setLayoutParams(lp);
 
 //        this.chibiList.add(chibi1);
 //        this.chibiList.add(chibi2);
@@ -279,93 +269,113 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         this.gameThread.start();
     }
 
-    private class MyTouchListeners implements View.OnTouchListener {
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        // Let the ScaleGestureDetector inspect all events.
+        mScaleDetector.onTouchEvent(ev);
 
-        float dX, dY;
+        final int action = ev.getAction();
+        switch (action & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_DOWN: {
 
-        MyTouchListeners() {
-            super();
-        }
+                final float x = ev.getX() / mScaleFactor;
+                final float y = ev.getY() / mScaleFactor;
+                mLastTouchX = x;
+                mLastTouchY = y;
+                mActivePointerId = ev.getPointerId(0);
 
-        @Override
-        public boolean onTouch(View view, MotionEvent event) {
-            SGD.onTouchEvent(event);
-            if (event.getPointerCount() > 1) {
-                isSingleTouch = false;
-            } else {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    isSingleTouch = true;
+                break;
+            }
+
+            case MotionEvent.ACTION_MOVE: {
+                final int pointerIndex = ev.findPointerIndex(mActivePointerId);
+                final float x = ev.getX(pointerIndex) / mScaleFactor;
+                final float y = ev.getY(pointerIndex) / mScaleFactor;
+
+                // Only move if the ScaleGestureDetector isn't processing a gesture.
+                if (!mScaleDetector.isInProgress()) {
+
+                    final float dx = x - mLastTouchX;
+                    final float dy = y - mLastTouchY;
+                    mPosX += dx;
+                    mPosY += dy;
+
+                    invalidate();
                 }
-            }
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    dX = GameSurface.this.getX() - event.getRawX();
-                    dY = GameSurface.this.getY() - event.getRawY();
-                    break;
 
-                case MotionEvent.ACTION_MOVE:
-                    if (isSingleTouch) {
-                        GameSurface.this.animate()
-                                .x(event.getRawX() + dX)
-                                .y(event.getRawY() + dY)
-                                .setDuration(0)
-                                .start();
-                        checkDimension(GameSurface.this);
-                    }
-                    break;
-                default:
-                    return true;
+                mLastTouchX = x;
+                mLastTouchY = y;
+
+                break;
             }
-            return true;
+
+            case MotionEvent.ACTION_UP: {
+                mActivePointerId = INVALID_POINTER_ID;
+                break;
+            }
+
+            case MotionEvent.ACTION_CANCEL: {
+                mActivePointerId = INVALID_POINTER_ID;
+                break;
+            }
+
+            case MotionEvent.ACTION_POINTER_UP: {
+
+                final int pointerIndex = (ev.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK) >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
+                final int pointerId = ev.getPointerId(pointerIndex);
+                if (pointerId == mActivePointerId) {
+                    // This was our active pointer going up. Choose a new
+                    // active pointer and adjust accordingly.
+                    final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
+                    mLastTouchX = ev.getX(newPointerIndex) / mScaleFactor;
+                    mLastTouchY = ev.getY(newPointerIndex) / mScaleFactor;
+                    mActivePointerId = ev.getPointerId(newPointerIndex);
+                }
+                break;
+            }
         }
+
+        return true;
     }
 
-    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+    private class ScaleListener extends
+            ScaleGestureDetector.SimpleOnScaleGestureListener {
+        @Override
+        public boolean onScaleBegin(ScaleGestureDetector detector) {
+
+            // float x = detector.getFocusX();
+            // float y = detector.getFocusY();
+
+            lastFocusX = -1;
+            lastFocusY = -1;
+
+            return true;
+        }
+
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
-            Log.e("onGlobalLayout: ", scale + " " + width + " " + height);
-            scale *= detector.getScaleFactor();
-            scale = Math.max(minScale, Math.min(scale, maxScale));
+            mScaleFactor *= detector.getScaleFactor();
 
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                    (int) (width * scale), (int) (height * scale));
-            GameSurface.this.setLayoutParams(params);
-            checkDimension(GameSurface.this);
+            focusX = detector.getFocusX();
+            focusY = detector.getFocusY();
+
+            if (lastFocusX == -1)
+                lastFocusX = focusX;
+            if (lastFocusY == -1)
+                lastFocusY = focusY;
+
+            mPosX += (focusX - lastFocusX);
+            mPosY += (focusY - lastFocusY);
+            Log.v("Hi Zoom", "Factor:" + mScaleFactor);
+            // Don't let the object get too small or too large.
+            mScaleFactor = Math.max(0.2f, Math.min(mScaleFactor, 2.0f));
+
+            lastFocusX = focusX;
+            lastFocusY = focusY;
+
+            invalidate();
             return true;
         }
-    }
 
-    private void checkDimension(View vi) {
-        if (vi.getX() > left) {
-            vi.animate()
-                    .x(left)
-                    .y(vi.getY())
-                    .setDuration(0)
-                    .start();
-        }
-
-        if ((vi.getWidth() + vi.getX()) < right) {
-            vi.animate()
-                    .x(right - vi.getWidth())
-                    .y(vi.getY())
-                    .setDuration(0)
-                    .start();
-        }
-
-        if (vi.getY() > top) {
-            vi.animate()
-                    .x(vi.getX())
-                    .y(top)
-                    .setDuration(0)
-                    .start();
-        }
-
-        if ((vi.getHeight() + vi.getY()) < bottom) {
-            vi.animate()
-                    .x(vi.getX())
-                    .y(bottom - vi.getHeight())
-                    .setDuration(0)
-                    .start();
-        }
     }
 }
