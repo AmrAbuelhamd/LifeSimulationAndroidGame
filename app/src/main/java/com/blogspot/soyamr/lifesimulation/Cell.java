@@ -14,12 +14,6 @@ public class Cell implements GameObject {
     int x, y;
     int key;
 
-    static void defineColors() {
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(2);
-        paint.setColor(Color.GREEN);
-    }
-
     public Cell(int i, int j, int cellNo) {
         x = j * width;
         y = i * height;
@@ -41,5 +35,11 @@ public class Cell implements GameObject {
         Random rnd = new Random();
         paint.setARGB(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
 
+    }
+
+    static void defineColors() {
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(2);
+        paint.setColor(Color.GREEN);
     }
 }

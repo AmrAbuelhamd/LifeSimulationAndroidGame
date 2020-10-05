@@ -1,7 +1,6 @@
-package com.blogspot.soyamr.lifesimulation.tobeusedlater;
+package com.blogspot.soyamr.lifesimulation.tobeusedlater_just_ignor_this_package;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 
 import com.blogspot.soyamr.lifesimulation.GameSurface;
 

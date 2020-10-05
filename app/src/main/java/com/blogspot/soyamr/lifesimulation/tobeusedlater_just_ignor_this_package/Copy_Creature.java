@@ -1,26 +1,30 @@
-package com.blogspot.soyamr.lifesimulation;
+package com.blogspot.soyamr.lifesimulation.tobeusedlater_just_ignor_this_package;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import com.blogspot.soyamr.lifesimulation.CONST;
+import com.blogspot.soyamr.lifesimulation.GameObject;
 
-public class Creature implements GameObject {
+
+public class Copy_Creature implements GameObject {
     int x;
     int y;
     Paint paint = new Paint();
     Rect rect;
-    int key;
+//    private long lastDrawNanoTime = -1;
+
     static String[] operator = {"+", "-"};
 
-    Creature(int creatureNo) {
+    Copy_Creature() {
         x = getRandom(0, CONST.N) * width;
         y = getRandom(0, CONST.M) * height;
         rect = new Rect(x, y, x + width, y + height);
         paint.setStyle(Paint.Style.FILL);
+//        paint.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
         paint.setColor(Color.WHITE);
-        key = creatureNo;
     }
 
     public void draw(Canvas canvas) {
@@ -28,21 +32,44 @@ public class Creature implements GameObject {
     }
 
     public void update() {
+
+        // Current time in nanoseconds
+//        long now = System.nanoTime();AmrAbuelhamd
+
+//        // Never once did draw.
+//        if (lastDrawNanoTime == -1) {
+//            lastDrawNanoTime = now;
+//        }
+        // Change nanoseconds to milliseconds (1 nanosecond = 1000000 milliseconds).
+//        int deltaTime = (int) ((now - lastDrawNanoTime) / 1000000);
+//        Log.i("mrTest", "deltaTime: " + deltaTime);
+//        if (deltaTime < 1310799552)
+//            return;
+        // Distance moves
+//        float distance = VELOCITY * deltaTime;
+
+//        double movingVectorLength = Math.sqrt(movingVectorX* movingVectorX + movingVectorY*movingVectorY);
+
         // Calculate the new position of the game character.
         this.x = x + (getRandomSign() * width) * getRandom(0, 2);
         this.y = y + (getRandomSign() * height) * getRandom(0, 2);
 
-        // When the game's character touches the edge of the screen, then stop it.
+        // When the game's character touches the edge of the screen, then change direction
+
         if (this.x < 0) {
             this.x = 0;
+//            this.movingVectorX = -this.movingVectorX;
         } else if (this.x > CONST.SCREEN_WIDTH - width) {
             this.x = CONST.SCREEN_WIDTH - width;
+//            this.movingVectorX = -this.movingVectorX;
         }
 
         if (this.y < 0) {
             this.y = 0;
+//            this.movingVectorY = -this.movingVectorY;
         } else if (this.y > CONST.SCREEN_HEIGHT - height) {
             this.y = CONST.SCREEN_HEIGHT - height;
+//            this.movingVectorY = -this.movingVectorY;
         }
         rect = new Rect(x, y, x + width, y + height);
     }
@@ -59,6 +86,6 @@ public class Creature implements GameObject {
 
     @Override
     public int getKey() {
-        return key;
+        return 0;
     }
 }

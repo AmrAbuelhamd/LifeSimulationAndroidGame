@@ -19,16 +19,8 @@ public class MainActivity extends AppCompatActivity {
         view.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
-
         setContentView(view);
-
-//        gameSurface = new GameSurface(this);
-//        setContentView(gameSurface);
-//        hideSystemUI();
-//        //getScreenSize();
-//
-//        Log.i("amro width: "," "+Const.SCREEN_WIDTH);
-//        Log.i("amro height: "," "+Const.SCREEN_HEIGHT);
+        hideSystemUI();
     }
 
 
@@ -56,9 +48,6 @@ public class MainActivity extends AppCompatActivity {
         int width = displayMetrics.widthPixels;
         CONST.SCREEN_WIDTH = width;
         CONST.SCREEN_HEIGHT = height;
-
-        Log.i("amro width: "," "+ CONST.SCREEN_WIDTH);
-        Log.i("amro height: "," "+ CONST.SCREEN_HEIGHT);
     }
 
     boolean firstTime = true;

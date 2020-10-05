@@ -1,8 +1,7 @@
 package com.blogspot.soyamr.lifesimulation;
 
-import android.graphics.Bitmap;
+
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.view.SurfaceHolder;
 
 public class GameThread extends Thread {
@@ -22,24 +21,16 @@ public class GameThread extends Thread {
         long startTime = System.nanoTime();
 
         while (running) {
-            Canvas canvas = null;
+            if (!surfaceHolder.getSurface().isValid())
+                continue;
             try {
                 // Get Canvas from Holder and lock it.
-                canvas = this.surfaceHolder.lockCanvas();
-
-                // Synchronized
-                synchronized (canvas) {
-                    this.gameSurface.update();
-                    this.gameSurface.draw(canvas);
-                }
-
+                Canvas canvas = this.surfaceHolder.lockCanvas();
+                this.gameSurface.update();
+                this.gameSurface.draw(canvas);
+                this.surfaceHolder.unlockCanvasAndPost(canvas);
             } catch (Exception e) {
                 // Do nothing.
-            } finally {
-                if (canvas != null) {
-                    // Unlock Canvas.
-                    this.surfaceHolder.unlockCanvasAndPost(canvas);
-                }
             }
             long now = System.nanoTime();
             // Interval to redraw game
