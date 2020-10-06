@@ -7,15 +7,18 @@ import android.graphics.Rect;
 
 import com.blogspot.soyamr.lifesimulation.CONST;
 import com.blogspot.soyamr.lifesimulation.GameObject;
+import com.blogspot.soyamr.lifesimulation.R;
+
+import java.util.Random;
 
 
-public class Copy_Creature implements GameObject {
+public abstract class Copy_Creature extends GameObject {
     int x;
     int y;
     Paint paint = new Paint();
     Rect rect;
 //    private long lastDrawNanoTime = -1;
-
+int width,height;
     static String[] operator = {"+", "-"};
 
     Copy_Creature() {
@@ -74,7 +77,7 @@ public class Copy_Creature implements GameObject {
         rect = new Rect(x, y, x + width, y + height);
     }
 
-
+static Random rand=new Random();
     static int getRandom(int min, int max) {
         return rand.nextInt(max - min) + min;
     }
@@ -84,7 +87,7 @@ public class Copy_Creature implements GameObject {
         return Integer.parseInt(operator[rdm] + "" + "1");
     }
 
-    @Override
+
     public int getKey() {
         return 0;
     }

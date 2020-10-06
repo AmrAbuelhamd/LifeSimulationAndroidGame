@@ -6,26 +6,26 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 
-public class Creature implements GameObject {
-    int x;
-    int y;
-    Paint paint = new Paint();
-    Rect rect;
-    int key;
-    static String[] operator = {"+", "-"};
+public class Creature extends GameObject {
+
+    static final String[] operator = {"+", "-"};
+
+    static final Paint paint;
+
+    static {
+        paint = new Paint();
+        paint.setColor(Color.WHITE);
+        paint.setStyle(Paint.Style.FILL);
+    }
 
     Creature(int creatureNo) {
         x = getRandom(0, CONST.N) * width;
         y = getRandom(0, CONST.M) * height;
-        rect = new Rect(x, y, x + width, y + height);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.WHITE);
+
+        rect.set(x, y, x + width, y + height);
         key = creatureNo;
     }
 
-    public void draw(Canvas canvas) {
-        canvas.drawRect(rect, paint);
-    }
 
     public void update() {
         // Calculate the new position of the game character.
@@ -38,15 +38,14 @@ public class Creature implements GameObject {
         } else if (this.x > CONST.SCREEN_WIDTH - width) {
             this.x = CONST.SCREEN_WIDTH - width;
         }
-
         if (this.y < 0) {
             this.y = 0;
         } else if (this.y > CONST.SCREEN_HEIGHT - height) {
             this.y = CONST.SCREEN_HEIGHT - height;
         }
-        rect = new Rect(x, y, x + width, y + height);
-    }
+        rect.set(x, y, x + width, y + height);
 
+    }
 
     static int getRandom(int min, int max) {
         return rand.nextInt(max - min) + min;
@@ -58,7 +57,7 @@ public class Creature implements GameObject {
     }
 
     @Override
-    public int getKey() {
-        return key;
+    Paint getPaint() {
+        return paint;
     }
 }

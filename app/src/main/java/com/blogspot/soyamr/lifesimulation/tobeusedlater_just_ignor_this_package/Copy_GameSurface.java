@@ -266,7 +266,7 @@ public class Copy_GameSurface extends SurfaceView implements SurfaceHolder.Callb
         //create creatures
        /// Cell.defineColors();
         for (int i = 0; i < 100; i++) {
-            Copy_Creature creature = new Copy_Creature();
+//            Copy_Creature creature = new Copy_Creature();
          //   creatures.add(creature);
         }
         //create cells

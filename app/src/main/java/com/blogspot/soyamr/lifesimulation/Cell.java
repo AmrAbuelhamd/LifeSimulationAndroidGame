@@ -1,7 +1,7 @@
 package com.blogspot.soyamr.lifesimulation;
 
 
-import android.graphics.Canvas;
+
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -9,37 +9,32 @@ import android.graphics.Rect;
 import java.util.Random;
 
 
-public class Cell implements GameObject {
-    Rect rect;
-    int x, y;
-    int key;
+public class Cell extends GameObject {
+
+    static final Paint paint;
+
+    static {
+        paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(2);
+        paint.setColor(Color.GREEN);
+    }
 
     public Cell(int i, int j, int cellNo) {
         x = j * width;
         y = i * height;
-        rect = new Rect(x, y, x + width, y + height);
+        rect.set(x, y, x + width, y + height);
         key = cellNo;
     }
 
-    public void draw(Canvas canvas) {
-        canvas.drawRect(rect, paint);
-    }
-
-
     @Override
-    public int getKey() {
-        return key;
+    Paint getPaint() {
+        return paint;
     }
 
     void setRandomColor() {
         Random rnd = new Random();
         paint.setARGB(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
 
-    }
-
-    static void defineColors() {
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(2);
-        paint.setColor(Color.GREEN);
     }
 }

@@ -1,3 +1,4 @@
+while progressing in this project... 
 HOW TO ADD ZOOM AND PAN TO SURFACE VIEW
         canvas.scale(mScaleFactor, mScaleFactor, focusX, focusY);
         canvas.translate(mPosX, mPosY);
@@ -32,3 +33,8 @@ http://android-coding.blogspot.com/2011/05/drawing-on-surfaceview.html
 
 - Handle onTouchEvent in SurfaceView
 http://android-coding.blogspot.com/2011/05/handle-ontouchevent-in-surfaceview.html
+
+
+
+----------------------------------------
+why changed interface to 

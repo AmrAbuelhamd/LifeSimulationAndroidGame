@@ -83,20 +83,18 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     // Implements method of SurfaceHolder.Callback
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
-        //create creatures
-        Cell.defineColors();
-        for (int i = 0; i < 100; i++) {
-            Creature creature = new Creature(i);
-            creatures.add(creature);
-        }
         //create cells
         int ctr = 0;
         for (int i = 0; i < CONST.M; i++) {
             for (int j = 0; j < CONST.N; j++) {
-                Cell cell = new Cell(i, j, ctr++);
-                cells.put(ctr, cell);
-
+                Cell cell = new Cell(i, j, ctr);
+                cells.put(ctr++, cell);
             }
+        }
+        //create creatures
+        for (int i = 0; i < 100; i++) {
+            Creature creature = new Creature(i);
+            creatures.add(creature);
         }
         resume();
     }
