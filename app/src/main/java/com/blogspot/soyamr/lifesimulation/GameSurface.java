@@ -29,8 +29,8 @@ import java.util.concurrent.TimeUnit;
 public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread gameThread;
 
-    private final CopyOnWriteArrayList<Cell> cells = new CopyOnWriteArrayList<>();
-    private final CopyOnWriteArrayList<Creature> creatures = new CopyOnWriteArrayList<>();
+    private final List<Cell> cells = new CopyOnWriteArrayList<>();
+    private final List<Creature> creatures = new CopyOnWriteArrayList<>();
     private final Map<String, Plant> plants = new ConcurrentHashMap<>();
 
     private static final int INVALID_POINTER_ID = -1;
@@ -66,7 +66,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         init();
     }
 
-    void init() {
+    void init() {//todo divide this to three functions
+
         //create cells
         List<Cell> tempCells = new ArrayList<>();
         for (int i = 0; i < CONST.M; i++) {
@@ -120,8 +121,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update() {
         for (Creature creature : creatures) {
-            creature.update();
-            if (plants.containsKey(creature.getKey())) {
+            creature.update();//it should update, everything todo update shuold do everything , just if i can
+            if (plants.containsKey(creature.getKey())) {//inside the creature, creature->surface todo creature should do this
                 plants.remove(creature.getKey());
                 creature.increaseLife();
             }
@@ -136,6 +137,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         canvas.scale(mScaleFactor, mScaleFactor, focusX, focusY);
         canvas.translate(mPosX, mPosY);
 
+      //  List<> dd = model.getCells();//it should be imutable todo create model class
         for (Cell cell : cells) {
             cell.draw(canvas);
         }

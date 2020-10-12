@@ -50,7 +50,6 @@ public class Creature extends GameObject {
 
         reachedScreenEdge();
         rect.set(x, y, x + width, y + height);
-
     }
 
     private void reachedScreenEdge() {
@@ -68,7 +67,7 @@ public class Creature extends GameObject {
     }
 
     private boolean needFood() {
-        if (life > 90)
+        if (life > 50)
             return false;
 
         //search clockwise direction in @CREATURE_SEARCH_RANG depth
