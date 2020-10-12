@@ -37,4 +37,34 @@ http://android-coding.blogspot.com/2011/05/handle-ontouchevent-in-surfaceview.ht
 
 
 ----------------------------------------
-why changed interface to 
+why changed interface to abstract class, because it tells more about the subclasses, also i found 
+that i am defining the same variables two times, and there's general functions that can be 
+written only once for all of them, and in case of chaging the functionality i can override it.
+----------------------------------------
+implement part of code every x seconds
+https://stackoverflow.com/questions/12908412/print-hello-world-every-x-seconds
+remove while iterating 
+https://stackoverflow.com/questions/1196586/calling-remove-in-foreach-loop-in-java
+the question code itself is usefull
+https://stackoverflow.com/questions/29612984/object-movement-in-a-2d-array-grid
+usefull answers for x and y as key
+https://stackoverflow.com/questions/44515273/make-longitude-and-latitude-as-key-of-hashmap-in-java
+https://stackoverflow.com/questions/4509798/finding-nearest-point-in-an-efficient-way
+
+perfect explanation of ConcurrentModificationException with solution
+  https://www.journaldev.com/378/java-util-concurrentmodificationexception
+
+how this error work  
+https://stackoverflow.com/questions/33705346/concurrentmodificationexception-when-multiple-thread-access-the-same-collection
+
+https://www.javatpoint.com/concurrentmodificationexception-in-java#:~:text=The%20ConcurrentModificationException%20occurs%20when%20an,thread%20is%20iterating%20over%20it.
+
+
+linkedhashmap
+https://stackoverflow.com/questions/1391918/does-java-have-a-linkedconcurrenthashmap-data-structure
+
+delete from CopyOnWriteArrayList 
+https://stackoverflow.com/questions/5612470/remove-elements-from-copyonwritearraylist
+**important
+while creating a lot of objects of type CopyOnWriteArrayList i must create them in temp ArrayList
+then copy them into  CopyOnWriteArrayList
