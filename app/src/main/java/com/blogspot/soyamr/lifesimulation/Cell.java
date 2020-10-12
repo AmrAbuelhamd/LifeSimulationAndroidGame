@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class Cell extends GameObject {
 
-    static final Paint paint;
+    private static final Paint paint;
 
     static {
         paint = new Paint();

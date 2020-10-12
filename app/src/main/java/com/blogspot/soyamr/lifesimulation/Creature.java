@@ -3,21 +3,15 @@ package com.blogspot.soyamr.lifesimulation;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
-import static java.lang.Math.sqrt;
 
 
 public class Creature extends GameObject {
     //creature can see this depth, i.e. 100 cell in all direction
-    static final int CREATURE_SEARCH_RANG = 50;
+    private static final int CREATURE_SEARCH_RANG = 100;
     static Map<String, Plant> plants;
-    static final String[] operator = {"+", "-"};
-    static final int[][] moves = new int[][]{
+    private static final int[][] moveDirection = new int[][]{
             {1, 0},
             {-1, 1},
             {0, 1},
@@ -27,7 +21,7 @@ public class Creature extends GameObject {
             {0, -1},
             {-1, -1},
     };
-    static final Paint paint;
+    private static final Paint paint;
 
     int life = 100;
 
@@ -45,17 +39,14 @@ public class Creature extends GameObject {
     }
 
 
-    static int getRandomSign() {
-        int rdm = getRandom(0, 2);
-        return Integer.parseInt(operator[rdm] + "" + "1");
-    }
-
     public void update() {
         if (needFood())
             return;
+
         // Calculate the new position of the game character.
-        this.x = x + (getRandomSign() * width) * getRandom(0, 2);
-        this.y = y + (getRandomSign() * height) * getRandom(0, 2);
+        int randomIndex = getRandom(0, 8);
+        this.x = x + width * moveDirection[randomIndex][0];
+        this.y = y + height * moveDirection[randomIndex][1];
 
         reachedScreenEdge();
         rect.set(x, y, x + width, y + height);
@@ -77,7 +68,7 @@ public class Creature extends GameObject {
     }
 
     private boolean needFood() {
-        if (life > 50)
+        if (life > 90)
             return false;
 
         //search clockwise direction in @CREATURE_SEARCH_RANG depth
@@ -85,9 +76,9 @@ public class Creature extends GameObject {
         for (int i = 0; i < CREATURE_SEARCH_RANG; i++) {
             int width = Creature.width * (i + 1);
             int height = Creature.height * (i + 1);
-            for (int j = 0; j < moves.length; j++) {
-                int nextCellX = x + moves[j][0] * width;
-                int nextCellY = y + moves[j][1] * height;
+            for (int j = 0; j < moveDirection.length; j++) {
+                int nextCellX = x + moveDirection[j][0] * width;
+                int nextCellY = y + moveDirection[j][1] * height;
                 String plantKey = nextCellX + " " + nextCellY;
                 //once found any plant, this means it's the closes no need to search further.
                 if (plants.containsKey(plantKey)) {
@@ -102,12 +93,12 @@ public class Creature extends GameObject {
         }
         //move the creature towards the plant
         // four cases
-        if (Objects.requireNonNull(nearestPlant).x < x)
+        if (nearestPlant.x < x)
             x += width;
         else if (nearestPlant.x > x)
             x += width;
 
-        if (Objects.requireNonNull(nearestPlant).y < y)
+        if (nearestPlant.y < y)
             y -= height;
         else if (nearestPlant.y > y)
             y += height;
@@ -115,7 +106,6 @@ public class Creature extends GameObject {
         reachedScreenEdge();
         rect.set(x, y, x + width, y + height);
         return true;
-
     }
 
 

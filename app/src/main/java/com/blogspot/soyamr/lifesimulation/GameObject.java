@@ -10,6 +10,7 @@ import java.util.Random;
 
 
 public abstract class GameObject {
+
     static final int width = CONST.CELL_WIDTH;
     static final int height = CONST.CELL_HEIGHT;
     static final Random rand = new Random();
@@ -20,7 +21,7 @@ public abstract class GameObject {
     abstract Paint getPaint();
 
     String getKey() {
-        return x + " " + y;//// string key = x+" "+y // cartej -> hash
+        return x + " " + y;
     }
 
     public void draw(Canvas canvas) {

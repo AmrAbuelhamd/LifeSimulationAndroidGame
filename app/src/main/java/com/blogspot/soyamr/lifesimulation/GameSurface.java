@@ -92,11 +92,10 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         Creature.plants = plants;
 
         Runnable addMorePlants = () -> {
-
             Plant plant = new Plant();
             plants.put(plant.getKey(), plant);
-
         };
+
         Runnable reduceCreatureLife = () -> {
             creatures.forEach(creature -> {
                 final boolean isDead = creature.reduceLife();

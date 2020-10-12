@@ -6,7 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 
 public class Plant extends GameObject {
-    static final Paint paint;
+    private static final Paint paint;
 
     static {
         paint = new Paint();
