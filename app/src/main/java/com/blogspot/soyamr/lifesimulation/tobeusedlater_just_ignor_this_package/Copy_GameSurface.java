@@ -273,7 +273,7 @@ public class Copy_GameSurface extends SurfaceView implements SurfaceHolder.Callb
         int ctr = 0;
         for (int i = 0; i < CONST.M; i++) {
             for (int j = 0; j < CONST.N; j++) {
-                Cell cell = new Cell(i, j, ctr++);
+                Cell cell = new Cell(i, j);
                 cells.put(ctr, cell);
 
             }

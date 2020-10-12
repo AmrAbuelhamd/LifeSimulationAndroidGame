@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.slaviboy:InfiniteGridView:0.1.0@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/21b4f384a0066a1f7db5344aa81acb27/jetified-InfiniteGridView-v0.1.0/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/21b4f384a0066a1f7db5344aa81acb27/jetified-InfiniteGridView-v0.1.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/21b4f384a0066a1f7db5344aa81acb27/jetified-InfiniteGridView-v0.1.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b7b565e6b790d91ea60620a64584fdca/jetified-InfiniteGridView-0.1.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b7b565e6b790d91ea60620a64584fdca/jetified-InfiniteGridView-0.1.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b7b565e6b790d91ea60620a64584fdca/jetified-InfiniteGridView-0.1.0/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

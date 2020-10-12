@@ -4,6 +4,7 @@ package com.blogspot.soyamr.lifesimulation;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.SurfaceHolder;
@@ -11,17 +12,26 @@ import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
 
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Iterator;
+import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread gameThread;
 
-    private final Map<Integer, Cell> cells = new LinkedHashMap<>();
-    private final List<Creature> creatures = new ArrayList<>();
+    private final CopyOnWriteArrayList<Cell> cells = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<Creature> creatures = new CopyOnWriteArrayList<>();
+    private final Map<String, Plant> plants = new ConcurrentHashMap<>();
 
     private static final int INVALID_POINTER_ID = -1;
 
@@ -52,12 +62,70 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         this.getHolder().addCallback(this);
 
         mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
+
+        init();
     }
 
+    void init() {
+        //create cells
+        List<Cell> tempCells = new ArrayList<>();
+        for (int i = 0; i < CONST.M; i++) {
+            for (int j = 0; j < CONST.N; j++) {
+                Cell cell = new Cell(i, j);
+                tempCells.add(cell);
+            }
+        }
+        cells.addAll(tempCells);
+        //create creatures
+        List<Creature> tempCreatures = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            Creature creature = new Creature();
+            tempCreatures.add(creature);
+        }
+        creatures.addAll(tempCreatures);
+        //create plants
+        for (int i = 0; i < 50; i++) {
+            Plant plant = new Plant();
+            plants.put(plant.getKey(), plant);
+        }
+
+        Creature.plants = plants;
+
+        Runnable addMorePlants = () -> {
+
+            Plant plant = new Plant();
+            plants.put(plant.getKey(), plant);
+
+        };
+        Runnable reduceCreatureLife = () -> {
+            creatures.forEach(creature -> {
+                final boolean isDead = creature.reduceLife();
+                if (isDead) {
+                    Log.i("one died", "bad!");
+                    creatures.remove(creature);
+                }
+            });
+        };
+        Runnable updateInfo = () -> {
+            Log.i("number of creatures: ", " " + creatures.size());
+            Log.i("number of plants: ", " " + plants.size());
+            Log.i("----------------", " ------------------------");
+        };
+
+
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
+        executor.scheduleAtFixedRate(addMorePlants, 0, 5, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(reduceCreatureLife, 0, 10, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(updateInfo, 0, 10, TimeUnit.SECONDS);
+    }
 
     public void update() {
         for (Creature creature : creatures) {
             creature.update();
+            if (plants.containsKey(creature.getKey())) {
+                plants.remove(creature.getKey());
+                creature.increaseLife();
+            }
         }
     }
 
@@ -69,13 +137,17 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         canvas.scale(mScaleFactor, mScaleFactor, focusX, focusY);
         canvas.translate(mPosX, mPosY);
 
-        for (Map.Entry<Integer, Cell> entry : cells.entrySet()) {
-            entry.getValue().draw(canvas);
+        for (Cell cell : cells) {
+            cell.draw(canvas);
         }
 
         for (Creature creature : creatures) {
             creature.draw(canvas);
         }
+        for (Map.Entry<String, Plant> entry : plants.entrySet()) {
+            entry.getValue().draw(canvas);
+        }
+
 
         canvas.restore();
     }
@@ -83,19 +155,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     // Implements method of SurfaceHolder.Callback
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
-        //create cells
-        int ctr = 0;
-        for (int i = 0; i < CONST.M; i++) {
-            for (int j = 0; j < CONST.N; j++) {
-                Cell cell = new Cell(i, j, ctr);
-                cells.put(ctr++, cell);
-            }
-        }
-        //create creatures
-        for (int i = 0; i < 100; i++) {
-            Creature creature = new Creature(i);
-            creatures.add(creature);
-        }
         resume();
     }
 

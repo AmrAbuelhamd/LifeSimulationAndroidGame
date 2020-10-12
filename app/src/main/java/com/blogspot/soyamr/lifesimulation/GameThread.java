@@ -2,6 +2,7 @@ package com.blogspot.soyamr.lifesimulation;
 
 
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 public class GameThread extends Thread {
@@ -30,7 +31,9 @@ public class GameThread extends Thread {
                 this.gameSurface.draw(canvas);
                 this.surfaceHolder.unlockCanvasAndPost(canvas);
             } catch (Exception e) {
-                // Do nothing.
+                throw e;
+            }finally {
+//                this.surfaceHolder.unlockCanvasAndPost(canvas);
             }
             long now = System.nanoTime();
             // Interval to redraw game

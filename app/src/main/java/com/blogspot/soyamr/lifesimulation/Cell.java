@@ -16,15 +16,14 @@ public class Cell extends GameObject {
     static {
         paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(2);
+        paint.setStrokeWidth(1);
         paint.setColor(Color.GREEN);
     }
 
-    public Cell(int i, int j, int cellNo) {
+    public Cell(int i, int j) {
         x = j * width;
         y = i * height;
         rect.set(x, y, x + width, y + height);
-        key = cellNo;
     }
 
     @Override
