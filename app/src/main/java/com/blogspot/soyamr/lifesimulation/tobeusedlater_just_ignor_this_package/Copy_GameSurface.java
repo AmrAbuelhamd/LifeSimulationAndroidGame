@@ -13,7 +13,7 @@ import android.view.SurfaceView;
 
 import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.Cell;
-import com.blogspot.soyamr.lifesimulation.Creature;
+import com.blogspot.soyamr.lifesimulation.Animal;
 import com.blogspot.soyamr.lifesimulation.GameThread;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class Copy_GameSurface extends SurfaceView implements SurfaceHolder.Callb
 //    private final List<Explosion> explosionList = new ArrayList<>();
 
     private final Map<Integer, Cell> cells = new LinkedHashMap<Integer, Cell>();
-    private final List<Creature> creatures = new ArrayList<>();
+    private final List<Animal> animals = new ArrayList<>();
 
 //    private static final int MAX_STREAMS = 100;
 //    private int soundIdExplosion;
@@ -165,8 +165,8 @@ public class Copy_GameSurface extends SurfaceView implements SurfaceHolder.Callb
 //        for (ChibiCharacter chibi : chibiList) {
 //            chibi.update();
 //        }
-        for (Creature creature : creatures) {
-            creature.update();
+        for (Animal animal : animals) {
+            animal.update();
         }
 
 //        Iterator<Explosion> iterator = this.explosionList.iterator();
@@ -198,8 +198,8 @@ public class Copy_GameSurface extends SurfaceView implements SurfaceHolder.Callb
             entry.getValue().draw(canvas);
         }
 
-        for (Creature creature : creatures) {
-            creature.draw(canvas);
+        for (Animal animal : animals) {
+            animal.draw(canvas);
         }
 
         canvas.restore();

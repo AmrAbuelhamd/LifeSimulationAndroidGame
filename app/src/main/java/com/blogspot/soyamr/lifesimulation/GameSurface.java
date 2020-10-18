@@ -15,12 +15,9 @@ import android.view.SurfaceView;
 import androidx.annotation.NonNull;
 
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.blogspot.soyamr.lifesimulation.Direction.DOWN;
 import static com.blogspot.soyamr.lifesimulation.Direction.LEFT;
@@ -28,31 +25,12 @@ import static com.blogspot.soyamr.lifesimulation.Direction.RIGHT;
 import static com.blogspot.soyamr.lifesimulation.Direction.UP;
 
 
-public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
+public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, Controller {
+    private final ScaleListener scaleListener;
     private GameThread gameThread;
 
-    public final List<Cell> cells = new CopyOnWriteArrayList<>();
-    public final List<Creature> creatures = new CopyOnWriteArrayList<>();
-    public final Map<String, Plant> plants = new ConcurrentHashMap<>();
 
-    private static final int INVALID_POINTER_ID = -1;
-
-    private float mPosX;
-    private float mPosY;
-
-    private float mLastTouchX;
-    private float mLastTouchY;
-    private int mActivePointerId = INVALID_POINTER_ID;
-
-    private ScaleGestureDetector mScaleDetector;
-    private float mScaleFactor = 1.f;
-
-    private float focusX;
-    private float focusY;
-
-    private float lastFocusX = -1;
-    private float lastFocusY = -1;
-
+    Model model;
 
     public GameSurface(Context context) {
         super(context);
@@ -63,47 +41,19 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         // Set callback.
         this.getHolder().addCallback(this);
 
-        mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
-
-        init();
-    }
-
-    void init() {//todo divide this to three functions
-
-
-        //create cells
-        List<Cell> tempCells = new ArrayList<>();
-        for (int i = 0; i < Const.M; i++) {
-            for (int j = 0; j < Const.N; j++) {
-                Cell cell = new Cell(i, j);
-                tempCells.add(cell);
-            }
-        }
-        cells.addAll(tempCells);
-        //create creatures
-        List<Creature> tempCreatures = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            Creature creature = new Creature();
-            tempCreatures.add(creature);
-        }
-        creatures.addAll(tempCreatures);
-        //create plants
-        for (int i = 0; i < 100; i++) {
-            Plant plant = new Plant();
-            plants.put(plant.getKey(), plant);
-        }
-
-        Creature.plants = plants;
-
+        scaleListener = new ScaleListener(this);
+        model = new Model();
 
     }
 
     public void update() {
-        for (Creature creature : creatures) {
+        List<Animal> creatures = model.getAnimals();
+        Map<String, Plant> plants = model.getPlants();
+        for (Animal creature : creatures) {
             creature.update();//it should update, everything todo update shuold do everything , just if i can
             if (plants.containsKey(creature.getKey())) {//inside the creature, creature->surface todo creature should do this
-                plants.remove(creature.getKey());
-                creature.increaseLife();
+                model.removePlant(creature.getKey());
+                creature.reduceHunger();
             }
         }
     }
@@ -114,18 +64,21 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
 
         canvas.save();
-        canvas.scale(mScaleFactor, mScaleFactor, focusX, focusY);
-        canvas.translate(mPosX, mPosY);
+        canvas.scale(scaleListener.mScaleFactor, scaleListener.mScaleFactor, scaleListener.focusX, scaleListener.focusY);
+        canvas.translate(scaleListener.mPosX, scaleListener.mPosY);
 
 
-        //  List<> dd = model.getCells();//it should be imutable todo create model class
+        List<Cell> cells = model.getCells();//it should be imutable todo create model class
         for (Cell cell : cells) {
             cell.draw(canvas);
         }
 
-        for (Creature creature : creatures) {
+        List<Animal> animals = model.getAnimals();
+        for (Animal creature : animals) {
             creature.draw(canvas);
         }
+        Map<String, Plant> plants = model.getPlants();
+
         for (Map.Entry<String, Plant> entry : plants.entrySet()) {
             entry.getValue().draw(canvas);
         }
@@ -134,6 +87,21 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 //        drawmyalgorithm(canvas);
 
         canvas.restore();
+    }
+
+    @Override
+    public void addOnePlant() {
+        model.addOnePlant();
+    }
+
+    @Override
+    public void increaseAnimalsHunger() {
+        model.increaseAnimalsHunger();
+    }
+
+    @Override
+    public void updateInfo() {
+        model.updateInfo();
     }
 
     private void drawmyalgorithm(Canvas canvas) {
@@ -157,8 +125,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         int y = Const.SCREEN_HEIGHT / 2;
 
         for (int i = 0; i < 100; i++) {
-            int width = Creature.width * (i + 1);
-            int height = Creature.height * (i + 1);
+            int width = Animal.width * (i + 1);
+            int height = Animal.height * (i + 1);
             for (int j = 0; j < moveDirection.length; j++) {
                 int nextCellX = x + moveDirection[j][0] * width;
                 int nextCellY = y + moveDirection[j][1] * height;
@@ -305,104 +273,17 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        // Let the ScaleGestureDetector inspect all events.
-
-        mScaleDetector.onTouchEvent(ev);
-
-        final int action = ev.getAction();
-        switch (action & MotionEvent.ACTION_MASK) {
-            case MotionEvent.ACTION_DOWN: {
-
-                final float x = ev.getX() / mScaleFactor;
-                final float y = ev.getY() / mScaleFactor;
-                mLastTouchX = x;
-                mLastTouchY = y;
-                mActivePointerId = ev.getPointerId(0);
-
-                break;
-            }
-
-            case MotionEvent.ACTION_MOVE: {
-                final int pointerIndex = ev.findPointerIndex(mActivePointerId);
-                final float x = ev.getX(pointerIndex) / mScaleFactor;
-                final float y = ev.getY(pointerIndex) / mScaleFactor;
-
-                // Only move if the ScaleGestureDetector isn't processing a gesture.
-                if (!mScaleDetector.isInProgress()) {
-
-                    final float dx = x - mLastTouchX;
-                    final float dy = y - mLastTouchY;
-                    mPosX += dx;
-                    mPosY += dy;
-
-                    invalidate();
-                }
-
-                mLastTouchX = x;
-                mLastTouchY = y;
-
-                break;
-            }
-
-            case MotionEvent.ACTION_UP:
-
-            case MotionEvent.ACTION_CANCEL: {
-                mActivePointerId = INVALID_POINTER_ID;
-                break;
-            }
-
-            case MotionEvent.ACTION_POINTER_UP: {
-
-                final int pointerIndex = (ev.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK) >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
-                final int pointerId = ev.getPointerId(pointerIndex);
-                if (pointerId == mActivePointerId) {
-                    // This was our active pointer going up. Choose a new
-                    // active pointer and adjust accordingly.
-                    final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
-                    mLastTouchX = ev.getX(newPointerIndex) / mScaleFactor;
-                    mLastTouchY = ev.getY(newPointerIndex) / mScaleFactor;
-                    mActivePointerId = ev.getPointerId(newPointerIndex);
-                }
-                break;
-            }
-        }
+        scaleListener.onTouchEvent(ev);
         return true;
     }
 
+    //  @Override
+    public List<Animal> getAnimals() {
+        return model.getAnimals();
+    }
 
-    private class ScaleListener extends
-            ScaleGestureDetector.SimpleOnScaleGestureListener {
-        @Override
-        public boolean onScaleBegin(ScaleGestureDetector detector) {
-
-            lastFocusX = -1;
-            lastFocusY = -1;
-
-            return true;
-        }
-
-        @Override
-        public boolean onScale(ScaleGestureDetector detector) {
-            mScaleFactor *= detector.getScaleFactor();
-
-            focusX = detector.getFocusX();
-            focusY = detector.getFocusY();
-
-            if (lastFocusX == -1)
-                lastFocusX = focusX;
-            if (lastFocusY == -1)
-                lastFocusY = focusY;
-
-            mPosX += (focusX - lastFocusX);
-            mPosY += (focusY - lastFocusY);
-            // Don't let the object get too small or too large.
-            mScaleFactor = Math.max(0.2f, Math.min(mScaleFactor, 2.0f));
-
-            lastFocusX = focusX;
-            lastFocusY = focusY;
-
-            invalidate();
-            return true;
-        }
+    // @Override
+    public Map<String, Plant> getPlants() {
+        return model.getPlants();
     }
 }

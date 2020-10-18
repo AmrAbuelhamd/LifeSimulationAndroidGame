@@ -2,6 +2,7 @@ package com.blogspot.soyamr.lifesimulation;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Random;
 
 import static com.blogspot.soyamr.lifesimulation.Direction.*;
 
@@ -9,9 +10,10 @@ enum Direction {
     UP, LEFT, RIGHT, DOWN
 }
 
-public abstract class Algorithms {
+public abstract class Utils {
+    static final Random rand = new Random();
 
-    static Plant searchAroundAnimal(int searchRange, Creature currentAnimal, Map<String, Plant> plants) {
+    static Plant searchAroundAnimal(int searchRange, Animal currentAnimal, Map<String, Plant> plants) {
 
         // The input matrix  dimension
         int matrixLength = searchRange;
@@ -110,5 +112,9 @@ public abstract class Algorithms {
             }
         }
         return null;
+    }
+
+    static int getRandom(int min, int max) {
+        return rand.nextInt(max - min) + min;
     }
 }
