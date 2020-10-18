@@ -21,8 +21,8 @@ public class GameThread {
         this.surfaceHolder = gameSurface.getHolder();
 
         executor = Executors.newScheduledThreadPool(4);
-        executor.scheduleAtFixedRate(gameSurface::addOnePlant, 0, 1, TimeUnit.SECONDS);//toask or i should pass model itself here?
-        executor.scheduleAtFixedRate(gameSurface::increaseAnimalsHunger, 0, 10, TimeUnit.SECONDS);//fixme change delay to 10
+        executor.scheduleAtFixedRate(gameSurface::addOnePlant, 0, 1, TimeUnit.SECONDS);//toAsk or i should pass model itself here?
+        executor.scheduleAtFixedRate(gameSurface::increaseAnimalsHunger, 0, 5, TimeUnit.SECONDS);//fixme change delay to 10, and time to 10
         executor.scheduleAtFixedRate(gameSurface::updateInfo, 0, 10, TimeUnit.SECONDS);
         executor.scheduleWithFixedDelay(this::run, 0, waitTime, TimeUnit.MILLISECONDS);
 

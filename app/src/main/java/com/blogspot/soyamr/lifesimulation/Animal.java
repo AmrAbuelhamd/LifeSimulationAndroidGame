@@ -3,12 +3,12 @@ package com.blogspot.soyamr.lifesimulation;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import java.util.List;
 import java.util.Map;
 
 
 public class Animal extends GameObject {
     //creature can see this depth, i.e. 100 cell in all direction
+    int hunger = 100;
     private static final int CREATURE_SEARCH_RANG = 50;
     private static Map<String, Plant> plants;
     private static final int[][] moveDirection = new int[][]{
@@ -23,7 +23,6 @@ public class Animal extends GameObject {
     };
     private static final Paint paint;
 
-    int life = 100;
 
     static {
         paint = new Paint();
@@ -70,7 +69,7 @@ public class Animal extends GameObject {
     }
 
     private boolean needFood() {
-        if (life > 90)
+        if (hunger > 80)
             return false;
 
         //search clockwise direction in @CREATURE_SEARCH_RANG depth
@@ -103,15 +102,15 @@ public class Animal extends GameObject {
     }
 
     public boolean increseHunger() {
-        if (life == 0)
+        if (hunger == 0)
             return true;
         else
-            life -= 10;
+            hunger -= 10;
         return false;
     }
 
     public void reduceHunger() {
-        if (life != 100)
-            life += 10;
+        if (hunger != 100)
+            hunger += 10;
     }
 }

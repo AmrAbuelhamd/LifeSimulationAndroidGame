@@ -57,7 +57,7 @@ public class Model {
 
     public void addPlants() {
         //create plants
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1000; i++) {
             addRandomPlant();
         }
     }
