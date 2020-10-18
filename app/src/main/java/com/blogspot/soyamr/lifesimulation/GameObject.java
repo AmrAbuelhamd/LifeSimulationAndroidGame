@@ -11,8 +11,8 @@ import java.util.Random;
 
 public abstract class GameObject {
 
-    static final int width = CONST.CELL_WIDTH;
-    static final int height = CONST.CELL_HEIGHT;
+    static final int width = Const.CELL_WIDTH;
+    static final int height = Const.CELL_HEIGHT;
     static final Random rand = new Random();
     final Rect rect = new Rect();
     int x;

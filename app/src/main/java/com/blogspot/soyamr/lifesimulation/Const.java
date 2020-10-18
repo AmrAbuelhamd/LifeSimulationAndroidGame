@@ -1,6 +1,6 @@
 package com.blogspot.soyamr.lifesimulation;
 
-public class CONST {
+public class Const {
     public static int CELL_WIDTH = 10;
     public static int CELL_HEIGHT = 10;
 

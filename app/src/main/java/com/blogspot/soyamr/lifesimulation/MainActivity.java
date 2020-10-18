@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -46,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
         int width = displayMetrics.widthPixels;
-        CONST.SCREEN_WIDTH = width;
-        CONST.SCREEN_HEIGHT = height;
+        Const.SCREEN_WIDTH = width;
+        Const.SCREEN_HEIGHT = height;
     }
 
     boolean firstTime = true;

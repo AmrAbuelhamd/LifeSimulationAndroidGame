@@ -1,9 +1,9 @@
 package com.blogspot.soyamr.lifesimulation;
 
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
+
+import androidx.annotation.NonNull;
 
 public class Plant extends GameObject {
     private static final Paint paint;
@@ -15,8 +15,8 @@ public class Plant extends GameObject {
     }
 
     Plant() {
-        x = getRandom(0, CONST.N) * width;
-        y = getRandom(0, CONST.M) * height;
+        x = getRandom(0, Const.N) * width;
+        y = getRandom(0, Const.M) * height;
         rect.set(x, y, x + width, y + height);
     }
 
@@ -24,4 +24,5 @@ public class Plant extends GameObject {
     Paint getPaint() {
         return paint;
     }
+
 }

@@ -11,7 +11,7 @@ import android.view.ScaleGestureDetector;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.blogspot.soyamr.lifesimulation.CONST;
+import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.Cell;
 import com.blogspot.soyamr.lifesimulation.Creature;
 import com.blogspot.soyamr.lifesimulation.GameThread;
@@ -213,7 +213,7 @@ public class Copy_GameSurface extends SurfaceView implements SurfaceHolder.Callb
         Paint paint = new Paint();
         paint.setColor(Color.WHITE);
         paint.setTextSize(500);
-        canvas.drawText("Amr", (float) (CONST.SCREEN_WIDTH / 3.0), (float) (CONST.SCREEN_HEIGHT / 2.0), paint);
+        canvas.drawText("Amr", (float) (Const.SCREEN_WIDTH / 3.0), (float) (Const.SCREEN_HEIGHT / 2.0), paint);
     }
 
     private void drawHeart(Canvas canvas) {
@@ -223,8 +223,8 @@ public class Copy_GameSurface extends SurfaceView implements SurfaceHolder.Callb
         path = new Path();
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-        float width = CONST.SCREEN_WIDTH;
-        float height = CONST.SCREEN_HEIGHT;
+        float width = Const.SCREEN_WIDTH;
+        float height = Const.SCREEN_HEIGHT;
 
 
         // Starting point
@@ -271,8 +271,8 @@ public class Copy_GameSurface extends SurfaceView implements SurfaceHolder.Callb
         }
         //create cells
         int ctr = 0;
-        for (int i = 0; i < CONST.M; i++) {
-            for (int j = 0; j < CONST.N; j++) {
+        for (int i = 0; i < Const.M; i++) {
+            for (int j = 0; j < Const.N; j++) {
                 Cell cell = new Cell(i, j);
                 cells.put(ctr, cell);
 
@@ -300,22 +300,11 @@ public class Copy_GameSurface extends SurfaceView implements SurfaceHolder.Callb
     }
 
     public void pause() {
-        this.gameThread.setRunning(false);
-        while (true) {
-            // Papubrent thread must wait until the end of GameThread.
-            try {
-                this.gameThread.join();
-                return;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+
     }
 
     public void resume() {
-        //this.gameThread = new GameThread(this, this.getHolder());
-        this.gameThread.setRunning(true);
-        this.gameThread.start();
+
     }
 
     @Override

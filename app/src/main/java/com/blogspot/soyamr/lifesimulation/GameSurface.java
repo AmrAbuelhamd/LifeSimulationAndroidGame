@@ -4,7 +4,9 @@ package com.blogspot.soyamr.lifesimulation;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.util.Log;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.SurfaceHolder;
@@ -19,19 +21,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.Iterator;
-import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+
+import static com.blogspot.soyamr.lifesimulation.Direction.DOWN;
+import static com.blogspot.soyamr.lifesimulation.Direction.LEFT;
+import static com.blogspot.soyamr.lifesimulation.Direction.RIGHT;
+import static com.blogspot.soyamr.lifesimulation.Direction.UP;
 
 
 public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread gameThread;
 
-    private final List<Cell> cells = new CopyOnWriteArrayList<>();
-    private final List<Creature> creatures = new CopyOnWriteArrayList<>();
-    private final Map<String, Plant> plants = new ConcurrentHashMap<>();
+    public final List<Cell> cells = new CopyOnWriteArrayList<>();
+    public final List<Creature> creatures = new CopyOnWriteArrayList<>();
+    public final Map<String, Plant> plants = new ConcurrentHashMap<>();
 
     private static final int INVALID_POINTER_ID = -1;
 
@@ -68,10 +70,11 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     void init() {//todo divide this to three functions
 
+
         //create cells
         List<Cell> tempCells = new ArrayList<>();
-        for (int i = 0; i < CONST.M; i++) {
-            for (int j = 0; j < CONST.N; j++) {
+        for (int i = 0; i < Const.M; i++) {
+            for (int j = 0; j < Const.N; j++) {
                 Cell cell = new Cell(i, j);
                 tempCells.add(cell);
             }
@@ -85,38 +88,14 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         }
         creatures.addAll(tempCreatures);
         //create plants
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 100; i++) {
             Plant plant = new Plant();
             plants.put(plant.getKey(), plant);
         }
 
         Creature.plants = plants;
 
-        Runnable addMorePlants = () -> {
-            Plant plant = new Plant();
-            plants.put(plant.getKey(), plant);
-        };
 
-        Runnable reduceCreatureLife = () -> {
-            creatures.forEach(creature -> {
-                final boolean isDead = creature.reduceLife();
-                if (isDead) {
-                    Log.i("one died", "bad!");
-                    creatures.remove(creature);
-                }
-            });
-        };
-        Runnable updateInfo = () -> {
-            Log.i("number of creatures: ", " " + creatures.size());
-            Log.i("number of plants: ", " " + plants.size());
-            Log.i("----------------", " ------------------------");
-        };
-
-
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
-        executor.scheduleAtFixedRate(addMorePlants, 0, 5, TimeUnit.SECONDS);
-        executor.scheduleAtFixedRate(reduceCreatureLife, 0, 10, TimeUnit.SECONDS);
-        executor.scheduleAtFixedRate(updateInfo, 0, 10, TimeUnit.SECONDS);
     }
 
     public void update() {
@@ -129,6 +108,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
@@ -137,7 +117,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
         canvas.scale(mScaleFactor, mScaleFactor, focusX, focusY);
         canvas.translate(mPosX, mPosY);
 
-      //  List<> dd = model.getCells();//it should be imutable todo create model class
+
+        //  List<> dd = model.getCells();//it should be imutable todo create model class
         for (Cell cell : cells) {
             cell.draw(canvas);
         }
@@ -149,8 +130,150 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
             entry.getValue().draw(canvas);
         }
 
+//        drawWhite(canvas);
+//        drawmyalgorithm(canvas);
 
         canvas.restore();
+    }
+
+    private void drawmyalgorithm(Canvas canvas) {
+        Plant nearestPlant = null;
+        Paint paint;
+
+        paint = new Paint();
+        paint.setColor(Color.RED);
+        paint.setStyle(Paint.Style.FILL);
+        final int[][] moveDirection = new int[][]{
+                {0, -1},
+                {1, -1},
+                {1, 0},
+                {1, 1},
+                {0, 1},
+                {-1, 1},
+                {-1, 0},
+                {-1, -1},
+        };
+        int x = Const.SCREEN_WIDTH / 2;
+        int y = Const.SCREEN_HEIGHT / 2;
+
+        for (int i = 0; i < 100; i++) {
+            int width = Creature.width * (i + 1);
+            int height = Creature.height * (i + 1);
+            for (int j = 0; j < moveDirection.length; j++) {
+                int nextCellX = x + moveDirection[j][0] * width;
+                int nextCellY = y + moveDirection[j][1] * height;
+                String plantKey = nextCellX + " " + nextCellY;
+                //once found any plant, this means it's the closes no need to search further.
+                canvas.drawRect(new Rect(nextCellX, nextCellY, nextCellX + Const.CELL_HEIGHT, nextCellY + Const.CELL_HEIGHT), paint);
+
+            }
+        }
+    }
+
+
+    private void drawWhite(Canvas canvas) {
+
+        // The input matrix  dimension
+        int i = 0;
+        int matrixLength = 100;
+        int numberOfElements = matrixLength * matrixLength;
+        Map<String, Integer> mask = new LinkedHashMap<>();
+        int y = Const.SCREEN_HEIGHT / 2;
+        int x = Const.SCREEN_WIDTH / 2;
+        Paint paint;
+        Direction nextDirection = LEFT;
+        //The number of elements of the input matrix
+        mask.put(y + " " + x, 1);
+
+        paint = new Paint();
+        paint.setColor(Color.WHITE);
+        paint.setStyle(Paint.Style.FILL);
+
+        // The matrix mask help to decide which is the next direction or the next element to pick from the input matrix
+        // All the values of the mask are initialized to zero.
+
+        //The first element of the output(the spiral) is always the middle element of the input matrix
+
+
+        // Each time an element from the input matrix is added to the output spiral, the corresponding element in the mask is set to 1
+
+        // The first direction is always to the left
+
+        // This is a counter to loop through all the elements of the input matrix only one time
+
+
+        while (i++ < numberOfElements - 1) {
+            // Check which direction to go (left, down, right or up)
+            switch (nextDirection) {
+
+                case LEFT:
+                    // From the input matrix, take the number at the left of the current position
+                    // (which is the middle of the input matrix) and add it to the spiral
+                    x -= Const.CELL_WIDTH;
+                    //Update the mask
+                    mask.put(y + " " + x, 1);
+                    canvas.drawRect(new Rect(x, y, x + Const.CELL_HEIGHT, y + Const.CELL_HEIGHT), paint);
+
+                    // Decide which direction(or element in the input matrix) to take next.
+                    // After moving to the left, you only have two choices : keeping the same direction or moving down
+                    // To know which direction to take, check the mask
+                    if (mask.containsKey((int) (y + Const.CELL_HEIGHT) + " " + x)) {
+                        nextDirection = LEFT;
+                    } else {
+                        nextDirection = DOWN;
+                    }
+                    break;
+
+                case DOWN:
+                    y += Const.CELL_HEIGHT;
+
+                    canvas.drawRect(new Rect(x, y, x + Const.CELL_HEIGHT, y + Const.CELL_HEIGHT), paint);
+
+                    //Update the mask
+                    mask.put(y + " " + x, 1);
+                    if (mask.containsKey(y + " " + (int) (x + Const.CELL_WIDTH))) {
+                        nextDirection = DOWN;
+                    } else {
+                        nextDirection = RIGHT;
+                    }
+                    break;
+
+                case RIGHT:
+                    x += Const.CELL_WIDTH;
+                    canvas.drawRect(new Rect(x, y, x + Const.CELL_HEIGHT, y + Const.CELL_HEIGHT), paint);
+
+
+                    //Update the mask
+                    mask.put(y + " " + x, 1);
+                    if (mask.containsKey((int) (y - Const.CELL_HEIGHT) + " " + x)) {
+                        nextDirection = RIGHT;
+                    } else {
+                        nextDirection = UP;
+                    }
+                    break;
+
+                case UP:
+                    y -= Const.CELL_HEIGHT;
+                    canvas.drawRect(new Rect(x, y, x + Const.CELL_HEIGHT, y + Const.CELL_HEIGHT), paint);
+
+                    //Update the mask
+                    mask.put(y + " " + x, 1);
+                    if (mask.containsKey(y + " " + (int) (x - Const.CELL_WIDTH))) {
+                        nextDirection = UP;
+                    } else {
+                        nextDirection = LEFT;
+                    }
+                    break;
+            }
+        }
+
+        y = Const.SCREEN_HEIGHT / 2;
+        x = Const.SCREEN_WIDTH / 2;
+        paint = new Paint();
+        paint.setColor(Color.RED);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawRect(new Rect(x, y, x + Const.CELL_HEIGHT, y + Const.CELL_HEIGHT), paint);
+
     }
 
     // Implements method of SurfaceHolder.Callback
@@ -171,22 +294,12 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void pause() {
-        this.gameThread.setRunning(false);
-        while (true) {
-            // Parent thread must wait until the end of GameThread.
-            try {
-                this.gameThread.join();
-                return;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        this.gameThread.executor.shutdown();
+
     }
 
     public void resume() {
-        this.gameThread = new GameThread(this, this.getHolder());
-        this.gameThread.setRunning(true);
-        this.gameThread.start();
+        this.gameThread = new GameThread(this);
     }
 
     @SuppressLint("ClickableViewAccessibility")

@@ -5,53 +5,61 @@ import android.graphics.Canvas;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
-public class GameThread extends Thread {
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+public class GameThread {
 
 
-    private boolean running;
     private GameSurface gameSurface;
     private SurfaceHolder surfaceHolder;
-
-    public GameThread(GameSurface gameSurface, SurfaceHolder surfaceHolder) {
+    final long waitTime = 50;
+    final ScheduledExecutorService executor;
+    public GameThread(GameSurface gameSurface) {
         this.gameSurface = gameSurface;
-        this.surfaceHolder = surfaceHolder;
+        this.surfaceHolder = gameSurface.getHolder();
+
+         executor = Executors.newScheduledThreadPool(2);
+
+        Runnable addMorePlants = () -> {
+            Plant plant = new Plant();
+            gameSurface.plants.put(plant.getKey(), plant);
+        };
+
+        Runnable reduceCreatureLife = () -> {
+            gameSurface.creatures.forEach(creature -> {
+                final boolean isDead = creature.reduceLife();
+                if (isDead) {
+                    Log.i("one died", "bad!");
+                    gameSurface.creatures.remove(creature);
+                }
+            });
+        };
+        Runnable updateInfo = () -> {
+            Log.i("number of creatures: ", " " + gameSurface.creatures.size());
+            Log.i("number of plants: ", " " + gameSurface.plants.size());
+            Log.i("----------------", " ------------------------");
+        };
+
+
+
+        executor.scheduleAtFixedRate(addMorePlants, 0, 1, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(reduceCreatureLife, 0, 10, TimeUnit.SECONDS);//fixme change delay to 10
+        executor.scheduleAtFixedRate(updateInfo, 0, 10, TimeUnit.SECONDS);
+        executor.scheduleWithFixedDelay(this::myrun,0, waitTime , TimeUnit.MILLISECONDS);
+
     }
 
-    @Override
-    public void run() {
-        long startTime = System.nanoTime();
+    public void myrun() {
+        if (!surfaceHolder.getSurface().isValid())
+            return ;
 
-        while (running) {
-            if (!surfaceHolder.getSurface().isValid())
-                continue;
-            try {
-                // Get Canvas from Holder and lock it.
-                Canvas canvas = this.surfaceHolder.lockCanvas();
-                this.gameSurface.update();
-                this.gameSurface.draw(canvas);
-                this.surfaceHolder.unlockCanvasAndPost(canvas);
-            } catch (Exception e) {
-                throw e;
-            }finally {
-//                this.surfaceHolder.unlockCanvasAndPost(canvas);
-            }
-            long now = System.nanoTime();
-            // Interval to redraw game
-            // (Change nanoseconds to milliseconds)
-            long waitTime = (now - startTime) / 1000000;
-            if (waitTime < 10) {
-                waitTime = 10; // Millisecond.
-            }
-            try {
-                // Sleep.
-                sleep(waitTime);
-            } catch (InterruptedException ignored) {
-            }
-            startTime = System.nanoTime();
-        }
+        // Get Canvas from Holder and lock it.
+        Canvas canvas = this.surfaceHolder.lockCanvas();
+        this.gameSurface.update();
+        this.gameSurface.draw(canvas);
+        this.surfaceHolder.unlockCanvasAndPost(canvas);
     }
 
-    public void setRunning(boolean running) {
-        this.running = running;
-    }
 }

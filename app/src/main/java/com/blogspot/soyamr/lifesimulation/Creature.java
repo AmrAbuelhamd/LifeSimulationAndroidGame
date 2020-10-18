@@ -2,23 +2,23 @@ package com.blogspot.soyamr.lifesimulation;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 
 import java.util.Map;
-import java.util.Objects;
 
 
 public class Creature extends GameObject {
     //creature can see this depth, i.e. 100 cell in all direction
-    private static final int CREATURE_SEARCH_RANG = 100;
+    private static final int CREATURE_SEARCH_RANG = 30;
     static Map<String, Plant> plants;
     private static final int[][] moveDirection = new int[][]{
-            {1, 0},
-            {-1, 1},
-            {0, 1},
-            {1, 1},
-            {1, 0},
-            {1, -1},
             {0, -1},
+            {1, -1},
+            {1, 0},
+            {1, 1},
+            {0, 1},
+            {-1, 1},
+            {-1, 0},
             {-1, -1},
     };
     private static final Paint paint;
@@ -32,8 +32,8 @@ public class Creature extends GameObject {
     }
 
     Creature() {
-        x = getRandom(0, CONST.N) * width;
-        y = getRandom(0, CONST.M) * height;
+        x = getRandom(0, Const.N) * width;
+        y = getRandom(0, Const.M) * height;
 
         rect.set(x, y, x + width, y + height);
     }
@@ -56,44 +56,30 @@ public class Creature extends GameObject {
         // When the game's character touches the edge of the screen, then stop it.
         if (this.x < 0) {
             this.x = 0;
-        } else if (this.x > CONST.SCREEN_WIDTH - width) {
-            this.x = CONST.SCREEN_WIDTH - width;
+        } else if (this.x > Const.SCREEN_WIDTH - width) {
+            this.x = Const.SCREEN_WIDTH - width;
         }
         if (this.y < 0) {
             this.y = 0;
-        } else if (this.y > CONST.SCREEN_HEIGHT - height) {
-            this.y = CONST.SCREEN_HEIGHT - height;
+        } else if (this.y > Const.SCREEN_HEIGHT - height) {
+            this.y = Const.SCREEN_HEIGHT - height;
         }
     }
 
     private boolean needFood() {
-        if (life > 50)
+        if (life > 90)
             return false;
 
         //search clockwise direction in @CREATURE_SEARCH_RANG depth
-        Plant nearestPlant = null;
-        for (int i = 0; i < CREATURE_SEARCH_RANG; i++) {
-            int width = Creature.width * (i + 1);
-            int height = Creature.height * (i + 1);
-            for (int j = 0; j < moveDirection.length; j++) {
-                int nextCellX = x + moveDirection[j][0] * width;
-                int nextCellY = y + moveDirection[j][1] * height;
-                String plantKey = nextCellX + " " + nextCellY;
-                //once found any plant, this means it's the closes no need to search further.
-                if (plants.containsKey(plantKey)) {
-                    nearestPlant = plants.get(plantKey);
-                    i = CREATURE_SEARCH_RANG;
-                    break;
-                }
-            }
-        }
+        Plant nearestPlant = Algorithms.searchAroundAnimal(CREATURE_SEARCH_RANG, this, plants);
         if (nearestPlant == null) {
             return false;
         }
+
         //move the creature towards the plant
         // four cases
         if (nearestPlant.x < x)
-            x += width;
+            x -= width;
         else if (nearestPlant.x > x)
             x += width;
 
