@@ -10,17 +10,8 @@ public class Animal extends GameObject {
     //creature can see this depth, i.e. 100 cell in all direction
     int hunger = 100;
     private static final int CREATURE_SEARCH_RANG = 50;
-    private static Map<String, Plant> plants;
-    private static final int[][] moveDirection = new int[][]{
-            {0, -1},
-            {1, -1},
-            {1, 0},
-            {1, 1},
-            {0, 1},
-            {-1, 1},
-            {-1, 0},
-            {-1, -1},
-    };
+    private static Model model;
+
     private static final Paint paint;
 
 
@@ -29,8 +20,9 @@ public class Animal extends GameObject {
         paint.setColor(Color.WHITE);
         paint.setStyle(Paint.Style.FILL);
     }
-    public static void setPlants( Map<String, Plant> plants){
-        Animal.plants = plants;
+
+    public static void setModel(Model model) {
+        Animal.model = model;
     }
 
     Animal() {
@@ -73,7 +65,7 @@ public class Animal extends GameObject {
             return false;
 
         //search clockwise direction in @CREATURE_SEARCH_RANG depth
-        Plant nearestPlant = Utils.searchAroundAnimal(CREATURE_SEARCH_RANG, this, plants);
+        Plant nearestPlant = Utils.searchAroundAnimal(CREATURE_SEARCH_RANG, this, model.getPlants());
         if (nearestPlant == null) {
             return false;
         }
@@ -101,12 +93,11 @@ public class Animal extends GameObject {
         return paint;
     }
 
-    public boolean increseHunger() {
+    public void increaseHunger() {
         if (hunger == 0)
-            return true;
+            model.deleteMePlease(this);
         else
             hunger -= 10;
-        return false;
     }
 
     public void reduceHunger() {

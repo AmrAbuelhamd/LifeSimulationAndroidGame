@@ -22,7 +22,7 @@ public class Model {
         addSells();
         addAnimals();
         addPlants();
-        Animal.setPlants(plants);
+        Animal.setModel(this);
     }
 
     public boolean plantsContain(String key) {//toAsk is a name?
@@ -46,13 +46,7 @@ public class Model {
     }
 
     public void increaseAnimalsHunger() {
-        animals.forEach(creature -> {
-            final boolean isDead = creature.increseHunger();
-            if (isDead) {
-                Log.i("one died", "bad!");
-                animals.remove(creature);
-            }
-        });
+        animals.forEach(Animal::increaseHunger);
     }
 
     public void addPlants() {
@@ -101,5 +95,11 @@ public class Model {
         Log.i("number of creatures: ", " " + animals.size());
         Log.i("number of plants: ", " " + plants.size());
         Log.i("----------------", " ------------------------");
+    }
+
+    public void deleteMePlease(Animal animal) {
+        animals.remove(animal);
+        Log.i("one died", "bad!");
+
     }
 }

@@ -13,7 +13,16 @@ public abstract class GameObject {
     final Rect rect = new Rect();
     int x;
     int y;
-
+    static final int[][] moveDirection = new int[][]{
+            {0, -1},
+            {1, -1},
+            {1, 0},
+            {1, 1},
+            {0, 1},
+            {-1, 1},
+            {-1, 0},
+            {-1, -1},
+    };
     abstract Paint getPaint();
 
     String getKey() {
