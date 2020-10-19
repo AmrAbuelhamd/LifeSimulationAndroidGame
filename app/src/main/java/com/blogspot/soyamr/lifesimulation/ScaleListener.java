@@ -69,7 +69,7 @@ public class ScaleListener extends
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    public boolean onTouchEvent(MotionEvent ev) {
+    public void onTouchEvent(MotionEvent ev) {
         // Let the ScaleGestureDetector inspect all events.
 
         mScaleDetector.onTouchEvent(ev);
@@ -131,6 +131,5 @@ public class ScaleListener extends
                 break;
             }
         }
-        return true;
     }
 }

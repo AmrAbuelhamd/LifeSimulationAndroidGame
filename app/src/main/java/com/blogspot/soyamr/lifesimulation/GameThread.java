@@ -12,7 +12,7 @@ public class GameThread {
 
     private final Controller gameSurface;
     private final SurfaceHolder surfaceHolder;
-    final long waitTime = 10;
+    final long waitTime = 60;
     final ScheduledExecutorService executor;
 
     public GameThread(Controller gameSurface) {
@@ -22,7 +22,7 @@ public class GameThread {
         executor = Executors.newScheduledThreadPool(4);
         executor.scheduleAtFixedRate(gameSurface::addOnePlant, 0, 1, TimeUnit.SECONDS);
         executor.scheduleAtFixedRate(gameSurface::increaseAnimalsHunger, 0, 5, TimeUnit.SECONDS);
-        executor.scheduleAtFixedRate(gameSurface::updateInfo, 0, 10, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(gameSurface::updateInfo, 0, 20, TimeUnit.SECONDS);
         executor.scheduleWithFixedDelay(this::run, 0, waitTime, TimeUnit.MILLISECONDS);
 
     }

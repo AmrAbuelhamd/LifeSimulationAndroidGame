@@ -10,7 +10,7 @@ import com.blogspot.soyamr.lifesimulation.Utils;
 public class Animal extends GameObject {
     //animal can see this depth, i.e. 100 cell in all direction
     int hunger = 100;
-    private static final int ANIMAL_SEARCH_RANG = 50;
+    public static final int ANIMAL_SEARCH_RANG = 50;
     private final Model model;
 
     private static final Paint paint;
@@ -71,7 +71,7 @@ public class Animal extends GameObject {
         }
 
         //search clockwise direction in @ANIMAL_SEARCH_RANG depth
-        Plant nearestPlant = Utils.searchAroundAnimal(ANIMAL_SEARCH_RANG, this, model.getPlants());
+        Plant nearestPlant = Utils.searchAroundAnimal(ANIMAL_SEARCH_RANG, x, y, model.getPlants());
         if (nearestPlant == null) {
             worthSearching = false;
             lastX = x;

@@ -1,9 +1,12 @@
 package com.blogspot.soyamr.lifesimulation;
 
 import com.blogspot.soyamr.lifesimulation.model.Animal;
+import com.blogspot.soyamr.lifesimulation.model.GameObject;
+import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.Plant;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -16,7 +19,7 @@ enum Direction {
 public abstract class Utils {
     public static final Random rand = new Random();
 
-    public static Plant searchAroundAnimal(int searchRange, Animal currentAnimal, Map<String, Plant> plants) {
+    public static <T> T searchAroundAnimal(int searchRange, int currentX, int currentY, Map<String, T> gameObject) {
 
         // The input matrix  dimension
         int matrixLength = searchRange;
@@ -29,8 +32,8 @@ public abstract class Utils {
         Map<String, Integer> mask = new LinkedHashMap<>();
 
         //The first element of the output(the spiral) is always the middle element of the input matrix
-        int rowIndex = currentAnimal.getY();
-        int colIndex = currentAnimal.getX();
+        int rowIndex = currentY;
+        int colIndex = currentX;
 
 
         // Each time an element from the input matrix is added to the output spiral, the corresponding element in the mask is set to 1
@@ -52,8 +55,8 @@ public abstract class Utils {
                     // (which is the middle of the input matrix) and add it to the spiral
                     colIndex -= Const.CELL_WIDTH;
                     key = colIndex + " " + rowIndex;
-                    if (plants.containsKey(key)) {
-                        return plants.get(key);
+                    if (gameObject.containsKey(key)) {
+                        return gameObject.get(key);
                     }
                     //Update the mask
                     mask.put(rowIndex + " " + colIndex, 1);
@@ -71,8 +74,8 @@ public abstract class Utils {
                 case DOWN:
                     rowIndex += Const.CELL_HEIGHT;
                     key = colIndex + " " + rowIndex;
-                    if (plants.containsKey(key)) {
-                        return plants.get(key);
+                    if (gameObject.containsKey(key)) {
+                        return gameObject.get(key);
                     }
                     //Update the mask
                     mask.put(rowIndex + " " + colIndex, 1);
@@ -86,8 +89,8 @@ public abstract class Utils {
                 case RIGHT:
                     colIndex += Const.CELL_WIDTH;
                     key = colIndex + " " + rowIndex;
-                    if (plants.containsKey(key)) {
-                        return plants.get(key);
+                    if (gameObject.containsKey(key)) {
+                        return gameObject.get(key);
                     }
                     //Update the mask
                     mask.put(rowIndex + " " + colIndex, 1);
@@ -101,8 +104,8 @@ public abstract class Utils {
                 case UP:
                     rowIndex -= Const.CELL_HEIGHT;
                     key = colIndex + " " + rowIndex;
-                    if (plants.containsKey(key)) {
-                        return plants.get(key);
+                    if (gameObject.containsKey(key)) {
+                        return gameObject.get(key);
                     }
                     //Update the mask
                     mask.put(rowIndex + " " + colIndex, 1);
@@ -119,5 +122,110 @@ public abstract class Utils {
 
     public static int getRandom(int min, int max) {
         return rand.nextInt(max - min) + min;
+    }
+
+    public static Animal searchAroundAnimal1(int searchRange, int currentX, int currentY, Model model) {
+        // The input matrix  dimension
+        int matrixLength = searchRange;
+
+        //The number of elements of the input matrix
+        int numberOfElements = matrixLength * matrixLength;
+
+        // The matrix mask help to decide which is the next direction or the next element to pick from the input matrix
+        // All the values of the mask are initialized to zero.
+        Map<String, Integer> mask = new LinkedHashMap<>();
+
+        //The first element of the output(the spiral) is always the middle element of the input matrix
+        int rowIndex = currentY;
+        int colIndex = currentX;
+
+
+        // Each time an element from the input matrix is added to the output spiral, the corresponding element in the mask is set to 1
+        mask.put(rowIndex + " " + colIndex, 1);
+
+        // The first direction is always to the left
+        Direction nextDirection = LEFT;
+        Animal animal = null;
+        // This is a counter to loop through all the elements of the input matrix only one time
+        int i = 0;
+        String key;
+        while (i++ < numberOfElements - 1) {
+
+            // Check which direction to go (left, down, right or up)
+            switch (nextDirection) {
+
+                case LEFT:
+                    // From the input matrix, take the number at the left of the current position
+                    // (which is the middle of the input matrix) and add it to the spiral
+                    colIndex -= Const.CELL_WIDTH;
+                    key = colIndex + " " + rowIndex;
+                    animal = model.getAnimal(key);
+                    if (animal != null) {
+                        return animal;
+                    }
+                    //Update the mask
+                    mask.put(rowIndex + " " + colIndex, 1);
+
+                    // Decide which direction(or element in the input matrix) to take next.
+                    // After moving to the left, you only have two choices : keeping the same direction or moving down
+                    // To know which direction to take, check the mask
+                    if (mask.containsKey((int) (rowIndex + Const.CELL_HEIGHT) + " " + colIndex)) {
+                        nextDirection = LEFT;
+                    } else {
+                        nextDirection = DOWN;
+                    }
+                    break;
+
+                case DOWN:
+                    rowIndex += Const.CELL_HEIGHT;
+                    key = colIndex + " " + rowIndex;
+                    animal = model.getAnimal(key);
+                    if (animal != null) {
+                        return animal;
+                    }
+                    //Update the mask
+                    mask.put(rowIndex + " " + colIndex, 1);
+                    if (mask.containsKey(rowIndex + " " + (int) (colIndex + Const.CELL_WIDTH))) {
+                        nextDirection = DOWN;
+                    } else {
+                        nextDirection = RIGHT;
+                    }
+                    break;
+
+                case RIGHT:
+                    colIndex += Const.CELL_WIDTH;
+                    key = colIndex + " " + rowIndex;
+                    animal = model.getAnimal(key);
+                    if (animal != null) {
+                        return animal;
+                    }
+                    //Update the mask
+                    mask.put(rowIndex + " " + colIndex, 1);
+                    if (mask.containsKey((int) (rowIndex - Const.CELL_HEIGHT) + " " + colIndex)) {
+                        nextDirection = RIGHT;
+                    } else {
+                        nextDirection = UP;
+                    }
+                    break;
+
+                case UP:
+                    rowIndex -= Const.CELL_HEIGHT;
+                    key = colIndex + " " + rowIndex;
+                    animal = model.getAnimal(key);
+                    if (animal != null) {
+                        return animal;
+                    }
+                    //Update the mask
+                    mask.put(rowIndex + " " + colIndex, 1);
+                    if (mask.containsKey(rowIndex + " " + (int) (colIndex - Const.CELL_WIDTH))) {
+                        nextDirection = UP;
+                    } else {
+                        nextDirection = LEFT;
+                    }
+                    break;
+            }
+        }
+        return null;
+
     }
 }

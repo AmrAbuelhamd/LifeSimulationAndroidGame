@@ -19,7 +19,6 @@ import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.Plant;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import static com.blogspot.soyamr.lifesimulation.Direction.DOWN;
@@ -31,6 +30,7 @@ import static com.blogspot.soyamr.lifesimulation.Direction.UP;
 public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, Controller {
     private final ScaleListener scaleListener;
     private GameThread gameThread;
+    Rect clipBoundsCanvas;
 
 
     Model model;
@@ -53,6 +53,11 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
         model.update();
     }
 
+    int x=0;
+    int y=0;
+
+    int xa=1;
+    int ya=1;
 
     @Override
     public void draw(Canvas canvas) {
@@ -61,9 +66,20 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
         canvas.save();
         canvas.scale(scaleListener.mScaleFactor, scaleListener.mScaleFactor, scaleListener.focusX, scaleListener.focusY);
         canvas.translate(scaleListener.mPosX, scaleListener.mPosY);
-
+        clipBoundsCanvas = canvas.getClipBounds();
 
         model.draw(canvas);
+
+        Paint paint;
+        paint = new Paint();
+        paint.setColor(Color.RED);
+        paint.setStyle(Paint.Style.FILL);
+
+        canvas.drawRect(new Rect(x, y, x + Const.CELL_HEIGHT, y + Const.CELL_HEIGHT), paint);
+
+        paint.setColor(Color.BLUE);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawRect(new Rect(xa, ya, xa + Const.CELL_HEIGHT, ya + Const.CELL_HEIGHT), paint);
 
 //        drawWhite(canvas);
 //        drawmyalgorithm(canvas);
@@ -252,8 +268,39 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
-    public boolean onTouchEvent(MotionEvent ev) {
-        scaleListener.onTouchEvent(ev);
+    public boolean onTouchEvent(MotionEvent event) {
+        scaleListener.onTouchEvent(event);
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            int x = (int) (event.getX() / scaleListener.mScaleFactor + clipBoundsCanvas.left);
+            int y = (int) (event.getY() / scaleListener.mScaleFactor + clipBoundsCanvas.top);
+
+
+            int rangeNumberX = x / Const.CELL_WIDTH;
+
+            int lowerBoundRangeX = rangeNumberX * Const.CELL_WIDTH;
+
+            int rangeNumberY = y / Const.CELL_HEIGHT;
+            int lowerBoundRangeY = rangeNumberY * Const.CELL_HEIGHT;
+
+            Animal animal = Utils.searchAroundAnimal1(50, lowerBoundRangeX, lowerBoundRangeY, model);
+            if (animal != null) {
+                System.out.println("found one at " + animal.getX() + " " + animal.getY());
+                model.setFamousAnimal(animal);
+            }
+            else
+                System.out.println("didn't find anything");
+
+            System.out.println("x= " + x);
+            System.out.println("y= " + y);
+            System.out.println("lowerBoundRangeX= " + lowerBoundRangeX);
+            System.out.println("lowerBoundRangeY= " + lowerBoundRangeY);
+
+//            this.x = x;
+//            this.y = y;
+
+//            this.xa = lowerBoundRangeX;
+//            this.ya = lowerBoundRangeY;
+        }
         return true;
     }
 

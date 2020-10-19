@@ -12,11 +12,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 public class Model {
     public final List<Cell> cells;//toAsk how about  List<GameObject> cells; but i can't access the cell specific methods if done so..
     public final List<Animal> animals;
     public final Map<String, Plant> plants;
+    private FamousAnimal famousAnimal;
+
+    public void setFamousAnimal(Animal animal) {
+        this.famousAnimal = new FamousAnimal(animal);
+    }
 
     public Model() {
         cells = new CopyOnWriteArrayList<>();
@@ -32,16 +38,20 @@ public class Model {
         return plants.containsKey(key);
     }
 
+    public boolean animalsContain(String key) {//toAsk is a name?
+        return false; //animals.containsKey(key);
+    }
+
     public void removePlant(String key) {
         plants.remove(key);
     }
 
-//    public List<Cell> getCells() {
+    //    public List<Cell> getCells() {
 //        return Collections.unmodifiableList(cells);
 //    }
-//    public List<Animal> getAnimals() {
-//        return Collections.unmodifiableList(animals);
-//    }
+    public List<Animal> getAnimals() {
+        return Collections.unmodifiableList(animals);
+    }
 
     public Map<String, Plant> getPlants() {
         return Collections.unmodifiableMap(plants);
@@ -101,7 +111,6 @@ public class Model {
 
     public void deleteMePlease(Animal animal) {
         animals.remove(animal);
-        Log.i("one died", "bad!");
 
     }
 
@@ -113,6 +122,12 @@ public class Model {
         cells.forEach(cell -> cell.draw(canvas));
         animals.forEach(animal -> animal.draw(canvas));
         plants.forEach((s, plant) -> plant.draw(canvas));
+        if (famousAnimal != null)
+            famousAnimal.draw(canvas);
+    }
 
+    public Animal getAnimal(String key) {
+        return animals.stream()
+                .filter(s -> key.equals(s.getKey())).findFirst().orElse(null);
     }
 }

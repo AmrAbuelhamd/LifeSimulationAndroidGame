@@ -5,6 +5,16 @@ HOW TO ADD ZOOM AND PAN TO SURFACE VIEW
 these two methods were the solution, now calculating the Parameters is very tricky, how to do this?
 adapted this code 
 http://android-innovation.blogspot.com/2013/07/how-to-implement-pinch-and-pan-zoom-on.html?m=1
+
+also later on you will need to get the correct x and y positons when user touches the screen
+here is the solution
+https://stackoverflow.com/questions/7524843/get-canvas-coordinates-after-scaling-up-down-or-dragging-in-android
+  int x = (int) (event.getX() /scaleListener.mScaleFactor + clipBoundsCanvas.left);
+  int y = (int) (event.getY()/ scaleListener.mScaleFactor + clipBoundsCanvas.top);
+clipBoundsCanvas is retrieved when you draw on the screen
+so i needed to do something like this inside ondraw
+  Rect clipBoundsCanvas = canvas.getClipBounds();
+
 ----------------------------------
 additional resources
 - this zoom is working perfectly
