@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.ContextMenu;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
+import android.view.View;
 
 public class ScaleListener extends
         ScaleGestureDetector.SimpleOnScaleGestureListener {
@@ -27,9 +28,9 @@ public class ScaleListener extends
     private float lastFocusX = -1;
     private float lastFocusY = -1;
 
-    private final GameSurface gameSurface;
+    private final View gameSurface;
 
-    ScaleListener(GameSurface gameSurface) {
+    ScaleListener(View gameSurface) {
         this.gameSurface = gameSurface;
         mScaleDetector = new ScaleGestureDetector(gameSurface.getContext(), this);
     }

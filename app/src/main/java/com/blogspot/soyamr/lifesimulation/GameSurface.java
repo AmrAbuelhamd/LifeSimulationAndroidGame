@@ -8,12 +8,15 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
 
+
+import com.blogspot.soyamr.lifesimulation.model.Animal;
+import com.blogspot.soyamr.lifesimulation.model.Model;
+import com.blogspot.soyamr.lifesimulation.model.Plant;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -47,15 +50,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
     }
 
     public void update() {
-        List<Animal> creatures = model.getAnimals();
-        Map<String, Plant> plants = model.getPlants();
-        for (Animal creature : creatures) {
-            creature.update();//it should update, everything todo update shuold do everything , just if i can
-            if (plants.containsKey(creature.getKey())) {//inside the creature, creature->surface todo creature should do this
-                model.removePlant(creature.getKey());
-                creature.reduceHunger();
-            }
-        }
+        model.update();
     }
 
 
@@ -68,20 +63,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
         canvas.translate(scaleListener.mPosX, scaleListener.mPosY);
 
 
-        List<Cell> cells = model.getCells();//it should be imutable todo create model class
-        for (Cell cell : cells) {
-            cell.draw(canvas);
-        }
-
-        List<Animal> animals = model.getAnimals();
-        for (Animal creature : animals) {
-            creature.draw(canvas);
-        }
-        Map<String, Plant> plants = model.getPlants();
-
-        for (Map.Entry<String, Plant> entry : plants.entrySet()) {
-            entry.getValue().draw(canvas);
-        }
+        model.draw(canvas);
 
 //        drawWhite(canvas);
 //        drawmyalgorithm(canvas);
@@ -137,7 +119,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
             }
         }
     }
-
 
     private void drawWhite(Canvas canvas) {
 
@@ -263,7 +244,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
 
     public void pause() {
         this.gameThread.executor.shutdown();
-
     }
 
     public void resume() {
@@ -277,13 +257,4 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
         return true;
     }
 
-    //  @Override
-    public List<Animal> getAnimals() {
-        return model.getAnimals();
-    }
-
-    // @Override
-    public Map<String, Plant> getPlants() {
-        return model.getPlants();
-    }
 }

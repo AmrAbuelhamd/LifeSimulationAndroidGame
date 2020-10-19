@@ -1,5 +1,8 @@
 package com.blogspot.soyamr.lifesimulation;
 
+import com.blogspot.soyamr.lifesimulation.model.Animal;
+import com.blogspot.soyamr.lifesimulation.model.Plant;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
@@ -11,9 +14,9 @@ enum Direction {
 }
 
 public abstract class Utils {
-    static final Random rand = new Random();
+    public static final Random rand = new Random();
 
-    static Plant searchAroundAnimal(int searchRange, Animal currentAnimal, Map<String, Plant> plants) {
+    public static Plant searchAroundAnimal(int searchRange, Animal currentAnimal, Map<String, Plant> plants) {
 
         // The input matrix  dimension
         int matrixLength = searchRange;
@@ -26,8 +29,8 @@ public abstract class Utils {
         Map<String, Integer> mask = new LinkedHashMap<>();
 
         //The first element of the output(the spiral) is always the middle element of the input matrix
-        int rowIndex = currentAnimal.y;
-        int colIndex = currentAnimal.x;
+        int rowIndex = currentAnimal.getY();
+        int colIndex = currentAnimal.getX();
 
 
         // Each time an element from the input matrix is added to the output spiral, the corresponding element in the mask is set to 1
@@ -114,7 +117,7 @@ public abstract class Utils {
         return null;
     }
 
-    static int getRandom(int min, int max) {
+    public static int getRandom(int min, int max) {
         return rand.nextInt(max - min) + min;
     }
 }

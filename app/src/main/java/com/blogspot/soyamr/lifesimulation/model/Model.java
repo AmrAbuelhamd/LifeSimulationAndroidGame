@@ -1,6 +1,10 @@
-package com.blogspot.soyamr.lifesimulation;
+package com.blogspot.soyamr.lifesimulation.model;
 
+import android.graphics.Canvas;
 import android.util.Log;
+
+import com.blogspot.soyamr.lifesimulation.Const;
+import com.blogspot.soyamr.lifesimulation.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +26,6 @@ public class Model {
         addSells();
         addAnimals();
         addPlants();
-        Animal.setModel(this);
     }
 
     public boolean plantsContain(String key) {//toAsk is a name?
@@ -70,10 +73,10 @@ public class Model {
     }
 
     private void addAnimals() {
-        //create creatures
+        //create ANIMALS
         List<Animal> tempAnimals = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            Animal animal = new Animal();
+            Animal animal = new Animal(this);
             tempAnimals.add(animal);
         }
         animals.addAll(tempAnimals);
@@ -92,7 +95,7 @@ public class Model {
     }
 
     public void updateInfo() {
-        Log.i("number of creatures: ", " " + animals.size());
+        Log.i("number of animals: ", " " + animals.size());
         Log.i("number of plants: ", " " + plants.size());
         Log.i("----------------", " ------------------------");
     }
@@ -100,6 +103,17 @@ public class Model {
     public void deleteMePlease(Animal animal) {
         animals.remove(animal);
         Log.i("one died", "bad!");
+
+    }
+
+    public void update() {
+        animals.forEach(Animal::update);
+    }
+
+    public void draw(Canvas canvas) {
+        cells.forEach(cell -> cell.draw(canvas));
+        animals.forEach(animal -> animal.draw(canvas));
+        plants.forEach((s, plant) -> plant.draw(canvas));
 
     }
 }

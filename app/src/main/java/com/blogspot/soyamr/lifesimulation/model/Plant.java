@@ -1,9 +1,10 @@
-package com.blogspot.soyamr.lifesimulation;
+package com.blogspot.soyamr.lifesimulation.model;
 
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import androidx.annotation.NonNull;
+import com.blogspot.soyamr.lifesimulation.Const;
+import com.blogspot.soyamr.lifesimulation.Utils;
 
 public class Plant extends GameObject {
     private static final Paint paint;
@@ -25,7 +26,7 @@ public class Plant extends GameObject {
 
         this.x = nearToThisPlant.x + moveDirection[index][0] * width;
         this.y = nearToThisPlant.y + moveDirection[index][1] * height;
-
+        reachedScreenEdge();
         rect.set(x, y, x + width, y + height);
     }
 

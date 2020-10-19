@@ -10,10 +10,9 @@ import java.util.concurrent.TimeUnit;
 
 public class GameThread {
 
-
     private final Controller gameSurface;
     private final SurfaceHolder surfaceHolder;
-    final long waitTime = 1;
+    final long waitTime = 10;
     final ScheduledExecutorService executor;
 
     public GameThread(Controller gameSurface) {
@@ -21,8 +20,8 @@ public class GameThread {
         this.surfaceHolder = gameSurface.getHolder();
 
         executor = Executors.newScheduledThreadPool(4);
-        executor.scheduleAtFixedRate(gameSurface::addOnePlant, 0, 1, TimeUnit.SECONDS);//toAsk or i should pass model itself here?
-        executor.scheduleAtFixedRate(gameSurface::increaseAnimalsHunger, 0, 5, TimeUnit.SECONDS);//fixme change delay to 10, and time to 10
+        executor.scheduleAtFixedRate(gameSurface::addOnePlant, 0, 1, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(gameSurface::increaseAnimalsHunger, 0, 5, TimeUnit.SECONDS);
         executor.scheduleAtFixedRate(gameSurface::updateInfo, 0, 10, TimeUnit.SECONDS);
         executor.scheduleWithFixedDelay(this::run, 0, waitTime, TimeUnit.MILLISECONDS);
 
