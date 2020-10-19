@@ -36,13 +36,12 @@ public class Model {
         plants.remove(key);
     }
 
-    public List<Cell> getCells() {
-        return Collections.unmodifiableList(cells);
-    }
-
-    public List<Animal> getAnimals() {
-        return Collections.unmodifiableList(animals);
-    }
+//    public List<Cell> getCells() {
+//        return Collections.unmodifiableList(cells);
+//    }
+//    public List<Animal> getAnimals() {
+//        return Collections.unmodifiableList(animals);
+//    }
 
     public Map<String, Plant> getPlants() {
         return Collections.unmodifiableMap(plants);

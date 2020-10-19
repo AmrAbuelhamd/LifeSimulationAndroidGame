@@ -52,16 +52,33 @@ public class Animal extends GameObject {
         }
     }
 
+    boolean worthSearching = true;
+    int lastX;
+    int lastY;
+
     private boolean needFood() {
         if (hunger > 80)
             return false;
 
+        //lidia [[FOR BONUS]] i added optimisation mechanism, {without it the animals becomes very slow.}
+        //if last time animal didn't find food around it, then no need to search again if he didn't
+        //move 10 cells aways from last time searched and didn't find anything.
+        if (!worthSearching) {
+            int distance = (int) Math.sqrt((x - lastX) * (x - lastX) + (y - lastY) * (y - lastY));
+            if (distance < 10 * Const.CELL_WIDTH) {
+                return false;
+            }
+        }
+
         //search clockwise direction in @ANIMAL_SEARCH_RANG depth
         Plant nearestPlant = Utils.searchAroundAnimal(ANIMAL_SEARCH_RANG, this, model.getPlants());
         if (nearestPlant == null) {
+            worthSearching = false;
+            lastX = x;
+            lastY = y;
             return false;
         }
-
+        worthSearching = true;
         //move the ANIMAL towards the plant
         // four cases
         if (nearestPlant.x < x)
