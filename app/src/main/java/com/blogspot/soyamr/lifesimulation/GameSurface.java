@@ -53,11 +53,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
         model.update();
     }
 
-    int x = 0;
-    int y = 0;
-
-    int xa = 1;
-    int ya = 1;
 
     @Override
     public void draw(Canvas canvas) {
@@ -69,17 +64,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
         clipBoundsCanvas = canvas.getClipBounds();
 
         model.draw(canvas);
-
-        Paint paint;
-        paint = new Paint();
-        paint.setColor(Color.RED);
-        paint.setStyle(Paint.Style.FILL);
-
-        canvas.drawRect(new Rect(x, y, x + Utils.Const.CELL_HEIGHT, y + Utils.Const.CELL_HEIGHT), paint);
-
-        paint.setColor(Color.BLUE);
-        paint.setStyle(Paint.Style.FILL);
-        canvas.drawRect(new Rect(xa, ya, xa + Utils.Const.CELL_HEIGHT, ya + Utils.Const.CELL_HEIGHT), paint);
 
 //        drawWhite(canvas);
 //        drawmyalgorithm(canvas);
@@ -266,28 +250,42 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
         this.gameThread = new GameThread(this);
     }
 
+    boolean isClick = false;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         scaleListener.onTouchEvent(event);
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            int x = (int) (event.getX() / scaleListener.mScaleFactor + clipBoundsCanvas.left);
-            int y = (int) (event.getY() / scaleListener.mScaleFactor + clipBoundsCanvas.top);
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                isClick = true;
+                break;
+            case MotionEvent.ACTION_CANCEL:
+            case MotionEvent.ACTION_UP:
+                if (isClick) {
+                    int x = (int) (event.getX() / scaleListener.mScaleFactor + clipBoundsCanvas.left);
+                    int y = (int) (event.getY() / scaleListener.mScaleFactor + clipBoundsCanvas.top);
 
 
-            int rangeNumberX = x / Utils.Const.CELL_WIDTH;
+                    int rangeNumberX = x / Utils.Const.CELL_WIDTH;
 
-            int lowerBoundRangeX = rangeNumberX * Utils.Const.CELL_WIDTH;
+                    int lowerBoundRangeX = rangeNumberX * Utils.Const.CELL_WIDTH;
 
-            int rangeNumberY = y / Utils.Const.CELL_HEIGHT;
-            int lowerBoundRangeY = rangeNumberY * Utils.Const.CELL_HEIGHT;
+                    int rangeNumberY = y / Utils.Const.CELL_HEIGHT;
+                    int lowerBoundRangeY = rangeNumberY * Utils.Const.CELL_HEIGHT;
 
-            Animal animal = (Animal) Utils.searchAroundAnimal(Utils.Const.USER_CLICK_SEARCH_RANG
-                    , lowerBoundRangeX, lowerBoundRangeY, model, Utils.Const.SearchFor.ANIMAL);
-            if (animal != null) {
-                model.setFamousAnimal(animal);
-            }
+                    Animal animal = (Animal) Utils.searchAroundAnimal(Utils.Const.USER_CLICK_SEARCH_RANG
+                            , lowerBoundRangeX, lowerBoundRangeY, model, Utils.Const.SearchFor.ANIMAL);
 
+                    model.setFamousAnimal(animal);
+
+                }
+                break;
+            case MotionEvent.ACTION_MOVE:
+                isClick = false;
+                break;
+            default:
+                break;
         }
         return true;
     }

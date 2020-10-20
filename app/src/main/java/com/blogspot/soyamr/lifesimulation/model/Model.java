@@ -15,21 +15,26 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Model {
     public final List<Cell> cells;//toAsk how about  List<GameObject> cells; but i can't access the cell specific methods if done so..
     public final List<Animal> animals;
+    public final List<Animal> femaleAnimals;
     public final Map<String, Plant> plants;
     private FamousAnimal famousAnimal;
-
-    public void setFamousAnimal(Animal animal) {
-        this.famousAnimal = new FamousAnimal(animal);
-    }
 
     public Model() {
         cells = new CopyOnWriteArrayList<>();
         animals = new CopyOnWriteArrayList<>();
+        femaleAnimals = new CopyOnWriteArrayList<>();
         plants = new ConcurrentHashMap<>();
 
-        addSells();
+        //addSells();
         addAnimals();
         addPlants();
+    }
+
+    public void setFamousAnimal(Animal animal) {
+        if (animal == null)
+            famousAnimal = null;
+        else
+            this.famousAnimal = new FamousAnimal(animal);
     }
 
     public Plant getPlant(String key) {
@@ -69,10 +74,16 @@ public class Model {
     }
 
     private void addAnimals() {
-        //create ANIMALS
+        //CREATE FEMALE ANIMALS
         List<Animal> tempAnimals = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            Animal animal = new Animal(this);
+        for (int i = 0; i < 50; i++) {
+            FemaleAnimal animal = new FemaleAnimal(this);
+            tempAnimals.add(animal);
+        }
+        femaleAnimals.addAll((tempAnimals));
+        //create male ANIMALS
+        for (int i = 0; i < 50; i++) {
+            MaleAnimal animal = new MaleAnimal(this);
             tempAnimals.add(animal);
         }
         animals.addAll(tempAnimals);
@@ -111,12 +122,31 @@ public class Model {
         cells.forEach(cell -> cell.draw(canvas));
         animals.forEach(animal -> animal.draw(canvas));
         plants.forEach((s, plant) -> plant.draw(canvas));
-        if (famousAnimal != null)
+        if (famousAnimal != null)////lidia if needed i can easily add list of this class, to show multiple animal status at a time.
             famousAnimal.draw(canvas);
     }
 
     public Animal getAnimal(String key) {
         return animals.stream()
                 .filter(s -> key.equals(s.getKey())).findFirst().orElse(null);
+    }
+
+    public Animal getSingleFemaleAnimal(String key) {
+        return femaleAnimals.stream()
+                .filter(s -> key.equals(s.getKey()) &&
+                        ((FemaleAnimal)s).wannaBeInRelationship())
+                .findFirst().orElse(null);
+    }
+
+    public void weHaveChild(int x, int y) {
+        if (Utils.getRandom(0, 2) == 0) {
+            FemaleAnimal animal = new FemaleAnimal(x, y, this);
+            animals.add(animal);
+            femaleAnimals.add(animal);
+        }
+        else {
+            animals.add(new MaleAnimal(x, y, this));
+        }
+        System.out.println("new child");
     }
 }

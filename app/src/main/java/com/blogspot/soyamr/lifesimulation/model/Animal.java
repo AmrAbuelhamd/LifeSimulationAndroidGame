@@ -1,24 +1,14 @@
 package com.blogspot.soyamr.lifesimulation.model;
 
-import android.graphics.Color;
-import android.graphics.Paint;
-
 import com.blogspot.soyamr.lifesimulation.Utils;
 
 
-public class Animal extends GameObject {
-    //animal can see this depth, i.e. 100 cell in all direction
+public abstract class Animal extends GameObject {
     int hunger = 100;
-    private final Model model;
+    final Model model;
+    boolean inRelation = false;
+    boolean iDoNotWant;
 
-    private static final Paint paint;
-
-
-    static {
-        paint = new Paint();
-        paint.setColor(Color.WHITE);
-        paint.setStyle(Paint.Style.FILL);
-    }
 
     Animal(Model model) {
         x = Utils.getRandom(0, Utils.Const.N) * width;
@@ -26,24 +16,46 @@ public class Animal extends GameObject {
 
         rect.set(x, y, x + width, y + height);
         this.model = model;
+        setIdoNotWant();
     }
 
+    Animal(int x, int y, Model model) {
+        this.x = x;
+        this.y = y;
 
+        rect.set(x, y, x + width, y + height);
+        this.model = model;
+        setIdoNotWant();
+    }
+
+    protected void setIdoNotWant() {
+        iDoNotWant = true;
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        iDoNotWant = false;
+                    }
+                },
+                10000
+        );
+    }
+
+    //search for food or move randomly
     public void update() {
-        if (!needFood()) {
-
-            // Calculate the new position of the game character.
-            int randomIndex = Utils.getRandom(0, 8);
-            this.x = x + width * moveDirection[randomIndex][0];
-            this.y = y + height * moveDirection[randomIndex][1];
-        }
         reachedScreenEdge();
         checkIfAnimalOnSameCellWithPlant();
         rect.set(x, y, x + width, y + height);
-
     }
 
-    void checkIfAnimalOnSameCellWithPlant() {
+    protected void moveRandomly() {
+        // Calculate the new position of the game character.
+        int randomIndex = Utils.getRandom(0, 8);
+        this.x = x + width * moveDirection[randomIndex][0];
+        this.y = y + height * moveDirection[randomIndex][1];
+    }
+
+    private void checkIfAnimalOnSameCellWithPlant() {
         Plant plant = model.getPlant(getKey());
         if (plant != null) {
             model.removePlant(getKey());
@@ -51,52 +63,58 @@ public class Animal extends GameObject {
         }
     }
 
-    boolean worthSearching = true;
+    boolean worthSearchingForFood = true;
     int lastX;
     int lastY;
 
-    private boolean needFood() {
-        if (hunger > 80)
-            return false;
+    private boolean doesItWorthSearching() {
+        if (!worthSearchingForFood) {
+            int distance = (int) Math.sqrt((x - lastX) * (x - lastX) + (y - lastY) * (y - lastY));
+            return distance >= SEARCH_FOOD_OPTIMIZATION_THRESHOLD * Utils.Const.CELL_WIDTH;
+        } else {
+            return true;
+        }
+    }
+
+    boolean needFood() {
 
         //lidia [[FOR BONUS]] i added optimisation mechanism, {without it the animals becomes very slow.}
         //if last time animal didn't find food around it, then no need to search again if he didn't
         //move 10 cells aways from last time searched and didn't find anything.
-        if (!worthSearching) {
-            int distance = (int) Math.sqrt((x - lastX) * (x - lastX) + (y - lastY) * (y - lastY));
-            if (distance < 10 * Utils.Const.CELL_WIDTH) {
-                return false;
-            }
+        if (!doesItWorthSearching()) {
+            return false;
         }
 
         //search clockwise direction in @ANIMAL_SEARCH_RANG depth
-        Plant nearestPlant = (Plant) Utils.searchAroundAnimal(ANIMAL_SEARCH_RANG, x, y, model, Utils.Const.SearchFor.PLANT);
+        Plant nearestPlant = (Plant) Utils.searchAroundAnimal(ANIMAL_FOOD_VISION_RANG, x, y, model, Utils.Const.SearchFor.PLANT);
         if (nearestPlant == null) {
-            worthSearching = false;
+            worthSearchingForFood = false;
             lastX = x;
             lastY = y;
             return false;
         }
-        worthSearching = true;
-        //move the ANIMAL towards the plant
-        // four cases
-        if (nearestPlant.x < x)
-            x -= width;
-        else if (nearestPlant.x > x)
-            x += width;
+        worthSearchingForFood = true;
 
-        if (nearestPlant.y < y)
-            y -= height;
-        else if (nearestPlant.y > y)
-            y += height;
+        //move the ANIMAL towards the plant
+        moveToward(nearestPlant.x, nearestPlant.y);
 
         return true;
     }
 
+    //returns true if arrived target
+    void moveToward(int targetX, int targetY) {
 
-    @Override
-    Paint getPaint() {
-        return paint;
+        // four cases
+        if (targetX < x)
+            x -= width;
+        else if (targetX > x)
+            x += width;
+
+        if (targetY < y)
+            y -= height;
+        else if (targetY > y)
+            y += height;
+
     }
 
 

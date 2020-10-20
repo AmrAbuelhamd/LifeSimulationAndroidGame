@@ -126,8 +126,14 @@ public abstract class Utils {
     private static GameObject search(Const.SearchFor searchFor, Model model, String key) {
         if (searchFor == Const.SearchFor.ANIMAL)
             return searchAnimal(model, key);
-        else
+        else if (searchFor == Const.SearchFor.PLANT)
             return searchPlant(model, key);
+        else
+            return searchSingleFemale(model, key);
+    }
+
+    private static GameObject searchSingleFemale(Model model, String key) {
+        return model.getSingleFemaleAnimal(key);
     }
 
     private static GameObject searchPlant(Model model, String key) {
@@ -157,7 +163,7 @@ public abstract class Utils {
         }
 
         public enum SearchFor {
-            ANIMAL, PLANT
+            ANIMAL, PLANT, FEMALE_ANIMAL
         }
     }
 }
