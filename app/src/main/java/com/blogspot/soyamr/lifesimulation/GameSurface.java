@@ -21,10 +21,10 @@ import com.blogspot.soyamr.lifesimulation.model.Plant;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.blogspot.soyamr.lifesimulation.Direction.DOWN;
-import static com.blogspot.soyamr.lifesimulation.Direction.LEFT;
-import static com.blogspot.soyamr.lifesimulation.Direction.RIGHT;
-import static com.blogspot.soyamr.lifesimulation.Direction.UP;
+import static com.blogspot.soyamr.lifesimulation.Utils.Const.Direction.DOWN;
+import static com.blogspot.soyamr.lifesimulation.Utils.Const.Direction.LEFT;
+import static com.blogspot.soyamr.lifesimulation.Utils.Const.Direction.RIGHT;
+import static com.blogspot.soyamr.lifesimulation.Utils.Const.Direction.UP;
 
 
 public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, Controller {
@@ -53,11 +53,11 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
         model.update();
     }
 
-    int x=0;
-    int y=0;
+    int x = 0;
+    int y = 0;
 
-    int xa=1;
-    int ya=1;
+    int xa = 1;
+    int ya = 1;
 
     @Override
     public void draw(Canvas canvas) {
@@ -75,11 +75,11 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
         paint.setColor(Color.RED);
         paint.setStyle(Paint.Style.FILL);
 
-        canvas.drawRect(new Rect(x, y, x + Const.CELL_HEIGHT, y + Const.CELL_HEIGHT), paint);
+        canvas.drawRect(new Rect(x, y, x + Utils.Const.CELL_HEIGHT, y + Utils.Const.CELL_HEIGHT), paint);
 
         paint.setColor(Color.BLUE);
         paint.setStyle(Paint.Style.FILL);
-        canvas.drawRect(new Rect(xa, ya, xa + Const.CELL_HEIGHT, ya + Const.CELL_HEIGHT), paint);
+        canvas.drawRect(new Rect(xa, ya, xa + Utils.Const.CELL_HEIGHT, ya + Utils.Const.CELL_HEIGHT), paint);
 
 //        drawWhite(canvas);
 //        drawmyalgorithm(canvas);
@@ -119,8 +119,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
                 {-1, 0},
                 {-1, -1},
         };
-        int x = Const.SCREEN_WIDTH / 2;
-        int y = Const.SCREEN_HEIGHT / 2;
+        int x = Utils.Const.SCREEN_WIDTH / 2;
+        int y = Utils.Const.SCREEN_HEIGHT / 2;
 
         for (int i = 0; i < 100; i++) {
             int width = Animal.width * (i + 1);
@@ -130,7 +130,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
                 int nextCellY = y + moveDirection[j][1] * height;
                 String plantKey = nextCellX + " " + nextCellY;
                 //once found any plant, this means it's the closes no need to search further.
-                canvas.drawRect(new Rect(nextCellX, nextCellY, nextCellX + Const.CELL_HEIGHT, nextCellY + Const.CELL_HEIGHT), paint);
+                canvas.drawRect(new Rect(nextCellX, nextCellY, nextCellX + Utils.Const.CELL_HEIGHT, nextCellY + Utils.Const.CELL_HEIGHT), paint);
 
             }
         }
@@ -143,10 +143,10 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
         int matrixLength = 100;
         int numberOfElements = matrixLength * matrixLength;
         Map<String, Integer> mask = new LinkedHashMap<>();
-        int y = Const.SCREEN_HEIGHT / 2;
-        int x = Const.SCREEN_WIDTH / 2;
+        int y = Utils.Const.SCREEN_HEIGHT / 2;
+        int x = Utils.Const.SCREEN_WIDTH / 2;
         Paint paint;
-        Direction nextDirection = LEFT;
+        Utils.Const.Direction nextDirection = LEFT;
         //The number of elements of the input matrix
         mask.put(y + " " + x, 1);
 
@@ -174,15 +174,15 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
                 case LEFT:
                     // From the input matrix, take the number at the left of the current position
                     // (which is the middle of the input matrix) and add it to the spiral
-                    x -= Const.CELL_WIDTH;
+                    x -= Utils.Const.CELL_WIDTH;
                     //Update the mask
                     mask.put(y + " " + x, 1);
-                    canvas.drawRect(new Rect(x, y, x + Const.CELL_HEIGHT, y + Const.CELL_HEIGHT), paint);
+                    canvas.drawRect(new Rect(x, y, x + Utils.Const.CELL_HEIGHT, y + Utils.Const.CELL_HEIGHT), paint);
 
                     // Decide which direction(or element in the input matrix) to take next.
                     // After moving to the left, you only have two choices : keeping the same direction or moving down
                     // To know which direction to take, check the mask
-                    if (mask.containsKey((int) (y + Const.CELL_HEIGHT) + " " + x)) {
+                    if (mask.containsKey((int) (y + Utils.Const.CELL_HEIGHT) + " " + x)) {
                         nextDirection = LEFT;
                     } else {
                         nextDirection = DOWN;
@@ -190,13 +190,13 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
                     break;
 
                 case DOWN:
-                    y += Const.CELL_HEIGHT;
+                    y += Utils.Const.CELL_HEIGHT;
 
-                    canvas.drawRect(new Rect(x, y, x + Const.CELL_HEIGHT, y + Const.CELL_HEIGHT), paint);
+                    canvas.drawRect(new Rect(x, y, x + Utils.Const.CELL_HEIGHT, y + Utils.Const.CELL_HEIGHT), paint);
 
                     //Update the mask
                     mask.put(y + " " + x, 1);
-                    if (mask.containsKey(y + " " + (int) (x + Const.CELL_WIDTH))) {
+                    if (mask.containsKey(y + " " + (int) (x + Utils.Const.CELL_WIDTH))) {
                         nextDirection = DOWN;
                     } else {
                         nextDirection = RIGHT;
@@ -204,13 +204,13 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
                     break;
 
                 case RIGHT:
-                    x += Const.CELL_WIDTH;
-                    canvas.drawRect(new Rect(x, y, x + Const.CELL_HEIGHT, y + Const.CELL_HEIGHT), paint);
+                    x += Utils.Const.CELL_WIDTH;
+                    canvas.drawRect(new Rect(x, y, x + Utils.Const.CELL_HEIGHT, y + Utils.Const.CELL_HEIGHT), paint);
 
 
                     //Update the mask
                     mask.put(y + " " + x, 1);
-                    if (mask.containsKey((int) (y - Const.CELL_HEIGHT) + " " + x)) {
+                    if (mask.containsKey((int) (y - Utils.Const.CELL_HEIGHT) + " " + x)) {
                         nextDirection = RIGHT;
                     } else {
                         nextDirection = UP;
@@ -218,12 +218,12 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
                     break;
 
                 case UP:
-                    y -= Const.CELL_HEIGHT;
-                    canvas.drawRect(new Rect(x, y, x + Const.CELL_HEIGHT, y + Const.CELL_HEIGHT), paint);
+                    y -= Utils.Const.CELL_HEIGHT;
+                    canvas.drawRect(new Rect(x, y, x + Utils.Const.CELL_HEIGHT, y + Utils.Const.CELL_HEIGHT), paint);
 
                     //Update the mask
                     mask.put(y + " " + x, 1);
-                    if (mask.containsKey(y + " " + (int) (x - Const.CELL_WIDTH))) {
+                    if (mask.containsKey(y + " " + (int) (x - Utils.Const.CELL_WIDTH))) {
                         nextDirection = UP;
                     } else {
                         nextDirection = LEFT;
@@ -232,12 +232,12 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
             }
         }
 
-        y = Const.SCREEN_HEIGHT / 2;
-        x = Const.SCREEN_WIDTH / 2;
+        y = Utils.Const.SCREEN_HEIGHT / 2;
+        x = Utils.Const.SCREEN_WIDTH / 2;
         paint = new Paint();
         paint.setColor(Color.RED);
         paint.setStyle(Paint.Style.FILL);
-        canvas.drawRect(new Rect(x, y, x + Const.CELL_HEIGHT, y + Const.CELL_HEIGHT), paint);
+        canvas.drawRect(new Rect(x, y, x + Utils.Const.CELL_HEIGHT, y + Utils.Const.CELL_HEIGHT), paint);
 
     }
 
@@ -275,31 +275,19 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
             int y = (int) (event.getY() / scaleListener.mScaleFactor + clipBoundsCanvas.top);
 
 
-            int rangeNumberX = x / Const.CELL_WIDTH;
+            int rangeNumberX = x / Utils.Const.CELL_WIDTH;
 
-            int lowerBoundRangeX = rangeNumberX * Const.CELL_WIDTH;
+            int lowerBoundRangeX = rangeNumberX * Utils.Const.CELL_WIDTH;
 
-            int rangeNumberY = y / Const.CELL_HEIGHT;
-            int lowerBoundRangeY = rangeNumberY * Const.CELL_HEIGHT;
+            int rangeNumberY = y / Utils.Const.CELL_HEIGHT;
+            int lowerBoundRangeY = rangeNumberY * Utils.Const.CELL_HEIGHT;
 
-            Animal animal = Utils.searchAroundAnimal1(50, lowerBoundRangeX, lowerBoundRangeY, model);
+            Animal animal = (Animal) Utils.searchAroundAnimal(Utils.Const.USER_CLICK_SEARCH_RANG
+                    , lowerBoundRangeX, lowerBoundRangeY, model, Utils.Const.SearchFor.ANIMAL);
             if (animal != null) {
-                System.out.println("found one at " + animal.getX() + " " + animal.getY());
                 model.setFamousAnimal(animal);
             }
-            else
-                System.out.println("didn't find anything");
 
-            System.out.println("x= " + x);
-            System.out.println("y= " + y);
-            System.out.println("lowerBoundRangeX= " + lowerBoundRangeX);
-            System.out.println("lowerBoundRangeY= " + lowerBoundRangeY);
-
-//            this.x = x;
-//            this.y = y;
-
-//            this.xa = lowerBoundRangeX;
-//            this.ya = lowerBoundRangeY;
         }
         return true;
     }

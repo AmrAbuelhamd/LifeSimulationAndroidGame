@@ -3,7 +3,6 @@ package com.blogspot.soyamr.lifesimulation.model;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.Utils;
 
 public class Plant extends GameObject {
@@ -16,8 +15,8 @@ public class Plant extends GameObject {
     }
 
     Plant() {
-        x = Utils.getRandom(0, Const.N) * width;
-        y = Utils.getRandom(0, Const.M) * height;
+        x = Utils.getRandom(0, Utils.Const.N) * width;
+        y = Utils.getRandom(0, Utils.Const.M) * height;
         rect.set(x, y, x + width, y + height);
     }
 

@@ -3,14 +3,12 @@ package com.blogspot.soyamr.lifesimulation.model;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.Utils;
 
 
 public class Animal extends GameObject {
     //animal can see this depth, i.e. 100 cell in all direction
     int hunger = 100;
-    public static final int ANIMAL_SEARCH_RANG = 50;
     private final Model model;
 
     private static final Paint paint;
@@ -23,8 +21,8 @@ public class Animal extends GameObject {
     }
 
     Animal(Model model) {
-        x = Utils.getRandom(0, Const.N) * width;
-        y = Utils.getRandom(0, Const.M) * height;
+        x = Utils.getRandom(0, Utils.Const.N) * width;
+        y = Utils.getRandom(0, Utils.Const.M) * height;
 
         rect.set(x, y, x + width, y + height);
         this.model = model;
@@ -46,7 +44,8 @@ public class Animal extends GameObject {
     }
 
     void checkIfAnimalOnSameCellWithPlant() {
-        if (model.plantsContain(getKey())) {
+        Plant plant = model.getPlant(getKey());
+        if (plant != null) {
             model.removePlant(getKey());
             reduceHunger();
         }
@@ -65,13 +64,13 @@ public class Animal extends GameObject {
         //move 10 cells aways from last time searched and didn't find anything.
         if (!worthSearching) {
             int distance = (int) Math.sqrt((x - lastX) * (x - lastX) + (y - lastY) * (y - lastY));
-            if (distance < 10 * Const.CELL_WIDTH) {
+            if (distance < 10 * Utils.Const.CELL_WIDTH) {
                 return false;
             }
         }
 
         //search clockwise direction in @ANIMAL_SEARCH_RANG depth
-        Plant nearestPlant = Utils.searchAroundAnimal(ANIMAL_SEARCH_RANG, x, y, model.getPlants());
+        Plant nearestPlant = (Plant) Utils.searchAroundAnimal(ANIMAL_SEARCH_RANG, x, y, model, Utils.Const.SearchFor.PLANT);
         if (nearestPlant == null) {
             worthSearching = false;
             lastX = x;

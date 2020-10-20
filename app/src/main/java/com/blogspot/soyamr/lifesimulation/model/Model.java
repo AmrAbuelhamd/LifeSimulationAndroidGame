@@ -3,7 +3,6 @@ package com.blogspot.soyamr.lifesimulation.model;
 import android.graphics.Canvas;
 import android.util.Log;
 
-import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.Utils;
 
 import java.util.ArrayList;
@@ -12,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
 
 public class Model {
     public final List<Cell> cells;//toAsk how about  List<GameObject> cells; but i can't access the cell specific methods if done so..
@@ -34,23 +32,12 @@ public class Model {
         addPlants();
     }
 
-    public boolean plantsContain(String key) {//toAsk is a name?
-        return plants.containsKey(key);
-    }
-
-    public boolean animalsContain(String key) {//toAsk is a name?
-        return false; //animals.containsKey(key);
+    public Plant getPlant(String key) {
+        return plants.get(key);
     }
 
     public void removePlant(String key) {
         plants.remove(key);
-    }
-
-    //    public List<Cell> getCells() {
-//        return Collections.unmodifiableList(cells);
-//    }
-    public List<Animal> getAnimals() {
-        return Collections.unmodifiableList(animals);
     }
 
     public Map<String, Plant> getPlants() {
@@ -94,8 +81,8 @@ public class Model {
     private void addSells() {
         //create cells
         List<Cell> tempCells = new ArrayList<>();
-        for (int i = 0; i < Const.M; i++) {
-            for (int j = 0; j < Const.N; j++) {
+        for (int i = 0; i < Utils.Const.M; i++) {
+            for (int j = 0; j < Utils.Const.N; j++) {
                 Cell cell = new Cell(i, j);
                 tempCells.add(cell);
             }
@@ -116,6 +103,8 @@ public class Model {
 
     public void update() {
         animals.forEach(Animal::update);
+        if (famousAnimal != null)
+            famousAnimal.update();
     }
 
     public void draw(Canvas canvas) {

@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
         int width = displayMetrics.widthPixels;
-        Const.SCREEN_WIDTH = width;
-        Const.SCREEN_HEIGHT = height;
+        Utils.Const.SCREEN_WIDTH = width;
+        Utils.Const.SCREEN_HEIGHT = height;
     }
 
     boolean firstTime = true;
