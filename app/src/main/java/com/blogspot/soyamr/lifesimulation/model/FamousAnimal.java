@@ -17,7 +17,7 @@ public class FamousAnimal extends GameObject {
         this.animal = animal;
         paint = new Paint();
 
-        paint.setTextSize(30);
+        paint.setTextSize(300);
         paint.setAntiAlias(true);
     }
 
@@ -26,7 +26,7 @@ public class FamousAnimal extends GameObject {
     public void draw(Canvas canvas) {
 
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(3);
+        paint.setStrokeWidth(10);
         paint.setColor(Color.CYAN);
         canvas.drawRect(rectFoodVision, paint);
 
@@ -38,8 +38,9 @@ public class FamousAnimal extends GameObject {
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(Color.YELLOW);
         canvas.drawText("Hunger: " + animal.hunger, x, y, paint);
-        canvas.drawText("in relationship: " + animal.inRelation, x, y + 30, paint);
-        canvas.drawText("idontwant: " + animal.iDoNotWant, x, y + 60, paint);
+        canvas.drawText("in relationship: " + animal.inRelation, x, y + 250, paint);
+        canvas.drawText("idontwant: " + animal.iDoNotWant, x, y + 500, paint);
+        canvas.drawText("my turn: " + animal.myTurn, x, y + 750, paint);
     }
 
     void update() {

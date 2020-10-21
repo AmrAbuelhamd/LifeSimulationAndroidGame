@@ -152,8 +152,8 @@ public abstract class Utils {
         public static final int USER_CLICK_SEARCH_RANG = 20;
         public static final int N = 300;
         public static final int M = 600;
-        public static int CELL_WIDTH = 10;
-        public static int CELL_HEIGHT = 10;
+        public static int CELL_WIDTH = 100;
+        public static int CELL_HEIGHT = 100;
         public static int SCREEN_HEIGHT = CELL_HEIGHT * M;
         public static int SCREEN_WIDTH = CELL_WIDTH * N;
         public static final int SEARCH_FOOD_THRESHOLD_NORMAL = 31;//31

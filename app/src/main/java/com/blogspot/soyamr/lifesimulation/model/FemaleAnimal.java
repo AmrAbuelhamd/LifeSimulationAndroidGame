@@ -1,5 +1,6 @@
 package com.blogspot.soyamr.lifesimulation.model;
 
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
@@ -24,6 +25,17 @@ public class FemaleAnimal extends Animal {
         paint.setAntiAlias(true);
     }
 
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+        if(inRelation){
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(10);
+            paint.setColor(Color.WHITE);
+            canvas.drawRect(rect,paint);
+            setInitialColor();
+        }
+    }
 
     @Override
     public void update() {
@@ -63,18 +75,23 @@ public class FemaleAnimal extends Animal {
     private void changeColor() {
         switch (hunger) {
             case 100:
+            case 90:
                 paint.setColor(Model.context.getColor(R.color.f100));
                 break;
             case 80:
+            case 70:
                 paint.setColor(Model.context.getColor(R.color.f80));
                 break;
             case 60:
+            case 50:
                 paint.setColor(Model.context.getColor(R.color.f60));
                 break;
             case 40:
+            case 30:
                 paint.setColor(Model.context.getColor(R.color.f40));
                 break;
             case 20:
+            case 10:
                 paint.setColor(Model.context.getColor(R.color.f20));
                 break;
             case 0:

@@ -1,5 +1,6 @@
 package com.blogspot.soyamr.lifesimulation.model;
 
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
@@ -96,21 +97,38 @@ public class MaleAnimal extends Animal {
 
     }
 
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+        if (inRelation) {
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(10);
+            paint.setColor(Color.RED);
+            canvas.drawRect(rect, paint);
+            setInitialColor();
+        }
+    }
+
     private void changeColor() {
         switch (hunger) {
             case 100:
+            case 90:
                 paint.setColor(Model.context.getColor(R.color.m100));
                 break;
             case 80:
+            case 70:
                 paint.setColor(Model.context.getColor(R.color.m80));
                 break;
             case 60:
+            case 50:
                 paint.setColor(Model.context.getColor(R.color.m60));
                 break;
             case 40:
+            case 30:
                 paint.setColor(Model.context.getColor(R.color.m40));
                 break;
             case 20:
+            case 10:
                 paint.setColor(Model.context.getColor(R.color.m20));
                 break;
             case 0:
