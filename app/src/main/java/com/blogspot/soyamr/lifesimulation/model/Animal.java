@@ -118,15 +118,7 @@ public abstract class Animal extends GameObject {
     }
 
 
-    public void increaseHunger() {
-        if (hunger == 0)
-            model.deleteMePlease(this);
-        else
-            hunger -= 10;
-    }
+    public abstract void increaseHunger();
 
-    public void reduceHunger() {
-        if (hunger != 100)
-            hunger += 10;
-    }
+    public abstract void reduceHunger();
 }

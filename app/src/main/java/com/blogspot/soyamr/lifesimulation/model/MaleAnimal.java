@@ -3,27 +3,29 @@ package com.blogspot.soyamr.lifesimulation.model;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import com.blogspot.soyamr.lifesimulation.R;
 import com.blogspot.soyamr.lifesimulation.Utils;
 
 public class MaleAnimal extends Animal {
-    private static final Paint paint;
 
-    static {
-        paint = new Paint();
-        paint.setColor(Color.WHITE);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setAntiAlias(true);
-    }
 
     private FemaleAnimal myLove;
 
 
     MaleAnimal(Model model) {
         super(model);
+        setInitialColor();
     }
 
     public MaleAnimal(int x, int y, Model model) {
         super(x, y, model);
+        setInitialColor();
+    }
+
+    void setInitialColor() {
+        paint.setColor(Model.context.getColor(R.color.m80));
+        paint.setStyle(Paint.Style.FILL);
+        paint.setAntiAlias(true);
     }
 
     @Override
@@ -84,6 +86,46 @@ public class MaleAnimal extends Animal {
         }
     }
 
+    @Override
+    public void increaseHunger() {
+        if (hunger == 0)
+            model.deleteMePlease(this);
+        else
+            hunger -= 10;
+        changeColor();
+
+    }
+
+    private void changeColor() {
+        switch (hunger) {
+            case 100:
+                paint.setColor(Model.context.getColor(R.color.m100));
+                break;
+            case 80:
+                paint.setColor(Model.context.getColor(R.color.m80));
+                break;
+            case 60:
+                paint.setColor(Model.context.getColor(R.color.m60));
+                break;
+            case 40:
+                paint.setColor(Model.context.getColor(R.color.m40));
+                break;
+            case 20:
+                paint.setColor(Model.context.getColor(R.color.m20));
+                break;
+            case 0:
+                paint.setColor(Model.context.getColor(R.color.m0));
+                break;
+        }
+    }
+
+    @Override
+    public void reduceHunger() {
+        if (hunger != 100)
+            hunger += 10;
+        changeColor();
+    }
+
     private boolean searchForPartner() {
         if (!doesItWorthSearching()) {
             return false;
@@ -102,10 +144,5 @@ public class MaleAnimal extends Animal {
             worthSearchingForWomen = true;
             return true;
         }
-    }
-
-    @Override
-    Paint getPaint() {
-        return paint;
     }
 }

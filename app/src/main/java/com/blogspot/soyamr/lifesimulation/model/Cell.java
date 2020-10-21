@@ -25,10 +25,6 @@ public class Cell extends GameObject {
         rect.set(x, y, x + width, y + height);
     }
 
-    @Override
-    Paint getPaint() {
-        return paint;
-    }
 
     void setRandomColor() {
         Random rnd = new Random();

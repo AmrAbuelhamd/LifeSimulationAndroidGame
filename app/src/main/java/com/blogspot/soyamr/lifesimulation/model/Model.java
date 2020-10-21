@@ -1,7 +1,9 @@
 package com.blogspot.soyamr.lifesimulation.model;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.util.Log;
+import android.view.ContextMenu;
 
 import com.blogspot.soyamr.lifesimulation.Utils;
 
@@ -21,14 +23,16 @@ public class Model {
     public final Map<String, Plant> plants;
     private FamousAnimal famousAnimal;
     private int queueTracker = 0;
+    static Context context;
 
-    public Model() {
+    public Model(Context context) {
+        this.context = context;
         cells = new CopyOnWriteArrayList<>();
         animals = new CopyOnWriteArrayList<>();
         femaleAnimals = new CopyOnWriteArrayList<>();
         plants = new ConcurrentHashMap<>();
 
-        //addSells();
+//        addSells();
         addAnimals();
         addPlants();
     }

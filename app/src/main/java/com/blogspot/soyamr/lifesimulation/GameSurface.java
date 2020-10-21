@@ -45,7 +45,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
         this.getHolder().addCallback(this);
 
         scaleListener = new ScaleListener(this);
-        model = new Model();
+        model = new Model(context);
 
     }
 

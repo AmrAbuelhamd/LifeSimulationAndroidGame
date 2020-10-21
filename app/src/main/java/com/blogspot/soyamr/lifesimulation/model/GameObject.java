@@ -23,6 +23,7 @@ public abstract class GameObject {
     public static final int width = Utils.Const.CELL_WIDTH;
     public static final int height = Utils.Const.CELL_HEIGHT;
     final Rect rect = new Rect();
+    final Paint paint = new Paint();
     int x;
     int y;
     static final int[][] moveDirection = new int[][]{
@@ -49,13 +50,12 @@ public abstract class GameObject {
             this.y = Utils.Const.SCREEN_HEIGHT - height;
         }
     }
-    abstract Paint getPaint();
 
     public String getKey() {
         return x + " " + y;
     }
     public void draw(Canvas canvas) {
-        canvas.drawRect(rect, getPaint());
+        canvas.drawRect(rect, paint);
     }
 
     public int getX() {

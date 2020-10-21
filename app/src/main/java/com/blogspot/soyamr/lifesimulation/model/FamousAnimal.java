@@ -63,8 +63,4 @@ public class FamousAnimal extends GameObject {
         ;
     }
 
-    @Override
-    Paint getPaint() {
-        return paint;
-    }
 }

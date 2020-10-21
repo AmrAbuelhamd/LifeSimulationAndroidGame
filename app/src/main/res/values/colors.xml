@@ -3,4 +3,23 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+
+
+    <color name="m100">#D5D5D5</color>
+    <color name="m80">#C3C3C3</color>
+    <color name="m60">#8e8e8e</color>
+    <color name="m40">#727272</color>
+    <color name="m20">#3E3D3D</color>
+    <color name="m0">#000000</color>
+
+    <color name="f100">#FF0000</color>
+    <color name="f80">#D80000</color>
+    <color name="f60">#950000</color>
+    <color name="f40">#6E0101</color>
+    <color name="f20">#390000</color>
+    <color name="f0">#020000</color>
+
+
+
+
 </resources>
