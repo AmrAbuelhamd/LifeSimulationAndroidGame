@@ -22,4 +22,6 @@ public interface Controller {
     void increaseAnimalsHunger();
 
     void updateInfo();
+
+    void controlBirthPlease();
 }

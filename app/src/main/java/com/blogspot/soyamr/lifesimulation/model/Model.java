@@ -134,7 +134,7 @@ public class Model {
     public Animal getSingleFemaleAnimal(String key) {
         return femaleAnimals.stream()
                 .filter(s -> key.equals(s.getKey()) &&
-                        ((FemaleAnimal)s).wannaBeInRelationship())
+                        ((FemaleAnimal) s).wannaBeInRelationship())
                 .findFirst().orElse(null);
     }
 
@@ -143,10 +143,20 @@ public class Model {
             FemaleAnimal animal = new FemaleAnimal(x, y, this);
             animals.add(animal);
             femaleAnimals.add(animal);
-        }
-        else {
+        } else {
             animals.add(new MaleAnimal(x, y, this));
         }
-        System.out.println("new child");
+    }
+
+    public void controlBirthPlease() {
+        if (animals.size() > 350) {
+            GameObject.SEARCH_PARTNER_THRESHOLD = Utils.Const.SEARCH_PARTNER_THRESHOLD_PROHIBIT;
+            GameObject.SEARCH_FOOD_THRESHOLD = Utils.Const.SEARCH_FOOD_THRESHOLD_HIGH;
+            ;
+        } else if (animals.size() < 100) {
+            GameObject.SEARCH_PARTNER_THRESHOLD = Utils.Const.SEARCH_PARTNER_THRESHOLD_NORMAL;
+            GameObject.SEARCH_FOOD_THRESHOLD = Utils.Const.SEARCH_FOOD_THRESHOLD_NORMAL;
+        }
+        System.out.println("#################hi from birth control#################");
     }
 }

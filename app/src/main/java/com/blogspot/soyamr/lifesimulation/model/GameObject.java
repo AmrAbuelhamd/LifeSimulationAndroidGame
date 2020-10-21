@@ -7,11 +7,14 @@ import android.graphics.Rect;
 
 import com.blogspot.soyamr.lifesimulation.Utils;
 
+import static com.blogspot.soyamr.lifesimulation.Utils.Const.SEARCH_FOOD_THRESHOLD_NORMAL;
+import static com.blogspot.soyamr.lifesimulation.Utils.Const.SEARCH_PARTNER_THRESHOLD_NORMAL;
+
 
 public abstract class GameObject {
 
-    public static final int SEARCH_FOOD_THRESHOLD = 31;
-    public static final int SEARCH_PARTNER_THRESHOLD = 49;
+    public static  int SEARCH_FOOD_THRESHOLD = SEARCH_FOOD_THRESHOLD_NORMAL;
+    public static  int SEARCH_PARTNER_THRESHOLD = SEARCH_PARTNER_THRESHOLD_NORMAL;
     public static final int ANIMAL_FOOD_VISION_RANG = 50;
     public static final int ANIMAL_WOMEN_VISION_RANG = 30;
     public static final int SEARCH_FOOD_OPTIMIZATION_THRESHOLD = 40;//40

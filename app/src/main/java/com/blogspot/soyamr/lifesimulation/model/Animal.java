@@ -37,7 +37,7 @@ public abstract class Animal extends GameObject {
                         iDoNotWant = false;
                     }
                 },
-                10000
+                5000
         );
     }
 

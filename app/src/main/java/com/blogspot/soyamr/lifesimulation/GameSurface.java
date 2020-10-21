@@ -86,6 +86,11 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
         model.updateInfo();
     }
 
+    @Override
+    public void controlBirthPlease() {
+        model.controlBirthPlease();
+    }
+
     private void drawmyalgorithm(Canvas canvas) {
         Plant nearestPlant = null;
         Paint paint;

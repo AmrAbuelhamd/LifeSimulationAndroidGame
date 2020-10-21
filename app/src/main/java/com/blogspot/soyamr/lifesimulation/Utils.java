@@ -156,6 +156,10 @@ public abstract class Utils {
         public static int CELL_HEIGHT = 10;
         public static int SCREEN_HEIGHT = CELL_HEIGHT * M;
         public static int SCREEN_WIDTH = CELL_WIDTH * N;
+        public static final int SEARCH_FOOD_THRESHOLD_NORMAL = 31;
+        public static final int SEARCH_PARTNER_THRESHOLD_NORMAL = 49;
+        public static final int SEARCH_FOOD_THRESHOLD_HIGH = 80;
+        public static final int SEARCH_PARTNER_THRESHOLD_PROHIBIT = 101;
 
 
         public enum Direction {
