@@ -8,7 +8,7 @@ public abstract class Animal extends GameObject {
     final Model model;
     boolean inRelation = false;
     boolean iDoNotWant;
-
+    boolean myTurn = false;
 
     Animal(Model model) {
         x = Utils.getRandom(0, Utils.Const.N) * width;

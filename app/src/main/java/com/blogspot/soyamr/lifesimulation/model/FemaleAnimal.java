@@ -25,15 +25,19 @@ public class FemaleAnimal extends Animal {
 
     @Override
     public void update() {
-        if (inRelation) {
-            waitLoveToArrive();
-            return;
-        } else if (hunger < SEARCH_FOOD_THRESHOLD) {
-            boolean found = needFood();
-            if (!found)
-                moveRandomly();
-        } else {
+        if (!myTurn && !inRelation) {
             moveRandomly();
+        } else {
+            if (inRelation) {
+                waitLoveToArrive();
+                return;
+            } else if (hunger < SEARCH_FOOD_THRESHOLD) {
+                boolean found = needFood();
+                if (!found)
+                    moveRandomly();
+            } else {
+                moveRandomly();
+            }
         }
         super.update();
     }

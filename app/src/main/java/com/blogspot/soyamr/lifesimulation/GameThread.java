@@ -23,7 +23,7 @@ public class GameThread {
         executor.scheduleAtFixedRate(gameSurface::addOnePlant, 0,  100, TimeUnit.MILLISECONDS);
         executor.scheduleAtFixedRate(gameSurface::increaseAnimalsHunger, 0, 10, TimeUnit.SECONDS);
         executor.scheduleAtFixedRate(gameSurface::updateInfo, 0, 5, TimeUnit.SECONDS);
-        executor.scheduleAtFixedRate(gameSurface::controlBirthPlease, 70, 70, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(gameSurface::controlBirthPlease, 20, 20, TimeUnit.SECONDS);
 
         executor.scheduleWithFixedDelay(this::run, 0, waitTime, TimeUnit.MILLISECONDS);
 

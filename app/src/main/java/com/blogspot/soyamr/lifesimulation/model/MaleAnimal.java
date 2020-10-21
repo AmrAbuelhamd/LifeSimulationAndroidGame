@@ -28,23 +28,27 @@ public class MaleAnimal extends Animal {
 
     @Override
     public void update() {
-        if (inRelation) {
-            if (arrived()) {
-                doCeremony();
-                moveRandomly();
-            } else {
-                moveToward(myLove.x, myLove.y);
-            }
-        } else if (!iDoNotWant && hunger > SEARCH_PARTNER_THRESHOLD) {
-            boolean found = searchForPartner();
-            if (!found)
-                moveRandomly();
-        } else if (hunger < SEARCH_FOOD_THRESHOLD) {
-            boolean found = needFood();
-            if (!found)
-                moveRandomly();
-        } else {
+        if (!myTurn && !inRelation) {
             moveRandomly();
+        } else {
+            if (inRelation) {
+                if (arrived()) {
+                    doCeremony();
+                    moveRandomly();
+                } else {
+                    moveToward(myLove.x, myLove.y);
+                }
+            } else if (!iDoNotWant && hunger > SEARCH_PARTNER_THRESHOLD) {
+                boolean found = searchForPartner();
+                if (!found)
+                    moveRandomly();
+            } else if (hunger < SEARCH_FOOD_THRESHOLD) {
+                boolean found = needFood();
+                if (!found)
+                    moveRandomly();
+            } else {
+                moveRandomly();
+            }
         }
         super.update();
     }

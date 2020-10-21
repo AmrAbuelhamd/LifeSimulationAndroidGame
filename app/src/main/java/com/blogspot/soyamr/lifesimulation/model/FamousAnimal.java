@@ -43,7 +43,7 @@ public class FamousAnimal extends GameObject {
     }
 
     void update() {
-        x = animal.getX() + 10;
+        x = animal.getX();
         y = animal.getY();
 
         rectFoodVision.set(x - squareDiameterFood * width,
@@ -57,6 +57,10 @@ public class FamousAnimal extends GameObject {
 
                 x + squareDiameterWomen * width,
                 y + squareDiameterWomen * height);
+
+        x = animal.getX() + squareDiameterFood * width + 15;
+        y = animal.getY() - squareDiameterFood * width
+        ;
     }
 
     @Override

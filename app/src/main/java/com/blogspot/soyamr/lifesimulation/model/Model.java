@@ -12,12 +12,15 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static com.blogspot.soyamr.lifesimulation.Utils.Const.QUEUE;
+
 public class Model {
     public final List<Cell> cells;//toAsk how about  List<GameObject> cells; but i can't access the cell specific methods if done so..
     public final List<Animal> animals;
     public final List<Animal> femaleAnimals;
     public final Map<String, Plant> plants;
     private FamousAnimal famousAnimal;
+    private int queueTracker = 0;
 
     public Model() {
         cells = new CopyOnWriteArrayList<>();
@@ -28,29 +31,6 @@ public class Model {
         //addSells();
         addAnimals();
         addPlants();
-    }
-
-    public void setFamousAnimal(Animal animal) {
-        if (animal == null)
-            famousAnimal = null;
-        else
-            this.famousAnimal = new FamousAnimal(animal);
-    }
-
-    public Plant getPlant(String key) {
-        return plants.get(key);
-    }
-
-    public void removePlant(String key) {
-        plants.remove(key);
-    }
-
-    public Map<String, Plant> getPlants() {
-        return Collections.unmodifiableMap(plants);
-    }
-
-    public void increaseAnimalsHunger() {
-        animals.forEach(Animal::increaseHunger);
     }
 
     public void addPlants() {
@@ -101,10 +81,12 @@ public class Model {
         cells.addAll(tempCells);
     }
 
-    public void updateInfo() {
-        Log.i("number of animals: ", " " + animals.size());
-        Log.i("number of plants: ", " " + plants.size());
-        Log.i("----------------", " ------------------------");
+
+    public void setFamousAnimal(Animal animal) {
+        if (animal == null)
+            famousAnimal = null;
+        else
+            this.famousAnimal = new FamousAnimal(animal);
     }
 
     public void deleteMePlease(Animal animal) {
@@ -112,7 +94,37 @@ public class Model {
 
     }
 
+    public void removePlant(String key) {
+        plants.remove(key);
+    }
+
+
+    public Map<String, Plant> getPlants() {
+        return Collections.unmodifiableMap(plants);
+    }
+
+    public void increaseAnimalsHunger() {
+        animals.forEach(Animal::increaseHunger);
+    }
+
+    public void updateInfo() {
+        Log.i("number of animals: ", " " + animals.size());
+        Log.i("number of plants: ", " " + plants.size());
+        Log.i("----------------", " ------------------------");
+    }
+
     public void update() {
+        if (queueTracker > animals.size())
+            queueTracker = 0;
+        queueTracker += QUEUE;
+        final int start = queueTracker - QUEUE;
+        final int end = queueTracker;
+        int ctr = 0;
+        for (Animal animal : animals) {
+            animal.myTurn = ctr >= start && ctr <= end;
+            ++ctr;
+            animal.update();
+        }
         animals.forEach(Animal::update);
         if (famousAnimal != null)
             famousAnimal.update();
@@ -124,6 +136,11 @@ public class Model {
         plants.forEach((s, plant) -> plant.draw(canvas));
         if (famousAnimal != null)////lidia if needed i can easily add list of this class, to show multiple animal status at a time.
             famousAnimal.draw(canvas);
+    }
+
+
+    public Plant getPlant(String key) {
+        return plants.get(key);
     }
 
     public Animal getAnimal(String key) {
@@ -138,6 +155,7 @@ public class Model {
                 .findFirst().orElse(null);
     }
 
+
     public void weHaveChild(int x, int y) {
         if (Utils.getRandom(0, 2) == 0) {
             FemaleAnimal animal = new FemaleAnimal(x, y, this);
@@ -149,7 +167,7 @@ public class Model {
     }
 
     public void controlBirthPlease() {
-        if (animals.size() > 350) {
+        if (animals.size() > 300) {
             GameObject.SEARCH_PARTNER_THRESHOLD = Utils.Const.SEARCH_PARTNER_THRESHOLD_PROHIBIT;
             GameObject.SEARCH_FOOD_THRESHOLD = Utils.Const.SEARCH_FOOD_THRESHOLD_HIGH;
             ;
