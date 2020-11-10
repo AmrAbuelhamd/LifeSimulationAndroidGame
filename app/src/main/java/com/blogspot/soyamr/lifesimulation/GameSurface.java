@@ -13,7 +13,6 @@ import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
 
-
 import com.blogspot.soyamr.lifesimulation.model.Animal;
 import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.Plant;
@@ -50,6 +49,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
     }
 
     public void update() {
+        updateLogInfo();
         model.update();
     }
 
@@ -64,7 +64,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
         clipBoundsCanvas = canvas.getClipBounds();
 
         model.draw(canvas);
-
 //        drawWhite(canvas);
 //        drawmyalgorithm(canvas);
 
@@ -72,18 +71,20 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
     }
 
     @Override
-    public void addOnePlant() {
-        model.addOnePlant();
-    }
-
-    @Override
     public void increaseAnimalsHunger() {
         model.increaseAnimalsHunger();
     }
 
-    @Override
-    public void updateInfo() {
-        model.updateInfo();
+    final int updateInfoThreshold = 50;
+    int uith = 0;
+
+    public void updateLogInfo() {
+        if (uith < updateInfoThreshold) {
+            ++uith;
+        } else {
+            model.updateLogInfo();
+            uith = 0;
+        }
     }
 
     @Override

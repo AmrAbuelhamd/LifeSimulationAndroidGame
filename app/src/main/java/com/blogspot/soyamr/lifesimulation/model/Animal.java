@@ -8,7 +8,7 @@ public abstract class Animal extends GameObject {
     final Model model;
     boolean inRelation = false;
     boolean iDoNotWant;
-    boolean myTurn = false;
+    boolean myTurn = true;//todo enable this variable agian when animals > 1000, and make small documentation on it in readme
 
     Animal(Model model) {
         x = Utils.getRandom(0, Utils.Const.N) * width;
@@ -28,21 +28,33 @@ public abstract class Animal extends GameObject {
         setIdoNotWant();
     }
 
+    final int reSetIDoNotWantVariable = 90;
+    int rsidwv = 0;
+
     protected void setIdoNotWant() {
         iDoNotWant = true;
-        new java.util.Timer().schedule(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        iDoNotWant = false;
-                    }
-                },
-                5000
-        );
+        rsidwv = 0;
     }
+
+    final int increasingHungerThreshold = 100;
+    int ihth = 0;
 
     //search for food or move randomly
     public void update() {
+        if (ihth < increasingHungerThreshold) {//toask is it better to keep this here or inside increase hunger itself?
+            ++ihth;
+        } else {
+            increaseHunger();
+            ihth = 0;
+        }
+        if (iDoNotWant == true) {
+            if (rsidwv < reSetIDoNotWantVariable) {
+                ++rsidwv;
+            } else {
+                iDoNotWant = false;
+                rsidwv = 0;
+            }
+        }
         reachedScreenEdge();
         checkIfAnimalOnSameCellWithPlant();
         rect.set(x, y, x + width, y + height);
@@ -69,8 +81,9 @@ public abstract class Animal extends GameObject {
 
     private boolean doesItWorthSearching() {
         if (!worthSearchingForFood) {
-            int distance = (int) Math.sqrt((x - lastX) * (x - lastX) + (y - lastY) * (y - lastY));
-            return distance >= SEARCH_FOOD_OPTIMIZATION_THRESHOLD * Utils.Const.CELL_WIDTH;
+            int distance = (x - lastX) * (x - lastX) + (y - lastY) * (y - lastY);
+            return distance >= (SEARCH_FOOD_OPTIMIZATION_THRESHOLD * Utils.Const.CELL_WIDTH)
+                    * (SEARCH_FOOD_OPTIMIZATION_THRESHOLD * Utils.Const.CELL_WIDTH);
         } else {
             return true;
         }
@@ -78,7 +91,6 @@ public abstract class Animal extends GameObject {
 
     boolean needFood() {
 
-        //lidia [[FOR BONUS]] i added optimisation mechanism, {without it the animals becomes very slow.}
         //if last time animal didn't find food around it, then no need to search again if he didn't
         //move 10 cells aways from last time searched and didn't find anything.
         if (!doesItWorthSearching()) {
@@ -101,7 +113,6 @@ public abstract class Animal extends GameObject {
         return true;
     }
 
-    //returns true if arrived target
     void moveToward(int targetX, int targetY) {
 
         // four cases
@@ -118,7 +129,19 @@ public abstract class Animal extends GameObject {
     }
 
 
-    public abstract void increaseHunger();
+    public void increaseHunger() {
+        if (hunger == 0)
+            model.deleteMePlease(this);
+        else
+            hunger -= 10;
+        changeColor();
+    }
 
-    public abstract void reduceHunger();
+    protected abstract void changeColor();
+
+    public void reduceHunger() {
+        if (hunger != 100)
+            hunger += 10;
+        changeColor();
+    }
 }

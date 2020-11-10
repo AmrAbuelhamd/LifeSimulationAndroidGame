@@ -57,7 +57,7 @@ public class MaleAnimal extends Animal {
     }
 
     private void doCeremony() {
-        model.weHaveChild(x, y);//lidia if two random animals met on the same cell they can't just have children because they were on the sam eon
+        model.weHaveChild(x, y);
         myLove.brokeUp();
         myLove = null;
         inRelation = false;
@@ -80,21 +80,12 @@ public class MaleAnimal extends Animal {
 
     private boolean doesItWorthSearching() {
         if (!worthSearchingForWomen) {
-            int distance = (int) Math.sqrt((x - lastX) * (x - lastX) + (y - lastY) * (y - lastY));
-            return distance >= SEARCH_WOMEN_OPTIMIZATION_THRESHOLD * Utils.Const.CELL_WIDTH;
+            int distance = (x - lastX) * (x - lastX) + (y - lastY) * (y - lastY);
+            return distance >= (SEARCH_WOMEN_OPTIMIZATION_THRESHOLD * Utils.Const.CELL_WIDTH)
+                    * (SEARCH_WOMEN_OPTIMIZATION_THRESHOLD * Utils.Const.CELL_WIDTH);
         } else {
             return true;
         }
-    }
-
-    @Override
-    public void increaseHunger() {
-        if (hunger == 0)
-            model.deleteMePlease(this);
-        else
-            hunger -= 10;
-        changeColor();
-
     }
 
     @Override
@@ -109,7 +100,8 @@ public class MaleAnimal extends Animal {
         }
     }
 
-    private void changeColor() {
+    @Override
+    protected void changeColor() {
         switch (hunger) {
             case 100:
             case 90:
@@ -135,13 +127,6 @@ public class MaleAnimal extends Animal {
                 paint.setColor(Model.context.getColor(R.color.m0));
                 break;
         }
-    }
-
-    @Override
-    public void reduceHunger() {
-        if (hunger != 100)
-            hunger += 10;
-        changeColor();
     }
 
     private boolean searchForPartner() {

@@ -57,22 +57,7 @@ public class FemaleAnimal extends Animal {
     }
 
     @Override
-    public void increaseHunger() {
-        if (hunger == 0)
-            model.deleteMePlease(this);
-        else
-            hunger -= 10;
-        changeColor();
-    }
-
-    @Override
-    public void reduceHunger() {
-        if (hunger != 100)
-            hunger += 10;
-        changeColor();
-    }
-
-    private void changeColor() {
+    protected void changeColor() {
         switch (hunger) {
             case 100:
             case 90:

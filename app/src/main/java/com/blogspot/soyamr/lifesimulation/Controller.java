@@ -15,13 +15,9 @@ public interface Controller {
 
     void draw(Canvas canvas);
 
-    void addOnePlant();
-
     SurfaceHolder getHolder();
 
     void increaseAnimalsHunger();
-
-    void updateInfo();
 
     void controlBirthPlease();
 }
