@@ -9,13 +9,11 @@ public class FamousAnimal extends GameObject {
     Animal animal;
     static final int squareDiameterFood = ANIMAL_FOOD_VISION_RANG / 2;
     static final int squareDiameterWomen = ANIMAL_WOMEN_VISION_RANG / 2;
-    final Paint paint;
     final Rect rectWomenVision = new Rect();
     final Rect rectFoodVision = new Rect();
 
     public FamousAnimal(Animal animal) {
         this.animal = animal;
-        paint = new Paint();
 
         paint.setTextSize(300);
         paint.setAntiAlias(true);

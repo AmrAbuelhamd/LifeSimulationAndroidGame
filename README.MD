@@ -78,3 +78,20 @@ https://stackoverflow.com/questions/5612470/remove-elements-from-copyonwritearra
 **important
 while creating a lot of objects of type CopyOnWriteArrayList i must create them in temp ArrayList
 then copy them into  CopyOnWriteArrayList
+
+
+---my queue system
+    private int queueTracker = 0;
+        if (queueTracker > animals.size())
+            queueTracker = 0;
+        queueTracker += QUEUE;
+        final int start = queueTracker - QUEUE;
+        final int end = queueTracker;
+        int ctr = 0;
+        for (Animal animal : animals) {
+            animal.myTurn = ctr >= start && ctr <= end;
+            ++ctr;
+            animal.update();
+        }
+ optimization, instead of updating the animal varialbe, i should just update him, and ignore the others,
+ it has problem becasue it will not update the last few animals

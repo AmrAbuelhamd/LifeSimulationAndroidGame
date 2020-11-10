@@ -4,7 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.blogspot.soyamr.lifesimulation.R;
 import com.blogspot.soyamr.lifesimulation.Utils;
 
 public class MaleAnimal extends Animal {
@@ -24,7 +23,7 @@ public class MaleAnimal extends Animal {
     }
 
     void setInitialColor() {
-        paint.setColor(Model.context.getColor(R.color.m80));
+        paint.setColor(model.getMeColor(FantasticColors.TYPE.male, hunger));
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
     }
@@ -80,9 +79,8 @@ public class MaleAnimal extends Animal {
 
     private boolean doesItWorthSearching() {
         if (!worthSearchingForWomen) {
-            int distance = (x - lastX) * (x - lastX) + (y - lastY) * (y - lastY);
-            return distance >= (SEARCH_WOMEN_OPTIMIZATION_THRESHOLD * Utils.Const.CELL_WIDTH)
-                    * (SEARCH_WOMEN_OPTIMIZATION_THRESHOLD * Utils.Const.CELL_WIDTH);
+            int distance = Math.abs(x - lastX) + Math.abs(y - lastY);
+            return distance >= (SEARCH_WOMEN_OPTIMIZATION_THRESHOLD * Utils.Const.CELL_WIDTH);
         } else {
             return true;
         }
@@ -102,31 +100,7 @@ public class MaleAnimal extends Animal {
 
     @Override
     protected void changeColor() {
-        switch (hunger) {
-            case 100:
-            case 90:
-                paint.setColor(Model.context.getColor(R.color.m100));
-                break;
-            case 80:
-            case 70:
-                paint.setColor(Model.context.getColor(R.color.m80));
-                break;
-            case 60:
-            case 50:
-                paint.setColor(Model.context.getColor(R.color.m60));
-                break;
-            case 40:
-            case 30:
-                paint.setColor(Model.context.getColor(R.color.m40));
-                break;
-            case 20:
-            case 10:
-                paint.setColor(Model.context.getColor(R.color.m20));
-                break;
-            case 0:
-                paint.setColor(Model.context.getColor(R.color.m0));
-                break;
-        }
+        paint.setColor(model.getMeColor(FantasticColors.TYPE.male, hunger));
     }
 
     private boolean searchForPartner() {

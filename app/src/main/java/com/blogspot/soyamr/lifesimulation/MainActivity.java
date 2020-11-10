@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT));
         setContentView(view);
         hideSystemUI();
+        getScreenSize();
     }
 
 

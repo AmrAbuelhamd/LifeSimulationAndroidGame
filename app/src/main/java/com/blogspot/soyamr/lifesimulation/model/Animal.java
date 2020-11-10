@@ -81,9 +81,8 @@ public abstract class Animal extends GameObject {
 
     private boolean doesItWorthSearching() {
         if (!worthSearchingForFood) {
-            int distance = (x - lastX) * (x - lastX) + (y - lastY) * (y - lastY);
-            return distance >= (SEARCH_FOOD_OPTIMIZATION_THRESHOLD * Utils.Const.CELL_WIDTH)
-                    * (SEARCH_FOOD_OPTIMIZATION_THRESHOLD * Utils.Const.CELL_WIDTH);
+            int distance = Math.abs(x - lastX) + Math.abs(y - lastY);
+            return distance >= (SEARCH_FOOD_OPTIMIZATION_THRESHOLD * Utils.Const.CELL_WIDTH);
         } else {
             return true;
         }

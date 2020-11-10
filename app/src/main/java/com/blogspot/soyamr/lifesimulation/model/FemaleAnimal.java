@@ -58,31 +58,7 @@ public class FemaleAnimal extends Animal {
 
     @Override
     protected void changeColor() {
-        switch (hunger) {
-            case 100:
-            case 90:
-                paint.setColor(Model.context.getColor(R.color.f100));
-                break;
-            case 80:
-            case 70:
-                paint.setColor(Model.context.getColor(R.color.f80));
-                break;
-            case 60:
-            case 50:
-                paint.setColor(Model.context.getColor(R.color.f60));
-                break;
-            case 40:
-            case 30:
-                paint.setColor(Model.context.getColor(R.color.f40));
-                break;
-            case 20:
-            case 10:
-                paint.setColor(Model.context.getColor(R.color.f20));
-                break;
-            case 0:
-                paint.setColor(Model.context.getColor(R.color.f0));
-                break;
-        }
+        paint.setColor(model.getMeColor(FantasticColors.TYPE.female, hunger));
     }
 
     void waitLoveToArrive() {

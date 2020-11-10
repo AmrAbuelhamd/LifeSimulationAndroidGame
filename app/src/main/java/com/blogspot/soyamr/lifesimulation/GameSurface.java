@@ -70,11 +70,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
         canvas.restore();
     }
 
-    @Override
-    public void increaseAnimalsHunger() {
-        model.increaseAnimalsHunger();
-    }
-
     final int updateInfoThreshold = 50;
     int uith = 0;
 
@@ -87,10 +82,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
         }
     }
 
-    @Override
-    public void controlBirthPlease() {
-        model.controlBirthPlease();
-    }
 
     private void drawmyalgorithm(Canvas canvas) {
         Plant nearestPlant = null;
@@ -109,8 +100,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
                 {-1, 0},
                 {-1, -1},
         };
-        int x = Utils.Const.SCREEN_WIDTH / 2;
-        int y = Utils.Const.SCREEN_HEIGHT / 2;
+        int x = Utils.Const.FIELD_WIDTH / 2;
+        int y = Utils.Const.FIELD_HEIGHT / 2;
 
         for (int i = 0; i < 100; i++) {
             int width = Animal.width * (i + 1);
@@ -133,8 +124,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
         int matrixLength = 100;
         int numberOfElements = matrixLength * matrixLength;
         Map<String, Integer> mask = new LinkedHashMap<>();
-        int y = Utils.Const.SCREEN_HEIGHT / 2;
-        int x = Utils.Const.SCREEN_WIDTH / 2;
+        int y = Utils.Const.FIELD_HEIGHT / 2;
+        int x = Utils.Const.FIELD_WIDTH / 2;
         Paint paint;
         Utils.Const.Direction nextDirection = LEFT;
         //The number of elements of the input matrix
@@ -222,8 +213,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
             }
         }
 
-        y = Utils.Const.SCREEN_HEIGHT / 2;
-        x = Utils.Const.SCREEN_WIDTH / 2;
+        y = Utils.Const.FIELD_HEIGHT / 2;
+        x = Utils.Const.FIELD_WIDTH / 2;
         paint = new Paint();
         paint.setColor(Color.RED);
         paint.setStyle(Paint.Style.FILL);

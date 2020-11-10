@@ -41,13 +41,13 @@ public abstract class GameObject {
         // When the game's character touches the edge of the screen, then stop it.
         if (this.x < 0) {
             this.x = 0;
-        } else if (this.x > Utils.Const.SCREEN_WIDTH - width) {
-            this.x = Utils.Const.SCREEN_WIDTH - width;
+        } else if (this.x > Utils.Const.FIELD_WIDTH - width) {
+            this.x = Utils.Const.FIELD_WIDTH - width;
         }
         if (this.y < 0) {
             this.y = 0;
-        } else if (this.y > Utils.Const.SCREEN_HEIGHT - height) {
-            this.y = Utils.Const.SCREEN_HEIGHT - height;
+        } else if (this.y > Utils.Const.FIELD_HEIGHT - height) {
+            this.y = Utils.Const.FIELD_HEIGHT - height;
         }
     }
 

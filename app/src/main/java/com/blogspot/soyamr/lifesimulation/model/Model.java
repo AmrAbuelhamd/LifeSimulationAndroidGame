@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.provider.Settings;
 import android.util.Log;
 
 import com.blogspot.soyamr.lifesimulation.Utils;
@@ -13,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Model {
     public final List<Cell> cells;
@@ -22,31 +19,18 @@ public class Model {
     public final List<Animal> femaleAnimals;
     public final Map<String, Plant> plants;
     private FamousAnimal famousAnimal;
-    private int queueTracker = 0;
-    static Context context;
-
+    private final FantasticColors fantasticColors;
+    private OnScreenInfo onScreenInfo;
     public Model(Context context) {
-        this.context = context;
-        cells = new CopyOnWriteArrayList<>();
-        animals = new CopyOnWriteArrayList<>();
-        femaleAnimals = new CopyOnWriteArrayList<>();
-        plants = new ConcurrentHashMap<>();
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.YELLOW);
-        paint.setTextSize(1500);
-        paint.setAntiAlias(true);
+        fantasticColors = new FantasticColors(context);
+        DataGenerator dataGenerator = new DataGenerator(this);
+        onScreenInfo = new OnScreenInfo();
 
+        cells = dataGenerator.getCells();
+        animals = dataGenerator.getAnimals();
+        femaleAnimals = dataGenerator.getFemaleAnimals();
+        plants = dataGenerator.getPlants();
 
-//        addSells();
-        addAnimals();
-        addPlants();
-    }
-
-    public void addPlants() {
-        //create plants
-        for (int i = 0; i < 1000; i++) {
-            addRandomPlant();
-        }
     }
 
     public void addOnePlant() {
@@ -57,40 +41,6 @@ public class Model {
         plants.put(plant.getKey(), plant);
     }
 
-    public void addRandomPlant() {
-        Plant plant = new Plant();
-        plants.put(plant.getKey(), plant);
-    }
-
-    private void addAnimals() {
-        //CREATE FEMALE ANIMALS
-        List<Animal> tempAnimals = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
-            FemaleAnimal animal = new FemaleAnimal(this);
-            tempAnimals.add(animal);
-        }
-        femaleAnimals.addAll((tempAnimals));
-        //create male ANIMALS
-        for (int i = 0; i < 50; i++) {
-            MaleAnimal animal = new MaleAnimal(this);
-            tempAnimals.add(animal);
-        }
-        animals.addAll(tempAnimals);
-    }
-
-    private void addSells() {
-        //create cells
-        List<Cell> tempCells = new ArrayList<>();
-        for (int i = 0; i < Utils.Const.M; i++) {
-            for (int j = 0; j < Utils.Const.N; j++) {
-                Cell cell = new Cell(i, j);
-                tempCells.add(cell);
-            }
-        }
-        cells.addAll(tempCells);
-    }
-
-
     public void setFamousAnimal(Animal animal) {
         if (animal == null)
             famousAnimal = null;
@@ -100,20 +50,14 @@ public class Model {
 
     public void deleteMePlease(Animal animal) {
         animals.remove(animal);
-
     }
 
     public void removePlant(String key) {
         plants.remove(key);
     }
 
-
     public Map<String, Plant> getPlants() {
         return Collections.unmodifiableMap(plants);
-    }
-
-    public void increaseAnimalsHunger() {
-        animals.forEach(Animal::increaseHunger);
     }
 
     public void updateLogInfo() {
@@ -121,21 +65,16 @@ public class Model {
         Log.i("number of plants: ", " " + plants.size());
         Log.i("----------------", " ------------------------");
     }
+
+    public int getMeColor(FantasticColors.TYPE type, int level) {
+        return fantasticColors.getColor(type, level);
+    }
+
     final int addingNewPlantThreshold = 20;
     int anpth = 0;
 
     public void update() {
-//        if (queueTracker > animals.size())
-//            queueTracker = 0;
-//        queueTracker += QUEUE;
-//        final int start = queueTracker - QUEUE;
-//        final int end = queueTracker;
-//        int ctr = 0;
-//        for (Animal animal : animals) {
-//            animal.myTurn = ctr >= start && ctr <= end;
-//            ++ctr;
-//            animal.update();
-//        }
+        onScreenInfo.update(animals.size(),plants.size());
         if (anpth < addingNewPlantThreshold) {
             ++anpth;
         } else {
@@ -146,16 +85,17 @@ public class Model {
         if (famousAnimal != null)
             famousAnimal.update();
     }
+
     final Paint paint = new Paint();
+
     public void draw(Canvas canvas) {
         cells.forEach(cell -> cell.draw(canvas));
         animals.forEach(animal -> animal.draw(canvas));
         plants.forEach((s, plant) -> plant.draw(canvas));
-        if (famousAnimal != null)////lidia if needed i can easily add list of this class, to show multiple animal status at a time.
+        if (famousAnimal != null)
             famousAnimal.draw(canvas);
 
-        canvas.drawText("animals population: " + animals.size(), 0, -2000, paint);
-        canvas.drawText("plants population: " + plants.size(), 0, -500, paint);
+        onScreenInfo.draw(canvas);
     }
 
 
