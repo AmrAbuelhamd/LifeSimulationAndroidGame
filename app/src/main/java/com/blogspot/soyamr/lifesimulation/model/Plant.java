@@ -8,16 +8,16 @@ import com.blogspot.soyamr.lifesimulation.Utils;
 public class Plant extends GameObject {
 
 
-    Plant() {
+    Plant(Model model) {
         paint.setColor(Color.CYAN);
         paint.setStyle(Paint.Style.FILL);
 
         x = Utils.getRandom(0, Utils.Const.N) * width;
         y = Utils.getRandom(0, Utils.Const.M) * height;
         rect.set(x, y, x + width, y + height);
+        model.putMeHerePlease(x, y, this);
     }
-
-    Plant(Plant nearToThisPlant) {
+    Plant(Plant nearToThisPlant, Model model) {
 
         paint.setColor(Color.CYAN);
         paint.setStyle(Paint.Style.FILL);
@@ -28,6 +28,7 @@ public class Plant extends GameObject {
         this.y = nearToThisPlant.y + moveDirection[index][1] * height;
         reachedScreenEdge();
         rect.set(x, y, x + width, y + height);
+        model.putMeHerePlease(x,y, this);
     }
 
 }

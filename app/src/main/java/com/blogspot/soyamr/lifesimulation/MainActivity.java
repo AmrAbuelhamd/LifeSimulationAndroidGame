@@ -2,12 +2,14 @@ package com.blogspot.soyamr.lifesimulation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     GameSurface gameSurface;
 
     @Override
@@ -19,10 +21,9 @@ public class MainActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
         setContentView(view);
-        hideSystemUI();
+        //hideSystemUI();
         getScreenSize();
     }
-
 
     private void hideSystemUI() {
         // Enables regular immersive mode.
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         if (!firstTime) {
             gameSurface.resume();
+            //hideSystemUI();
         }
     }
 }

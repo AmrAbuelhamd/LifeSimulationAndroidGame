@@ -1,151 +1,111 @@
 package com.blogspot.soyamr.lifesimulation;
 
+import android.util.Log;
+
+import com.blogspot.soyamr.lifesimulation.model.Animal;
+import com.blogspot.soyamr.lifesimulation.model.FemaleAnimal;
 import com.blogspot.soyamr.lifesimulation.model.GameObject;
 import com.blogspot.soyamr.lifesimulation.model.Model;
+import com.blogspot.soyamr.lifesimulation.model.Plant;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Random;
-
-import static com.blogspot.soyamr.lifesimulation.Utils.Const.Direction.*;
 
 public abstract class Utils {
     public static final Random rand = new Random();
+    static String tag = "search algorithm";
 
     public static GameObject searchAroundAnimal(int searchRange, int currentX, int currentY, Model model, Const.SearchFor searchFor) {
+        //Log.i(tag,""+searchFor);
+//        if (searchFor != Const.SearchFor.ANIMAL)
+//            return null;
+        int iStart = getRowIndex(currentY) - searchRange;
+        int jStart = getColumnIndex(currentX) - searchRange;
+        iStart = Math.max(iStart, 0);
+        jStart = Math.max(jStart, 0);
 
-        GameObject object = null;
-        // The input matrix  dimension
-        int matrixLength = searchRange;
+        int iEnd = getRowIndex(currentY) + searchRange;
+        int jEnd = getColumnIndex(currentX) + searchRange;
+        iEnd = Math.min(iEnd, Const.M);
+        jEnd = Math.min(jEnd, Const.N);
 
-        //The number of elements of the input matrix
-        int numberOfElements = matrixLength * matrixLength;
+        Log.i(tag, "i= " + iStart + " j= " + jStart);
+        Log.i(tag, "iEnd= " + iEnd + " jEnd= " + jEnd);
 
-        // The matrix mask help to decide which is the next direction or the next element to pick from the input matrix
-        // All the values of the mask are initialized to zero.
-        Map<String, Integer> mask = new LinkedHashMap<>();
+        int posI = Utils.getRowIndex(currentY);
+        int posJ = Utils.getColumnIndex(currentX);
 
-        //The first element of the output(the spiral) is always the middle element of the input matrix
-        int rowIndex = currentY;
-        int colIndex = currentX;
+        Log.i(tag, "posI= " + posI + " posJ= " + posJ);
 
 
-        // Each time an element from the input matrix is added to the output spiral, the corresponding element in the mask is set to 1
-        mask.put(rowIndex + " " + colIndex, 1);
+        int shortestDistance = Integer.MAX_VALUE;//impossible length;
+        GameObject gameObject = null;
+        for (int i = iStart; i < iEnd; i++) {
+            //Log.i(tag ,"*-***********************");
+            //Log.i(tag,"i= "+i);
+            for (int j = jStart; j < jEnd; j++) {
+                //Log.i(tag,"j= "+j);
+                //found myself
+                if (i == posI && j == posJ) {
+                    continue;
+                }
+                GameObject currentObject = search(searchFor, model, i, j);
+                if (currentObject == null)
+                    continue;
 
-        // The first direction is always to the left
-        Const.Direction nextDirection = LEFT;
+                int newPathDistance = getManhattanDistance(currentX, currentY,
+                        currentObject.getX(), currentObject.getY());
 
-        // This is a counter to loop through all the elements of the input matrix only one time
-        int i = 0;
-        String key;
-        while (i++ < numberOfElements - 1) {
-
-            // Check which direction to go (left, down, right or up)
-            switch (nextDirection) {
-
-                case LEFT:
-                    // From the input matrix, take the number at the left of the current position
-                    // (which is the middle of the input matrix) and add it to the spiral
-                    colIndex -= Const.CELL_WIDTH;
-                    key = colIndex + " " + rowIndex;
-                    object = search(searchFor, model, key);
-                    if (object != null) {
-                        i = numberOfElements;
-                        break;
-                    }
-                    //Update the mask
-                    mask.put(rowIndex + " " + colIndex, 1);
-
-                    // Decide which direction(or element in the input matrix) to take next.
-                    // After moving to the left, you only have two choices : keeping the same direction or moving down
-                    // To know which direction to take, check the mask
-                    if (mask.containsKey((int) (rowIndex + Const.CELL_HEIGHT) + " " + colIndex)) {
-                        nextDirection = LEFT;
-                    } else {
-                        nextDirection = DOWN;
-                    }
-                    break;
-
-                case DOWN:
-                    rowIndex += Const.CELL_HEIGHT;
-                    key = colIndex + " " + rowIndex;
-                    object = search(searchFor, model, key);
-                    if (object != null) {
-                        i = numberOfElements;
-                        break;
-                    }
-                    //Update the mask
-                    mask.put(rowIndex + " " + colIndex, 1);
-                    if (mask.containsKey(rowIndex + " " + (int) (colIndex + Const.CELL_WIDTH))) {
-                        nextDirection = DOWN;
-                    } else {
-                        nextDirection = RIGHT;
-                    }
-                    break;
-
-                case RIGHT:
-                    colIndex += Const.CELL_WIDTH;
-                    key = colIndex + " " + rowIndex;
-                    object = search(searchFor, model, key);
-                    if (object != null) {
-                        i = numberOfElements;
-                        break;
-                    }
-                    //Update the mask
-                    mask.put(rowIndex + " " + colIndex, 1);
-                    if (mask.containsKey((int) (rowIndex - Const.CELL_HEIGHT) + " " + colIndex)) {
-                        nextDirection = RIGHT;
-                    } else {
-                        nextDirection = UP;
-                    }
-                    break;
-
-                case UP:
-                    rowIndex -= Const.CELL_HEIGHT;
-                    key = colIndex + " " + rowIndex;
-                    object = search(searchFor, model, key);
-                    if (object != null) {
-                        i = numberOfElements;
-                        break;
-                    }
-                    //Update the mask
-                    mask.put(rowIndex + " " + colIndex, 1);
-                    if (mask.containsKey(rowIndex + " " + (int) (colIndex - Const.CELL_WIDTH))) {
-                        nextDirection = UP;
-                    } else {
-                        nextDirection = LEFT;
-                    }
-                    break;
+                if (shortestDistance > newPathDistance) {
+                    gameObject = currentObject;
+                    shortestDistance = newPathDistance;
+                }
             }
         }
-        return object;
+        if (searchFor == Const.SearchFor.FEMALE_ANIMAL) {
+        }
+        //Log.i(tag,"finished searching for woman " + searchFor + " " + gameObject);
+        return gameObject;
     }
 
 
-    private static GameObject search(Const.SearchFor searchFor, Model model, String key) {
-        if (searchFor == Const.SearchFor.ANIMAL)
-            return searchAnimal(model, key);
-        else if (searchFor == Const.SearchFor.PLANT)
-            return searchPlant(model, key);
-        else
-            return searchSingleFemale(model, key);
+    private static GameObject search(Const.SearchFor searchFor, Model model, int i, int j) {
+//        List<GameObject> currentObject = model.getObjectResidingHere(i, j);
+        List<GameObject> objectSOnCell = model.getObjectResidingHere(i, j);
+        if (searchFor == Const.SearchFor.ANIMAL) {
+            for (GameObject currentObject : objectSOnCell)
+                if (currentObject instanceof Animal)
+                    return currentObject;
+            return null;
+        } else if (searchFor == Const.SearchFor.PLANT) {
+            for (GameObject currentObject : objectSOnCell)
+                if (currentObject instanceof Plant)
+                    return currentObject;
+            return null;
+        } else {
+            for (GameObject currentObject : objectSOnCell)
+                if (currentObject instanceof FemaleAnimal)
+                    return currentObject;
+            return null;
+        }
     }
 
-    private static GameObject searchSingleFemale(Model model, String key) {
-        return model.getSingleFemaleAnimal(key);
+    private static int getManhattanDistance(int x1, int y1, int x2, int y2) {
+        return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+//        return distance >= (SEARCH_FOOD_OPTIMIZATION_THRESHOLD * Utils.Const.CELL_WIDTH);
     }
 
-    private static GameObject searchPlant(Model model, String key) {
-        return model.getPlant(key);
-    }
-
-    private static GameObject searchAnimal(Model model, String key) {
-        return model.getAnimal(key);
-    }
 
     public static int getRandom(int min, int max) {
         return rand.nextInt(max - min) + min;
+    }
+
+    public static int getRowIndex(int index) {
+        return index / Const.CELL_HEIGHT;
+    }
+
+    public static int getColumnIndex(int index) {
+        return index / Const.CELL_WIDTH;
     }
 
     public static class Const {

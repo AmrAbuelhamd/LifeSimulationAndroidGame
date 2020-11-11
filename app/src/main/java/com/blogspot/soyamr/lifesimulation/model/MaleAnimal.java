@@ -14,11 +14,13 @@ public class MaleAnimal extends Animal {
 
     MaleAnimal(Model model) {
         super(model);
+        model.putMeHerePlease(x, y, this);
         setInitialColor();
     }
 
     public MaleAnimal(int x, int y, Model model) {
         super(x, y, model);
+        model.putMeHerePlease(x, y, this);
         setInitialColor();
     }
 
@@ -30,6 +32,7 @@ public class MaleAnimal extends Animal {
 
     @Override
     public void update() {
+        model.iAmLeavingThisCell(x,y, this);
         if (!myTurn && !inRelation) {
             moveRandomly();
         } else {
@@ -51,12 +54,13 @@ public class MaleAnimal extends Animal {
             } else {
                 moveRandomly();
             }
-        }
+        }//use flag
         super.update();
     }
 
     private void doCeremony() {
-        model.weHaveChild(x, y);
+        System.out.println("marriage");
+        myLove.marriage();
         myLove.brokeUp();
         myLove = null;
         inRelation = false;
@@ -110,16 +114,20 @@ public class MaleAnimal extends Animal {
         FemaleAnimal singleFemaleAnimal = (FemaleAnimal) Utils.searchAroundAnimal(ANIMAL_WOMEN_VISION_RANG,
                 x, y, model, Utils.Const.SearchFor.FEMALE_ANIMAL);
         if (singleFemaleAnimal == null) {
+            System.out.println("she is null");
             worthSearchingForWomen = false;
             lastX = x;
             lastY = y;
             return false;
-        } else {
+        } else if (singleFemaleAnimal.wannaBeInRelationship()) {//if true this means she already engaged
+            System.out.println("she accepted");
+            //no broken hearts in my game :)
             inRelation = true;
             myLove = singleFemaleAnimal;
             moveToward(myLove.x, myLove.y);
             worthSearchingForWomen = true;
             return true;
         }
+        return false;
     }
 }

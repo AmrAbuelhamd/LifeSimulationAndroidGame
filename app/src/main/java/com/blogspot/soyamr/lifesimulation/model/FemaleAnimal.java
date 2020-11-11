@@ -4,18 +4,20 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.blogspot.soyamr.lifesimulation.R;
+import com.blogspot.soyamr.lifesimulation.Utils;
 
 public class FemaleAnimal extends Animal {
 
 
     FemaleAnimal(Model model) {
         super(model);
+        model.putMeHerePlease(x, y, this);
         setInitialColor();
     }
 
     public FemaleAnimal(int x, int y, Model model) {
         super(x, y, model);
+        model.putMeHerePlease(x, y, this);
         setInitialColor();
     }
 
@@ -39,6 +41,7 @@ public class FemaleAnimal extends Animal {
 
     @Override
     public void update() {
+        model.iAmLeavingThisCell(x, y,this);
         if (!myTurn && !inRelation) {
             moveRandomly();
         } else {
@@ -55,6 +58,7 @@ public class FemaleAnimal extends Animal {
         }
         super.update();
     }
+
 
     @Override
     protected void changeColor() {
@@ -75,5 +79,13 @@ public class FemaleAnimal extends Animal {
     public void brokeUp() {
         inRelation = false;
         setIdoNotWant();
+    }
+
+    public void marriage() {
+        if (Utils.getRandom(0, 2) == 0) {
+            model.addChild(new FemaleAnimal(x, y,model));
+        } else {
+            model.addChild(new MaleAnimal(x, y, model));
+        }
     }
 }

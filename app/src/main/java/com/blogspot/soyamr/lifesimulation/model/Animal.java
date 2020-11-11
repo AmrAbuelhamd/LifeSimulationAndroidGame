@@ -1,6 +1,10 @@
 package com.blogspot.soyamr.lifesimulation.model;
 
+import android.util.Log;
+
 import com.blogspot.soyamr.lifesimulation.Utils;
+
+import java.util.List;
 
 
 public abstract class Animal extends GameObject {
@@ -9,6 +13,7 @@ public abstract class Animal extends GameObject {
     boolean inRelation = false;
     boolean iDoNotWant;
     boolean myTurn = true;//todo enable this variable agian when animals > 1000, and make small documentation on it in readme
+    private String tag = "Animal";
 
     Animal(Model model) {
         x = Utils.getRandom(0, Utils.Const.N) * width;
@@ -41,11 +46,13 @@ public abstract class Animal extends GameObject {
 
     //search for food or move randomly
     public void update() {
-        if (ihth < increasingHungerThreshold) {//toask is it better to keep this here or inside increase hunger itself?
-            ++ihth;
+        if (ihth < increasingHungerThreshold) {//todo add this to another method, but be sure that
+            ++ihth;                         //if dead no need to add ghost animal on cell and disappear
         } else {
-            increaseHunger();
+            boolean isDead = increaseHunger();
             ihth = 0;
+            if (isDead)
+                return;
         }
         if (iDoNotWant == true) {
             if (rsidwv < reSetIDoNotWantVariable) {
@@ -55,9 +62,12 @@ public abstract class Animal extends GameObject {
                 rsidwv = 0;
             }
         }
+
         reachedScreenEdge();
         checkIfAnimalOnSameCellWithPlant();
+        model.putMeHerePlease(x, y, this);
         rect.set(x, y, x + width, y + height);
+
     }
 
     protected void moveRandomly() {
@@ -68,10 +78,13 @@ public abstract class Animal extends GameObject {
     }
 
     private void checkIfAnimalOnSameCellWithPlant() {
-        Plant plant = model.getPlant(getKey());
-        if (plant != null) {
-            model.removePlant(getKey());
-            reduceHunger();
+        List<GameObject> gameObjects = model.getObjectResidingHere(Utils.getRowIndex(y), Utils.getColumnIndex(x));
+        for (GameObject current : gameObjects) {
+            if (current instanceof Plant) {
+                model.removePlant((Plant) current);
+                reduceHunger();
+                break;
+            }
         }
     }
 
@@ -89,7 +102,6 @@ public abstract class Animal extends GameObject {
     }
 
     boolean needFood() {
-
         //if last time animal didn't find food around it, then no need to search again if he didn't
         //move 10 cells aways from last time searched and didn't find anything.
         if (!doesItWorthSearching()) {
@@ -99,11 +111,14 @@ public abstract class Animal extends GameObject {
         //search clockwise direction in @ANIMAL_SEARCH_RANG depth
         Plant nearestPlant = (Plant) Utils.searchAroundAnimal(ANIMAL_FOOD_VISION_RANG, x, y, model, Utils.Const.SearchFor.PLANT);
         if (nearestPlant == null) {
+            Log.i(tag, "food is null");
             worthSearchingForFood = false;
             lastX = x;
             lastY = y;
             return false;
         }
+        Log.i(tag, "found food");
+
         worthSearchingForFood = true;
 
         //move the ANIMAL towards the plant
@@ -128,12 +143,14 @@ public abstract class Animal extends GameObject {
     }
 
 
-    public void increaseHunger() {
-        if (hunger == 0)
+    public boolean increaseHunger() {
+        if (hunger == 0) {
             model.deleteMePlease(this);
-        else
+            return true;
+        } else
             hunger -= 10;
         changeColor();
+        return false;
     }
 
     protected abstract void changeColor();

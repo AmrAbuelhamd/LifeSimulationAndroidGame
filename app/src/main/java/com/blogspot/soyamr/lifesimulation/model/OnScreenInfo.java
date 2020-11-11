@@ -10,7 +10,7 @@ import com.blogspot.soyamr.lifesimulation.Utils;
 public class OnScreenInfo extends GameObject {
 
     public OnScreenInfo() {
-        paint.setTextSize(300);
+        paint.setTextSize(600);
         paint.setAntiAlias(true);
         paint.setColor(Color.YELLOW);
         paint.setStyle(Paint.Style.STROKE);
@@ -31,7 +31,7 @@ public class OnScreenInfo extends GameObject {
         x = r.left + Utils.Const.SCREEN_WIDTH / 2;
         y = r.top + Utils.Const.SCREEN_HEIGHT / 2;
         canvas.drawText("animals population: " + animalsCount, x, y, paint);
-        canvas.drawText("plants population: " + plantCount, x, y + 300, paint);
+        canvas.drawText("plants population: " + plantCount, x, y + 600, paint);
     }
 
 }

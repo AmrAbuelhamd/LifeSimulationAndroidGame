@@ -19,9 +19,9 @@ public class GameThread {
         this.gameSurface = gameSurface;
         this.surfaceHolder = gameSurface.getHolder();
 
-        executor = Executors.newSingleThreadScheduledExecutor();
+        executor = Executors.newScheduledThreadPool(1);
 
-        executor.scheduleAtFixedRate(this::run, 0, waitTime, TimeUnit.MILLISECONDS);
+        executor.scheduleWithFixedDelay(this::run, 0, waitTime, TimeUnit.MILLISECONDS);
 
     }
 
