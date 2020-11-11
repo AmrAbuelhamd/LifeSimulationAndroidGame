@@ -31,7 +31,7 @@ public class DataGenerator {
 
     public List<Plant> generatePlants() {
         //create plants
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 5000; i++) {
             addRandomPlant();
         }
         return plants;
@@ -40,12 +40,12 @@ public class DataGenerator {
     public List<Animal> generateAnimals() {
         //CREATE FEMALE ANIMALS
         List<Animal> tempAnimals = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 500; i++) {
             FemaleAnimal animal = new FemaleAnimal(model);
             tempAnimals.add(animal);
         }
         //create male male ANIMALS
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 500; i++) {
             MaleAnimal animal = new MaleAnimal(model);
             tempAnimals.add(animal);
         }

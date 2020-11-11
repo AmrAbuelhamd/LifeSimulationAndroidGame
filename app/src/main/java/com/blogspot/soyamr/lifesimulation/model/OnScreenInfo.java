@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import com.blogspot.soyamr.lifesimulation.GameThread;
 import com.blogspot.soyamr.lifesimulation.Utils;
 
 public class OnScreenInfo extends GameObject {
@@ -33,6 +34,8 @@ public class OnScreenInfo extends GameObject {
         y = r.top+100;
         canvas.drawText("animals population: " + animalsCount, x, y, paint);
         canvas.drawText("plants population: " + plantCount, x, y + 60, paint);
+        canvas.drawText("fps: " + GameThread.getFrameRate(), r.right-400, y + 60, paint);
+
     }
 
 }
