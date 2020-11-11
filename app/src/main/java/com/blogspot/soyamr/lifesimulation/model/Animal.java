@@ -1,8 +1,6 @@
 package com.blogspot.soyamr.lifesimulation.model;
 
 
-import android.util.Log;
-
 import com.blogspot.soyamr.lifesimulation.Utils;
 
 import java.util.ArrayList;
@@ -12,7 +10,7 @@ import java.util.ListIterator;
 
 public abstract class Animal extends GameObject {
     List<GameObject> myFoodMenu = null;
-    int hunger = 20;
+    int hunger = 100;
     final Model model;
     boolean inRelation = false;
     boolean iDoNotWant;
@@ -94,51 +92,34 @@ public abstract class Animal extends GameObject {
         }
     }
 
-    int lastX;
-    int lastY;
 
-//    private boolean doesItWorthSearching() {
-//        if (!worthSearchingForFood) {
-//            int distance = Math.abs(x - lastX) + Math.abs(y - lastY);
-//            return distance >= (SEARCH_FOOD_OPTIMIZATION_THRESHOLD * Utils.Const.CELL_WIDTH);
-//        } else {
-//            return true;
-//        }
-//    }
+    protected boolean doesItWorthSearching() {
+        if (mtodth < movingToOneDirectionThreshold) {
+            ++mtodth;
+            moveThere();
+            return false;
+        }
+        return true;
+    }
 
-    int moveToOneDirectionCTR = 50;
+    int mtodth = 50;
     int movingToOneDirectionThreshold = 30;
     int[] direction = new int[2];
 
     boolean needFood() {
-        if (moveToOneDirectionCTR < movingToOneDirectionThreshold) {
-            ++moveToOneDirectionCTR;
-            moveThere();
+        if (!doesItWorthSearching()) {
             return true;
         }
-        GameObject target = null;
         if (myFoodMenu.isEmpty())
             myFoodMenu = Utils.searchAroundAnimal(ANIMAL_FOOD_VISION_RANG, x, y, model, Utils.Const.SearchFor.PLANT);
         if (myFoodMenu.isEmpty()) {
-            moveToOneDirectionCTR = 0;
-            int rand = Utils.getRandom(0, moveDirection.length);
-            direction = moveDirection[rand];
-            moveThere();
+            moveToOneDirectionSetUp();
             return true;
         }
         //make sure that food that i kept in my list still available before going towards it
         //if not delete it
-        ListIterator<GameObject> iter = myFoodMenu.listIterator();
-        while (iter.hasNext()) {
-            GameObject current = iter.next();
-            if (Utils.search(Utils.Const.SearchFor.PLANT, model,
-                    Utils.getRowIndex(current.y), Utils.getColumnIndex(current.x)) != null) {
-                target = current;
-                break;
-            } else {
-                iter.remove();
-            }
-        }
+        GameObject target = getNextTarget();
+
         if (target == null)
             return false;
 
@@ -146,6 +127,27 @@ public abstract class Animal extends GameObject {
         moveToward(target.x, target.y);
 
         return true;
+    }
+
+    private GameObject getNextTarget() {
+        ListIterator<GameObject> iter = myFoodMenu.listIterator();
+        while (iter.hasNext()) {
+            GameObject current = iter.next();
+            if (Utils.search(Utils.Const.SearchFor.PLANT, model,
+                    Utils.getRowIndex(current.y), Utils.getColumnIndex(current.x)) != null) {
+                return current;
+            } else {
+                iter.remove();
+            }
+        }
+        return null;
+    }
+
+    void moveToOneDirectionSetUp() {
+        mtodth = 0;
+        int rand = Utils.getRandom(0, moveDirection.length);
+        direction = moveDirection[rand];
+        moveThere();
     }
 
     private void moveThere() {
