@@ -51,4 +51,5 @@ public class Cell extends GameObject {
     List<GameObject> getObjectResidingHere() {
         return gameObjects;
     }
+
 }

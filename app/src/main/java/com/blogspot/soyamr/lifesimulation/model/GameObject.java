@@ -58,7 +58,6 @@ public abstract class GameObject {
     public void draw(Canvas canvas) {
         canvas.drawRect(rect, paint);
     }
-
     public int getX() {
         return x;
     }

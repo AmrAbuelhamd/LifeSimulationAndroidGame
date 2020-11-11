@@ -9,13 +9,14 @@ import java.util.ListIterator;
 
 
 public abstract class Animal extends GameObject {
-    List<GameObject> myFoodMenu = null;
+    List<GameObject> myFoodMenu;
     int hunger = 100;
     final Model model;
     boolean inRelation = false;
     boolean iDoNotWant;
     boolean myTurn = true;//todo enable this variable agian when animals > 1000, and make small documentation on it in readme
     private String tag = "Animal";
+
 
     Animal(Model model) {
         x = Utils.getRandom(0, Utils.Const.N) * width;
@@ -37,7 +38,7 @@ public abstract class Animal extends GameObject {
     }
 
     final int reSetIDoNotWantVariable = 90;
-    int rsidwv = 0;
+    public int rsidwv = 0;
 
     protected void setIdoNotWant() {
         iDoNotWant = true;

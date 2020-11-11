@@ -32,10 +32,12 @@ public class FamousAnimal extends GameObject {
         }
 
         paint.setColor(Color.YELLOW);
-        canvas.drawText("Hunger: " + animal.hunger, x, y - 10, paint);
+        canvas.drawText("Hunger: " + animal.hunger, x, y - 40, paint);
+        canvas.drawText("Hunger CTR: " + animal.ihth, x, y - 10, paint);
         canvas.drawText("in relationship: " + animal.inRelation, x, y + 20, paint);
         canvas.drawText("idontwant: " + animal.iDoNotWant, x, y + 50, paint);
-        canvas.drawText("one direction: " + animal.mtodth, x, y + 80, paint);
+        canvas.drawText("idontwant CTR: " + animal.rsidwv, x, y + 80, paint);
+        canvas.drawText("one direction: " + animal.mtodth, x, y + 110, paint);
     }
 
     void update() {

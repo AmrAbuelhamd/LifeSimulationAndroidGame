@@ -19,6 +19,7 @@ public class FemaleAnimal extends Animal {
         super(x, y, model);
         model.putMeHerePlease(x, y, this);
         setInitialColor();
+        rect.inset(30,30);
     }
 
     private void setInitialColor() {

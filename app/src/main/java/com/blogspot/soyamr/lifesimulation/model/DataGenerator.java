@@ -45,7 +45,7 @@ public class DataGenerator {
             tempAnimals.add(animal);
         }
         //create male male ANIMALS
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 50; i++) {
             MaleAnimal animal = new MaleAnimal(model);
             tempAnimals.add(animal);
         }
