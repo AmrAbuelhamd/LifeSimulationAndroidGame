@@ -7,6 +7,7 @@ import android.util.Log;
 import com.blogspot.soyamr.lifesimulation.Utils;
 
 import java.util.List;
+import java.util.Random;
 
 public class Model {
     public final Cell[][] cells;
@@ -18,7 +19,6 @@ public class Model {
     private OnScreenInfo onScreenInfo;
 
     public Model(Context context) {
-        Log.i(tag, "ececuted one time");
         fantasticColors = new FantasticColors(context);
         DataGenerator dataGenerator = new DataGenerator(this);
         onScreenInfo = new OnScreenInfo();
@@ -30,10 +30,22 @@ public class Model {
     }
 
     public void addOnePlant() {
-        int randomIndex = Utils.getRandom(0, plants.size());
-        Plant randomPlant = plants.get(randomIndex);
+        Plant randomPlant = plants.get(Utils.getRandom(0, plants.size()));
         Plant plant = new Plant(randomPlant, this);
         plants.add(plant);
+
+    }
+
+    Plant getRandomSetElement() {
+        int size = plants.size();
+        int item = new Random().nextInt(size); // In real life, the Random object should be rather more shared than this
+        int i = 0;
+        for (Plant obj : plants) {
+            if (i == item)
+                return obj;
+            i++;
+        }
+        return null;
     }
 
     public void setFamousAnimal(Animal animal) {
@@ -68,12 +80,13 @@ public class Model {
 
     public void update() {
         onScreenInfo.update(animals.size(), plants.size());
-        if (anpth < addingNewPlantThreshold) {
-            ++anpth;
-        } else {
-            addOnePlant();
-            anpth = 0;
-        }
+        if (!plants.isEmpty())
+            if (anpth < addingNewPlantThreshold) {
+                ++anpth;
+            } else {
+                addOnePlant();
+                anpth = 0;
+            }
         animals.forEach(Animal::update);
         if (famousAnimal != null)
             famousAnimal.update();
@@ -106,19 +119,14 @@ public class Model {
     }
 
     public void putMeHerePlease(int x, int y, GameObject gameObject) {
-        Log.i(tag, "put object here i: " + Utils.getRowIndex(y) + " j " + Utils.getColumnIndex(x));
         cells[Utils.getRowIndex(y)][Utils.getColumnIndex(x)].putMeHerePlease(gameObject);
     }
 
     public List<GameObject> getObjectResidingHere(int i, int j) {
-        //Log.i(tag,  "get object from cell i "+ i + " j " + j);
         return cells[i][j].getObjectResidingHere();
     }
 
     public void iAmLeavingThisCell(int x, int y, Animal animal) {
-
-        Log.i(tag, "animal is leaving i: " + Utils.getRowIndex(y) + " j " + Utils.getColumnIndex(x));
-        Log.i(tag, "animal is leaving x: " +x + " y " + y);
         cells[Utils.getRowIndex(y)][Utils.getColumnIndex(x)].removeMeFromHere(animal);
     }
 }

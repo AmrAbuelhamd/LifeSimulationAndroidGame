@@ -7,24 +7,22 @@ import android.graphics.Rect;
 
 public class FamousAnimal extends GameObject {
     Animal animal;
-    static final int squareDiameterFood = ANIMAL_FOOD_VISION_RANG / 2;
-    static final int squareDiameterWomen = ANIMAL_WOMEN_VISION_RANG / 2;
     final Rect rectWomenVision = new Rect();
     final Rect rectFoodVision = new Rect();
 
     public FamousAnimal(Animal animal) {
         this.animal = animal;
 
-        paint.setTextSize(300);
+
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setTextSize(30);
         paint.setAntiAlias(true);
     }
 
 
     @Override
     public void draw(Canvas canvas) {
-
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(10);
+        paint.setStrokeWidth(2);
         paint.setColor(Color.CYAN);
         canvas.drawRect(rectFoodVision, paint);
 
@@ -33,33 +31,31 @@ public class FamousAnimal extends GameObject {
             canvas.drawRect(rectWomenVision, paint);
         }
 
-        paint.setStyle(Paint.Style.FILL);
         paint.setColor(Color.YELLOW);
-        canvas.drawText("Hunger: " + animal.hunger, x, y, paint);
-        canvas.drawText("in relationship: " + animal.inRelation, x, y + 250, paint);
-        canvas.drawText("idontwant: " + animal.iDoNotWant, x, y + 500, paint);
-        canvas.drawText("my turn: " + animal.myTurn, x, y + 750, paint);
+        canvas.drawText("Hunger: " + animal.hunger, x, y - 10, paint);
+        canvas.drawText("in relationship: " + animal.inRelation, x, y + 20, paint);
+        canvas.drawText("idontwant: " + animal.iDoNotWant, x, y + 50, paint);
+        canvas.drawText("my turn: " + animal.myTurn, x, y + 80, paint);
     }
 
     void update() {
         x = animal.getX();
         y = animal.getY();
 
-        rectFoodVision.set(x - squareDiameterFood * width,
-                y - squareDiameterFood * height,
+        rectFoodVision.set(x - ANIMAL_FOOD_VISION_RANG * width,
+                y - ANIMAL_FOOD_VISION_RANG * height,
 
-                x + squareDiameterFood * width,
-                y + squareDiameterFood * height);
+                x + ANIMAL_FOOD_VISION_RANG * width,
+                y + ANIMAL_FOOD_VISION_RANG * height);
 
-        rectWomenVision.set(x - squareDiameterWomen * width,
-                y - squareDiameterWomen * height,
+        rectWomenVision.set(x - ANIMAL_WOMEN_VISION_RANG * width,
+                y - ANIMAL_WOMEN_VISION_RANG * height,
 
-                x + squareDiameterWomen * width,
-                y + squareDiameterWomen * height);
+                x + ANIMAL_WOMEN_VISION_RANG * width,
+                y + ANIMAL_WOMEN_VISION_RANG * height);
 
-        x = animal.getX() + squareDiameterFood * width + 15;
-        y = animal.getY() - squareDiameterFood * width
-        ;
+        x = animal.getX() - (ANIMAL_WOMEN_VISION_RANG * height)/4;
+        y = animal.getY() - ANIMAL_WOMEN_VISION_RANG * height;
     }
 
 }

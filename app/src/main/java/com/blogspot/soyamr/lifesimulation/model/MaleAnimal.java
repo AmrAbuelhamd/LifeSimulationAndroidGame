@@ -59,7 +59,6 @@ public class MaleAnimal extends Animal {
     }
 
     private void doCeremony() {
-        System.out.println("marriage");
         myLove.marriage();
         myLove.brokeUp();
         myLove = null;
@@ -96,7 +95,7 @@ public class MaleAnimal extends Animal {
         if (inRelation) {
             paint.setStyle(Paint.Style.STROKE);
             paint.setStrokeWidth(10);
-            paint.setColor(Color.RED);
+            paint.setColor(Color.WHITE);
             canvas.drawRect(rect, paint);
             setInitialColor();
         }
@@ -114,13 +113,11 @@ public class MaleAnimal extends Animal {
         FemaleAnimal singleFemaleAnimal = (FemaleAnimal) Utils.searchAroundAnimal(ANIMAL_WOMEN_VISION_RANG,
                 x, y, model, Utils.Const.SearchFor.FEMALE_ANIMAL);
         if (singleFemaleAnimal == null) {
-            System.out.println("she is null");
             worthSearchingForWomen = false;
             lastX = x;
             lastY = y;
             return false;
         } else if (singleFemaleAnimal.wannaBeInRelationship()) {//if true this means she already engaged
-            System.out.println("she accepted");
             //no broken hearts in my game :)
             inRelation = true;
             myLove = singleFemaleAnimal;

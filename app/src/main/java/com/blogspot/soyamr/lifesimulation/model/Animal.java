@@ -111,13 +111,11 @@ public abstract class Animal extends GameObject {
         //search clockwise direction in @ANIMAL_SEARCH_RANG depth
         Plant nearestPlant = (Plant) Utils.searchAroundAnimal(ANIMAL_FOOD_VISION_RANG, x, y, model, Utils.Const.SearchFor.PLANT);
         if (nearestPlant == null) {
-            Log.i(tag, "food is null");
             worthSearchingForFood = false;
             lastX = x;
             lastY = y;
             return false;
         }
-        Log.i(tag, "found food");
 
         worthSearchingForFood = true;
 

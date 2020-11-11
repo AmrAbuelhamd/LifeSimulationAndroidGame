@@ -33,7 +33,7 @@ public class FemaleAnimal extends Animal {
         if(inRelation){
             paint.setStyle(Paint.Style.STROKE);
             paint.setStrokeWidth(10);
-            paint.setColor(Color.WHITE);
+            paint.setColor(Color.RED);
             canvas.drawRect(rect,paint);
             setInitialColor();
         }

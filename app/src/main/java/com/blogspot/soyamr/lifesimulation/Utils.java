@@ -16,9 +16,6 @@ public abstract class Utils {
     static String tag = "search algorithm";
 
     public static GameObject searchAroundAnimal(int searchRange, int currentX, int currentY, Model model, Const.SearchFor searchFor) {
-        //Log.i(tag,""+searchFor);
-//        if (searchFor != Const.SearchFor.ANIMAL)
-//            return null;
         int iStart = getRowIndex(currentY) - searchRange;
         int jStart = getColumnIndex(currentX) - searchRange;
         iStart = Math.max(iStart, 0);
@@ -29,22 +26,14 @@ public abstract class Utils {
         iEnd = Math.min(iEnd, Const.M);
         jEnd = Math.min(jEnd, Const.N);
 
-        Log.i(tag, "i= " + iStart + " j= " + jStart);
-        Log.i(tag, "iEnd= " + iEnd + " jEnd= " + jEnd);
-
         int posI = Utils.getRowIndex(currentY);
         int posJ = Utils.getColumnIndex(currentX);
-
-        Log.i(tag, "posI= " + posI + " posJ= " + posJ);
 
 
         int shortestDistance = Integer.MAX_VALUE;//impossible length;
         GameObject gameObject = null;
         for (int i = iStart; i < iEnd; i++) {
-            //Log.i(tag ,"*-***********************");
-            //Log.i(tag,"i= "+i);
             for (int j = jStart; j < jEnd; j++) {
-                //Log.i(tag,"j= "+j);
                 //found myself
                 if (i == posI && j == posJ) {
                     continue;
@@ -64,13 +53,11 @@ public abstract class Utils {
         }
         if (searchFor == Const.SearchFor.FEMALE_ANIMAL) {
         }
-        //Log.i(tag,"finished searching for woman " + searchFor + " " + gameObject);
         return gameObject;
     }
 
 
     private static GameObject search(Const.SearchFor searchFor, Model model, int i, int j) {
-//        List<GameObject> currentObject = model.getObjectResidingHere(i, j);
         List<GameObject> objectSOnCell = model.getObjectResidingHere(i, j);
         if (searchFor == Const.SearchFor.ANIMAL) {
             for (GameObject currentObject : objectSOnCell)
@@ -92,7 +79,6 @@ public abstract class Utils {
 
     private static int getManhattanDistance(int x1, int y1, int x2, int y2) {
         return Math.abs(x1 - x2) + Math.abs(y1 - y2);
-//        return distance >= (SEARCH_FOOD_OPTIMIZATION_THRESHOLD * Utils.Const.CELL_WIDTH);
     }
 
 
@@ -112,8 +98,8 @@ public abstract class Utils {
         public static final int USER_CLICK_SEARCH_RANG = 20;
         public static final int N = 300;
         public static final int M = 600;
-        public static int CELL_WIDTH = 100;
-        public static int CELL_HEIGHT = 100;
+        public static int CELL_WIDTH = 10;
+        public static int CELL_HEIGHT = 10;
         public static int FIELD_HEIGHT = CELL_HEIGHT * M;
         public static int FIELD_WIDTH = CELL_WIDTH * N;
         public static int SCREEN_WIDTH;

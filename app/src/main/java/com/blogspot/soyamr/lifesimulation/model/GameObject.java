@@ -7,6 +7,7 @@ import android.graphics.Rect;
 
 import com.blogspot.soyamr.lifesimulation.Utils;
 
+import static com.blogspot.soyamr.lifesimulation.Utils.Const.SEARCH_FOOD_THRESHOLD_HIGH;
 import static com.blogspot.soyamr.lifesimulation.Utils.Const.SEARCH_FOOD_THRESHOLD_NORMAL;
 import static com.blogspot.soyamr.lifesimulation.Utils.Const.SEARCH_PARTNER_THRESHOLD_NORMAL;
 

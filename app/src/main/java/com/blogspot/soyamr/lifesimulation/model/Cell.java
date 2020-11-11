@@ -3,7 +3,6 @@ package com.blogspot.soyamr.lifesimulation.model;
 
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 
 import java.util.List;
 import java.util.Random;
@@ -42,20 +41,14 @@ public class Cell extends GameObject {
     }
 
     void putMeHerePlease(GameObject gameObject) {
-        Log.i(tag, "added " + gameObject);
-//        Log.i(tag, iam);
         this.gameObjects.add(gameObject);
     }
 
     void removeMeFromHere(GameObject gameObject) {
-        Log.i(tag, "removing " + gameObject);
-//        Log.i(tag, iam);
         this.gameObjects.remove(gameObject);
     }
 
     List<GameObject> getObjectResidingHere() {
-        //Log.i(tag, "getting animal: " + gameObject + " from cell ");
-//        Log.i(tag, iam);
         return gameObjects;
     }
 }
