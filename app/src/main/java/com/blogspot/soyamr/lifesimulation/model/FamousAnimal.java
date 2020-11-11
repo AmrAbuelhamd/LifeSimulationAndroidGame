@@ -35,7 +35,7 @@ public class FamousAnimal extends GameObject {
         canvas.drawText("Hunger: " + animal.hunger, x, y - 10, paint);
         canvas.drawText("in relationship: " + animal.inRelation, x, y + 20, paint);
         canvas.drawText("idontwant: " + animal.iDoNotWant, x, y + 50, paint);
-        canvas.drawText("my turn: " + animal.myTurn, x, y + 80, paint);
+        canvas.drawText("one direction: " + animal.moveToOneDirectionCTR, x, y + 80, paint);
     }
 
     void update() {

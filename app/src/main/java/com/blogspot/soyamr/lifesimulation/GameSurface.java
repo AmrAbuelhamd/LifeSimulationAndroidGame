@@ -272,7 +272,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
                     int lowerBoundRangeY = rangeNumberY * Utils.Const.CELL_HEIGHT;
 
                     Animal animal = (Animal) Utils.searchAroundAnimal(Utils.Const.USER_CLICK_SEARCH_RANG
-                            , lowerBoundRangeX - Utils.Const.CELL_WIDTH, lowerBoundRangeY - Utils.Const.CELL_HEIGHT, model, Utils.Const.SearchFor.ANIMAL);
+                            , lowerBoundRangeX - Utils.Const.CELL_WIDTH,
+                            lowerBoundRangeY - Utils.Const.CELL_HEIGHT,
+                            model, Utils.Const.SearchFor.ANIMAL).stream().findFirst().orElse(null);
 
                     model.setFamousAnimal(animal);
 

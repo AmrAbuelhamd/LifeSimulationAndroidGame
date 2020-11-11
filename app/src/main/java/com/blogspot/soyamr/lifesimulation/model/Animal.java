@@ -1,14 +1,18 @@
 package com.blogspot.soyamr.lifesimulation.model;
 
+
 import android.util.Log;
 
 import com.blogspot.soyamr.lifesimulation.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 
 public abstract class Animal extends GameObject {
-    int hunger = 100;
+    List<GameObject> myFoodMenu = null;
+    int hunger = 20;
     final Model model;
     boolean inRelation = false;
     boolean iDoNotWant;
@@ -18,6 +22,7 @@ public abstract class Animal extends GameObject {
     Animal(Model model) {
         x = Utils.getRandom(0, Utils.Const.N) * width;
         y = Utils.getRandom(0, Utils.Const.M) * height;
+        myFoodMenu = new ArrayList<>();
 
         rect.set(x, y, x + width, y + height);
         this.model = model;
@@ -27,7 +32,7 @@ public abstract class Animal extends GameObject {
     Animal(int x, int y, Model model) {
         this.x = x;
         this.y = y;
-
+        myFoodMenu = new ArrayList<>();
         rect.set(x, y, x + width, y + height);
         this.model = model;
         setIdoNotWant();
@@ -83,46 +88,87 @@ public abstract class Animal extends GameObject {
             if (current instanceof Plant) {
                 model.removePlant((Plant) current);
                 reduceHunger();
+                myFoodMenu.removeIf(el -> el.x == x && el.y == y);
                 break;
             }
         }
     }
 
-    boolean worthSearchingForFood = true;
     int lastX;
     int lastY;
 
-    private boolean doesItWorthSearching() {
-        if (!worthSearchingForFood) {
-            int distance = Math.abs(x - lastX) + Math.abs(y - lastY);
-            return distance >= (SEARCH_FOOD_OPTIMIZATION_THRESHOLD * Utils.Const.CELL_WIDTH);
-        } else {
-            return true;
-        }
-    }
+//    private boolean doesItWorthSearching() {
+//        if (!worthSearchingForFood) {
+//            int distance = Math.abs(x - lastX) + Math.abs(y - lastY);
+//            return distance >= (SEARCH_FOOD_OPTIMIZATION_THRESHOLD * Utils.Const.CELL_WIDTH);
+//        } else {
+//            return true;
+//        }
+//    }
+
+    int moveToOneDirectionCTR = 50;
+    int movingToOneDirectionThreshold = 30;
+    int[] direction = new int[2];
 
     boolean needFood() {
-        //if last time animal didn't find food around it, then no need to search again if he didn't
-        //move 10 cells aways from last time searched and didn't find anything.
-        if (!doesItWorthSearching()) {
-            return false;
+        if (moveToOneDirectionCTR < movingToOneDirectionThreshold) {
+            ++moveToOneDirectionCTR;
+            moveThere();
+            return true;
         }
-
-        //search clockwise direction in @ANIMAL_SEARCH_RANG depth
-        Plant nearestPlant = (Plant) Utils.searchAroundAnimal(ANIMAL_FOOD_VISION_RANG, x, y, model, Utils.Const.SearchFor.PLANT);
-        if (nearestPlant == null) {
-            worthSearchingForFood = false;
-            lastX = x;
-            lastY = y;
-            return false;
+        GameObject target = null;
+        if (myFoodMenu.isEmpty())
+            myFoodMenu = Utils.searchAroundAnimal(ANIMAL_FOOD_VISION_RANG, x, y, model, Utils.Const.SearchFor.PLANT);
+        if (myFoodMenu.isEmpty()) {
+            moveToOneDirectionCTR = 0;
+            int rand = Utils.getRandom(0, moveDirection.length);
+            direction = moveDirection[rand];
+            moveThere();
+            return true;
         }
-
-        worthSearchingForFood = true;
+        //make sure that food that i kept in my list still available before going towards it
+        //if not delete it
+        ListIterator<GameObject> iter = myFoodMenu.listIterator();
+        while (iter.hasNext()) {
+            GameObject current = iter.next();
+            if (Utils.search(Utils.Const.SearchFor.PLANT, model,
+                    Utils.getRowIndex(current.y), Utils.getColumnIndex(current.x)) != null) {
+                target = current;
+                break;
+            } else {
+                iter.remove();
+            }
+        }
+        if (target == null)
+            return false;
 
         //move the ANIMAL towards the plant
-        moveToward(nearestPlant.x, nearestPlant.y);
+        moveToward(target.x, target.y);
 
         return true;
+    }
+
+    private void moveThere() {
+//        Log.i(tag, "moving to one direction");
+        x += width * direction[0];
+        y += height * direction[1];
+        boolean flag = false;
+        if (this.x < 0) {
+            this.x = 0;
+            flag = true;
+        } else if (this.x > Utils.Const.FIELD_WIDTH - width) {
+            this.x = Utils.Const.FIELD_WIDTH - width;
+            flag = true;
+        }
+        if (this.y < 0) {
+            this.y = 0;
+            flag = true;
+        } else if (this.y > Utils.Const.FIELD_HEIGHT - height) {
+            this.y = Utils.Const.FIELD_HEIGHT - height;
+            flag = true;
+        }
+        if (flag)
+            direction = moveDirection[Utils.getRandom(0, moveDirection.length)];
     }
 
     void moveToward(int targetX, int targetY) {

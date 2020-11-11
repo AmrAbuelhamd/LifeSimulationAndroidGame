@@ -1,13 +1,12 @@
 package com.blogspot.soyamr.lifesimulation;
 
-import android.util.Log;
-
 import com.blogspot.soyamr.lifesimulation.model.Animal;
 import com.blogspot.soyamr.lifesimulation.model.FemaleAnimal;
 import com.blogspot.soyamr.lifesimulation.model.GameObject;
 import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.Plant;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -15,7 +14,7 @@ public abstract class Utils {
     public static final Random rand = new Random();
     static String tag = "search algorithm";
 
-    public static GameObject searchAroundAnimal(int searchRange, int currentX, int currentY, Model model, Const.SearchFor searchFor) {
+    public static List<GameObject> searchAroundAnimal(int searchRange, int currentX, int currentY, Model model, Const.SearchFor searchFor) {
         int iStart = getRowIndex(currentY) - searchRange;
         int jStart = getColumnIndex(currentX) - searchRange;
         iStart = Math.max(iStart, 0);
@@ -30,8 +29,8 @@ public abstract class Utils {
         int posJ = Utils.getColumnIndex(currentX);
 
 
-        int shortestDistance = Integer.MAX_VALUE;//impossible length;
-        GameObject gameObject = null;
+
+        List<GameObject> gameObjects = new ArrayList<>();
         for (int i = iStart; i < iEnd; i++) {
             for (int j = jStart; j < jEnd; j++) {
                 //found myself
@@ -42,22 +41,20 @@ public abstract class Utils {
                 if (currentObject == null)
                     continue;
 
-                int newPathDistance = getManhattanDistance(currentX, currentY,
+                currentObject.distance = getManhattanDistance(currentX, currentY,
                         currentObject.getX(), currentObject.getY());
-
-                if (shortestDistance > newPathDistance) {
-                    gameObject = currentObject;
-                    shortestDistance = newPathDistance;
-                }
+                gameObjects.add(currentObject);
             }
         }
-        if (searchFor == Const.SearchFor.FEMALE_ANIMAL) {
-        }
-        return gameObject;
+        gameObjects.sort((lhs, rhs) -> {
+            // -1 - less than, 1 - greater than, 0 - equal, for ascending
+            return Integer.compare(lhs.distance, rhs.distance);
+        });
+        return gameObjects;
     }
 
 
-    private static GameObject search(Const.SearchFor searchFor, Model model, int i, int j) {
+    public static GameObject search(Const.SearchFor searchFor, Model model, int i, int j) {
         List<GameObject> objectSOnCell = model.getObjectResidingHere(i, j);
         if (searchFor == Const.SearchFor.ANIMAL) {
             for (GameObject currentObject : objectSOnCell)

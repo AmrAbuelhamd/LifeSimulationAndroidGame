@@ -20,7 +20,7 @@ public abstract class GameObject {
     public static final int ANIMAL_WOMEN_VISION_RANG = 30;
     public static final int SEARCH_FOOD_OPTIMIZATION_THRESHOLD = 40;//40
     public static final int SEARCH_WOMEN_OPTIMIZATION_THRESHOLD = 20;//20
-
+    public int distance;
     public static final int width = Utils.Const.CELL_WIDTH;
     public static final int height = Utils.Const.CELL_HEIGHT;
     final Rect rect = new Rect();

@@ -107,7 +107,7 @@ public class MaleAnimal extends Animal {
     }
 
     private boolean searchForPartner() {
-        if (!doesItWorthSearching()) {
+        if (true || !doesItWorthSearching()) {
             return false;
         }
         FemaleAnimal singleFemaleAnimal = (FemaleAnimal) Utils.searchAroundAnimal(ANIMAL_WOMEN_VISION_RANG,
