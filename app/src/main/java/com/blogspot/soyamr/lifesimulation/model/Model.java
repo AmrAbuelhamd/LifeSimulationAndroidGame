@@ -57,6 +57,7 @@ public class Model {
 
     public void deleteMePlease(Animal animal) {
 //        iAmLeavingThisCell(animal.getX(), animal.getY(), animal);
+        //todo add explosion effect which will be class that will work for a couple of seconds
         animals.remove(animal);
     }
 
