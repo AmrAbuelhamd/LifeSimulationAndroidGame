@@ -2,6 +2,7 @@ package com.blogspot.soyamr.lifesimulation.model;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.util.Log;
 
 import com.blogspot.soyamr.lifesimulation.Utils;
@@ -79,8 +80,8 @@ public class Model {
     final int addingNewPlantThreshold = 20;
     int anpth = 0;
 
-    public void update() {
-        onScreenInfo.update(animals.size(), plants.size());
+    public void update(Rect clipBoundsCanvas, float mScaleFactor) {
+        onScreenInfo.update(animals.size(), plants.size(), clipBoundsCanvas, mScaleFactor);
         if (!plants.isEmpty())
             if (anpth < addingNewPlantThreshold) {
                 ++anpth;
@@ -90,7 +91,7 @@ public class Model {
             }
         animals.forEach(Animal::update);
         if (famousAnimal != null)
-            famousAnimal.update();
+            famousAnimal.update(mScaleFactor);
     }
 
 
