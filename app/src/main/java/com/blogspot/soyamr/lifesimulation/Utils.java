@@ -71,13 +71,23 @@ public abstract class Utils {
                 if (currentObject instanceof FemaleAnimal)
                     return currentObject;
         } else if (searchFor == Species.BOTH) {
-            for (GameObject currentObject : objectSOnCell)
-                return currentObject;
+            for (GameObject currentObject : objectSOnCell) {
+                if (currentObject instanceof Animal && ((Animal) currentObject).myFoodType != Species.BOTH
+                        && !((Animal) currentObject).inRelation
+                        || currentObject instanceof Plant)
+                    return currentObject;
+            }
+        } else if (searchFor == Species.HERBIVORE) {
+            for (GameObject currentObject : objectSOnCell) {
+                if (currentObject instanceof Animal && ((Animal) currentObject).myFoodType == Species.PLANT &&
+                        !((Animal) currentObject).inRelation)
+                    return currentObject;
+            }
         }
         return null;
     }
 
-    private static int getManhattanDistance(int x1, int y1, int x2, int y2) {
+    public static int getManhattanDistance(int x1, int y1, int x2, int y2) {
         return Math.abs(x1 - x2) + Math.abs(y1 - y2);
     }
 

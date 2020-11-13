@@ -59,7 +59,7 @@ public class MaleAnimal<T extends AnimalSpecie<Species>> extends Animal {
                 if (!found)
                     moveRandomly();
             } else if (hunger < SEARCH_FOOD_THRESHOLD) {
-                boolean found = needFood();
+                boolean found = foundFood();
                 if (!found)
                     moveRandomly();
             } else {
@@ -104,8 +104,13 @@ public class MaleAnimal<T extends AnimalSpecie<Species>> extends Animal {
         paint.setColor(model.getMeColor(FantasticColors.TYPE.male, hunger));
     }
 
+    @Override
+    protected Species getMyType() {
+        return mySpecie.getType();
+    }
+
     private boolean searchForPartner() {
-        if (!doesItWorthSearching()) {
+        if (!worthSearching()) {
             return true;
         }
         if (myCrushes.isEmpty())

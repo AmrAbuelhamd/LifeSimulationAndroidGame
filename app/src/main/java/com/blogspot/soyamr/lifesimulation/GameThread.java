@@ -22,7 +22,7 @@ public class GameThread {
 
         executor = Executors.newSingleThreadScheduledExecutor();
         initialize();
-        executor.scheduleAtFixedRate(this::run, 0, waitTime, TimeUnit.MILLISECONDS);
+        executor.scheduleWithFixedDelay(this::run, 0, waitTime, TimeUnit.MILLISECONDS);
     }
 
     private static String frameRate;

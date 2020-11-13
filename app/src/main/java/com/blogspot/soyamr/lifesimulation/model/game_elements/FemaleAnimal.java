@@ -4,12 +4,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.blogspot.soyamr.lifesimulation.GameThread;
-import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.FantasticColors;
 import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.types.AnimalSpecie;
-import com.blogspot.soyamr.lifesimulation.model.types.Carnivore;
 import com.blogspot.soyamr.lifesimulation.model.types.Species;
 
 public class FemaleAnimal<T extends AnimalSpecie<Species>> extends Animal {
@@ -60,7 +57,7 @@ public class FemaleAnimal<T extends AnimalSpecie<Species>> extends Animal {
                 waitLoveToArrive();
                 return;
             } else if (hunger < SEARCH_FOOD_THRESHOLD) {
-                boolean found = needFood();
+                boolean found = foundFood();
                 if (!found)
                     moveRandomly();
             } else {
@@ -81,6 +78,11 @@ public class FemaleAnimal<T extends AnimalSpecie<Species>> extends Animal {
         paint.setColor(model.getMeColor(FantasticColors.TYPE.female, hunger));
     }
 
+    @Override
+    protected Species getMyType() {
+        return mySpecie.getType();
+    }
+
     void waitLoveToArrive() {
     }
 
@@ -98,10 +100,6 @@ public class FemaleAnimal<T extends AnimalSpecie<Species>> extends Animal {
     }
 
     public void marriage() {
-        if (Utils.getRandom(0, 2) == 0) {
-            model.addChild(new FemaleAnimal<>(x, y, model, new Carnivore()));
-        } else {
-            model.addChild(new MaleAnimal<>(x, y, model, new Carnivore()));
-        }
+        model.addChild(model.generator.createRandomAnimal());
     }
 }

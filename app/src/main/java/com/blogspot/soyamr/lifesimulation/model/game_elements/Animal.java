@@ -12,11 +12,11 @@ import java.util.ListIterator;
 
 
 public abstract class Animal extends GameObject {
-    public List<GameObject> myFoodMenu;
-    public int hunger = 50;
+    List<GameObject> myFoodMenu;
+    int hunger = 50;
     final Model model;
     public boolean inRelation = false;
-    public boolean iDoNotWant;
+    boolean iDoNotWant;
     boolean myTurn = true;//todo enable this variable agian when animals > 1000, and make small documentation on it in readme
     private String tag = "Animal";
 
@@ -44,7 +44,7 @@ public abstract class Animal extends GameObject {
     }
 
     final int reSetIDoNotWantVariable = 90;
-    public int rsidwv = 0;
+    int rsidwv = 0;
 
     protected void setIdoNotWant() {
         iDoNotWant = true;
@@ -52,18 +52,40 @@ public abstract class Animal extends GameObject {
     }
 
     final int increasingHungerThreshold = 100;
-    public int ihth = 0;
+    int ihth = 0;
 
     //search for food or move randomly
     public void update() {
+        //cleanMyPreysList();
+        boolean isDead = updateHunger();
+        if (isDead)
+            return;
+        updateIDoNotWant();
+        reachedScreenEdge();
+        checkIfAnimalOnSameCellWithTarget();
+        model.putMeHerePlease(x, y, this);
+        rect.set(x, y, x + width, y + height);
+
+    }
+
+    private boolean updateHunger() {
         if (ihth < increasingHungerThreshold) {//todo add this to another method, but be sure that
             ++ihth;                         //if dead no need to add ghost animal on cell and disappear
         } else {
             boolean isDead = increaseHunger();
             ihth = 0;
-            if (isDead)
-                return;
+            return isDead;
         }
+        return false;
+    }
+
+    private void cleanMyPreysList() {
+        if (hunger > SEARCH_FOOD_THRESHOLD) {
+            deleteVeryFarPreys();
+        }
+    }
+
+    private void updateIDoNotWant() {
         if (iDoNotWant == true) {
             if (rsidwv < reSetIDoNotWantVariable) {
                 ++rsidwv;
@@ -72,12 +94,22 @@ public abstract class Animal extends GameObject {
                 rsidwv = 0;
             }
         }
+    }
 
-        reachedScreenEdge();
-        checkIfAnimalOnSameCellWithPlant();
-        model.putMeHerePlease(x, y, this);
-        rect.set(x, y, x + width, y + height);
-
+    private void deleteVeryFarPreys() {
+        ListIterator<GameObject> iter = myFoodMenu.listIterator();
+        while (iter.hasNext()) {
+            GameObject current = iter.next();
+            current.distance = Utils.getManhattanDistance(x, y,
+                    current.getX(), current.getY());
+            if (current.distance > SEARCH_FOOD_THRESHOLD * width) {
+                iter.remove();
+            }
+        }
+        myFoodMenu.sort((lhs, rhs) -> {
+            // -1 - less than, 1 - greater than, 0 - equal, for ascending
+            return Integer.compare(lhs.distance, rhs.distance);
+        });
     }
 
     protected void moveRandomly() {
@@ -87,21 +119,22 @@ public abstract class Animal extends GameObject {
         this.y = y + height * moveDirection[randomIndex][1];
     }
 
-    private void checkIfAnimalOnSameCellWithPlant() {
-        GameObject prey = Utils.search(myFoodType, model,
-                Utils.getRowIdx(y),
-                Utils.getColIdx(x));
-        if (prey != null) {
-            if (isSuitableFood(prey)) {
-                model.removeObjectFromMap(prey);
-                reduceHunger();
-                myFoodMenu.remove(prey);
+    private void checkIfAnimalOnSameCellWithTarget() {
+        if (hunger < SEARCH_FOOD_THRESHOLD) {
+            GameObject prey = Utils.search(myFoodType, model,
+                    Utils.getRowIdx(y),
+                    Utils.getColIdx(x));
+            if (prey != null) {
+                if (myFoodMenu.remove(prey)) {
+                    model.removeObjectFromMap(prey);
+                    reduceHunger();
+                }
             }
         }
     }
 
 
-    protected boolean doesItWorthSearching() {
+    protected boolean worthSearching() {
         if (mtodth < movingToOneDirectionThreshold) {
             ++mtodth;
             moveThere();
@@ -114,8 +147,8 @@ public abstract class Animal extends GameObject {
     int movingToOneDirectionThreshold = 30;
     int[] direction = new int[2];
 
-    boolean needFood() {
-        if (!doesItWorthSearching()) {
+    boolean foundFood() {
+        if (!worthSearching()) {
             return true;
         }
         if (myFoodMenu.isEmpty())
@@ -138,6 +171,7 @@ public abstract class Animal extends GameObject {
     }
 
     private GameObject getNextTarget() {
+        deleteVeryFarPreys();
         ListIterator<GameObject> iter = myFoodMenu.listIterator();
         while (iter.hasNext()) {
             GameObject current = iter.next();
@@ -145,10 +179,7 @@ public abstract class Animal extends GameObject {
                     Utils.getRowIdx(current.y),
                     Utils.getColIdx(current.x)
             ) != null) {
-                if (isSuitableFood(current))
-                    return current;
-                else
-                    iter.remove();
+                return current;
             } else {
                 iter.remove();
             }
@@ -213,6 +244,8 @@ public abstract class Animal extends GameObject {
     }
 
     protected abstract void changeColor();
+
+    protected abstract Species getMyType();
 
     public void reduceHunger() {
         if (hunger != 100)

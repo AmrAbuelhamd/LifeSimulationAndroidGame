@@ -26,10 +26,11 @@ public class Model {
     private FamousAnimal famousAnimal;
     private final FantasticColors fantasticColors;
     private final OnScreenInfo onScreenInfo;
+    public final Generator generator;
 
     public Model(Context context) {
         fantasticColors = new FantasticColors(context);
-        Generator generator = new Generator(this);
+        generator = new Generator(this);
         onScreenInfo = new OnScreenInfo();
 
         cells = generator.generateSells();

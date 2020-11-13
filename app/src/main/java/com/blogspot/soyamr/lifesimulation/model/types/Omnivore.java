@@ -1,9 +1,17 @@
 package com.blogspot.soyamr.lifesimulation.model.types;
 
-import com.blogspot.soyamr.lifesimulation.model.game_elements.Animal;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 
 public class Omnivore implements AnimalSpecie<Species> {
+    public static final Omnivore instance = new Omnivore();
+
+    public static Omnivore getInstance() {
+        return instance;
+    }
+
+    private Omnivore() {
+    }
+
     @Override
     public Species getType() {
         return Species.OMNIVORE;
@@ -16,9 +24,6 @@ public class Omnivore implements AnimalSpecie<Species> {
 
     @Override
     public boolean isSuitableFood(GameObject current) {
-        if (current instanceof Animal) {
-            return ((Animal) current).myFoodType != Species.BOTH;
-        }
         return true;
     }
 }
