@@ -26,4 +26,9 @@ public class Omnivore implements AnimalSpecie<Species> {
     public boolean isSuitableFood(GameObject current) {
         return true;
     }
+
+    @Override
+    public boolean isSuitableGroom(Species groomType) {
+        return groomType == getType();
+    }
 }

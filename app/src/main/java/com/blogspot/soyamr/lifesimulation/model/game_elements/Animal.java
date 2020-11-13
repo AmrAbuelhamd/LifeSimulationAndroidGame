@@ -42,7 +42,7 @@ public abstract class Animal extends GameObject {
         model.putMeHerePlease(x, y, this);
     }
 
-    final int reSetIDoNotWantVariable = 500;
+    final int reSetIDoNotWantVariable = 250;
     int rsidwv = 0;
 
     protected void setIdoNotWant() {
@@ -92,7 +92,7 @@ public abstract class Animal extends GameObject {
             }
         }
     }
-
+    //lidia here i am deleting far prays but with crushes no delete, he will go after his crush even if she is faaaaar away from him
     private void deleteVeryFarPreys() {
         ListIterator<GameObject> iter = myFoodMenu.listIterator();
         while (iter.hasNext()) {

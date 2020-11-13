@@ -3,6 +3,7 @@ package com.blogspot.soyamr.lifesimulation.model.game_elements;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 
 import com.blogspot.soyamr.lifesimulation.model.FantasticColors;
 import com.blogspot.soyamr.lifesimulation.model.Model;
@@ -12,6 +13,7 @@ import com.blogspot.soyamr.lifesimulation.model.types.Species;
 public class FemaleAnimal<T extends AnimalSpecie<Species>> extends Animal {
 
     T mySpecie;
+    private String tag="Female Class";
 
     public FemaleAnimal(int x, int y, Model model, T myType) {
         super(x, y, model, myType.getFoodType());
@@ -80,12 +82,15 @@ public class FemaleAnimal<T extends AnimalSpecie<Species>> extends Animal {
     void waitLoveToArrive() {
     }
 
-    boolean wannaBeInRelationship() {
+    boolean wannaBeInRelationship(Species groomType) {
         if (!iDoNotWant && !inRelation && hunger > SEARCH_FOOD_THRESHOLD) {
-            inRelation = true;
-            return true;
-        } else
-            return false;
+            if (mySpecie.isSuitableGroom(groomType)) {
+                inRelation = true;
+//                Log.i(tag,"i am "+mySpecie.getType()+" married with "+groomType);
+                return true;
+            }
+        }
+        return false;
     }
 
     public void brokeUp() {
@@ -94,6 +99,6 @@ public class FemaleAnimal<T extends AnimalSpecie<Species>> extends Animal {
     }
 
     public void marriage() {
-        model.addChild(model.generator.createRandomAnimal(x,y));
+        model.addChild(model.generator.createRandomAnimal(x, y));
     }
 }

@@ -134,7 +134,7 @@ public class MaleAnimal<T extends AnimalSpecie<Species>> extends Animal {
         ListIterator<GameObject> iter = myCrushes.listIterator();
         while (iter.hasNext()) {
             FemaleAnimal current = (FemaleAnimal) iter.next();
-            if (current.wannaBeInRelationship()) {
+            if (current.wannaBeInRelationship(mySpecie.getType())) {
                 return current;
             } else {
                 iter.remove();

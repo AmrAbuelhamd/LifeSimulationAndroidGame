@@ -7,4 +7,6 @@ public interface AnimalSpecie<T> {
     T getFoodType();
 
     boolean isSuitableFood(GameObject current);
+
+    boolean isSuitableGroom(T groomType);
 }
