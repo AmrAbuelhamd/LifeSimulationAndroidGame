@@ -11,7 +11,7 @@ public class Const {
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
     public static final int SEARCH_FOOD_THRESHOLD_NORMAL = 31;//31
-    public static final int SEARCH_PARTNER_THRESHOLD_NORMAL = 49;//49
+    public static final int SEARCH_PARTNER_THRESHOLD_NORMAL = 31;//49//it's better idea to have them equal
     public static final int SEARCH_FOOD_THRESHOLD_HIGH = 80;
     public static final int SEARCH_PARTNER_THRESHOLD_PROHIBIT = 101;
 

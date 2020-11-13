@@ -59,4 +59,8 @@ public class Cell extends GameObject {
             }
         }
     }
+
+    public void deleteEveryOne() {
+        residences.clear();
+    }
 }
