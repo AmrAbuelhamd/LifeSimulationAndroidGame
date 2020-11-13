@@ -49,7 +49,6 @@ public class FamousAnimal extends GameObject {
             canvas.drawRect(rectWomenVision, womenPaintRect);
         }
 
-
         canvas.drawText("Hunger                 : " + animal.hunger, x, y - 2 * space, textAndRectPaint);
         canvas.drawText("Hunger CTR       : " + animal.ihth, x, y - space, textAndRectPaint);
         canvas.drawText("in relationship  : " + animal.inRelation, x, y, textAndRectPaint);
@@ -58,7 +57,7 @@ public class FamousAnimal extends GameObject {
         canvas.drawText("moving in one direction: " + (animal.mtodth < animal.movingToOneDirectionThreshold)
                 , x, y + 3 * space, textAndRectPaint);
         canvas.drawText("my menu size    : " + animal.myFoodMenu.size(), x, y + 4 * space, textAndRectPaint);
-        canvas.drawText("myFoodType    : " + animal.myFoodType, x, y + 5 * space, textAndRectPaint);
+        canvas.drawText("myType    : " + animal.getMyType(), x, y + 5 * space, textAndRectPaint);
         //put rectangle around current animal
         canvas.drawRect(rect, paint);
         //put rectangle around target

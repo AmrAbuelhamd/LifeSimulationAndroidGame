@@ -13,19 +13,13 @@ public class FemaleAnimal<T extends AnimalSpecie<Species>> extends Animal {
 
     T mySpecie;
 
-    public FemaleAnimal(Model model, T myType) {
-        super(model, myType.getFoodType());
-        this.mySpecie = myType;
-
-        model.putMeHerePlease(x, y, this);
-        setInitialColor();
-    }
-
     public FemaleAnimal(int x, int y, Model model, T myType) {
         super(x, y, model, myType.getFoodType());
-        this.mySpecie = myType;
+        setInitialData(myType);
+    }
 
-        model.putMeHerePlease(x, y, this);
+    void setInitialData(T myType) {
+        this.mySpecie = myType;
         setInitialColor();
     }
 
@@ -100,6 +94,6 @@ public class FemaleAnimal<T extends AnimalSpecie<Species>> extends Animal {
     }
 
     public void marriage() {
-        model.addChild(model.generator.createRandomAnimal());
+        model.addChild(model.generator.createRandomAnimal(x,y));
     }
 }

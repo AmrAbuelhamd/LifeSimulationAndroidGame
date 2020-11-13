@@ -5,13 +5,14 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Cell extends GameObject {
 
-    private List<GameObject> gameObjects;
+    private List<GameObject> residences;
 
     private static final Paint paint;
 
@@ -27,12 +28,9 @@ public class Cell extends GameObject {
     public Cell(int i, int j) {
         x = j * width;
         y = i * height;
-        rect.set(x, y, x + width, y + height);
+        residences = new CopyOnWriteArrayList<>();
     }
 
-    public Cell() {
-        gameObjects = new CopyOnWriteArrayList<>();
-    }
 
 
     void setRandomColor() {
@@ -41,15 +39,24 @@ public class Cell extends GameObject {
     }
 
     public void putMeHerePlease(GameObject gameObject) {
-        this.gameObjects.add(gameObject);
+        this.residences.add(gameObject);
     }
 
     public void removeMeFromHere(GameObject gameObject) {
-        this.gameObjects.remove(gameObject);
+        this.residences.remove(gameObject);
     }
 
     public List<GameObject> getObjectResidingHere() {
-        return gameObjects;
+        return residences;
     }
 
+    public void update() {
+        ListIterator<GameObject> iter = residences.listIterator();
+        while (iter.hasNext()) {
+            GameObject current = iter.next();
+            if (current.x != x || current.y != y) {
+                iter.remove();
+            }
+        }
+    }
 }

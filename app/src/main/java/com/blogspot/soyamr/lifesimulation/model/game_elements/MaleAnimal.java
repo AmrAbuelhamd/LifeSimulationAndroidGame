@@ -20,17 +20,13 @@ public class MaleAnimal<T extends AnimalSpecie<Species>> extends Animal {
     private FemaleAnimal myLove;
     private List<GameObject> myCrushes;
 
-    public MaleAnimal(Model model, T myType) {
-        super(model, myType.getFoodType());
-        this.mySpecie = myType;
-        model.putMeHerePlease(x, y, this);
-        setInitialColor();
-    }
-
     public MaleAnimal(int x, int y, Model model, T myType) {
         super(x, y, model, myType.getFoodType());
+        setInitialData(myType);
+    }
+
+    void setInitialData(T myType) {
         mySpecie = myType;
-        model.putMeHerePlease(x, y, this);
         setInitialColor();
     }
 

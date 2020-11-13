@@ -1,4 +1,4 @@
-package com.blogspot.soyamr.lifesimulation.model;
+package com.blogspot.soyamr.lifesimulation.model.game_elements;
 
 import android.graphics.Canvas;
 import android.graphics.Color;

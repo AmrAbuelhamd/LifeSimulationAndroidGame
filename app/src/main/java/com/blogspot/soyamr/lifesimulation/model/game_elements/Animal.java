@@ -14,7 +14,7 @@ import java.util.ListIterator;
 public abstract class Animal extends GameObject {
     List<GameObject> myFoodMenu;
     int hunger = 50;
-    final Model model;
+    Model model;
     public boolean inRelation = false;
     boolean iDoNotWant;
     boolean myTurn = true;//todo enable this variable agian when animals > 1000, and make small documentation on it in readme
@@ -22,28 +22,27 @@ public abstract class Animal extends GameObject {
 
     public Species myFoodType;
 
-    Animal(Model model, Species myFoodType) {
-        this.myFoodType = myFoodType;
-        x = Utils.getRandom(0, Const.N) * width;
-        y = Utils.getRandom(0, Const.M) * height;
-        myFoodMenu = new ArrayList<>();
-
-        rect.set(x, y, x + width, y + height);
-        this.model = model;
-        setIdoNotWant();
+    Animal(int x, int y, Model model, Species myFoodType) {
+        if (x == -1 && y == -1) {
+            setInitialData(Utils.getRandom(0, Const.N) * width,
+                    Utils.getRandom(0, Const.M) * height, model, myFoodType);
+        } else {
+            setInitialData(x, y, model, myFoodType);
+        }
     }
 
-    Animal(int x, int y, Model model, Species myFoodType) {
-        this.myFoodType = myFoodType;
+    void setInitialData(int x, int y, Model model, Species myFoodType) {
         this.x = x;
         this.y = y;
+        this.myFoodType = myFoodType;
         myFoodMenu = new ArrayList<>();
         rect.set(x, y, x + width, y + height);
         this.model = model;
         setIdoNotWant();
+        model.putMeHerePlease(x, y, this);
     }
 
-    final int reSetIDoNotWantVariable = 90;
+    final int reSetIDoNotWantVariable = 500;
     int rsidwv = 0;
 
     protected void setIdoNotWant() {
@@ -56,7 +55,6 @@ public abstract class Animal extends GameObject {
 
     //search for food or move randomly
     public void update() {
-        //cleanMyPreysList();
         boolean isDead = updateHunger();
         if (isDead)
             return;
@@ -65,12 +63,11 @@ public abstract class Animal extends GameObject {
         checkIfAnimalOnSameCellWithTarget();
         model.putMeHerePlease(x, y, this);
         rect.set(x, y, x + width, y + height);
-
     }
 
     private boolean updateHunger() {
-        if (ihth < increasingHungerThreshold) {//todo add this to another method, but be sure that
-            ++ihth;                         //if dead no need to add ghost animal on cell and disappear
+        if (ihth < increasingHungerThreshold) {
+            ++ihth;
         } else {
             boolean isDead = increaseHunger();
             ihth = 0;
@@ -120,16 +117,20 @@ public abstract class Animal extends GameObject {
     }
 
     private void checkIfAnimalOnSameCellWithTarget() {
+        GameObject prey = Utils.search(myFoodType, model,
+                Utils.getRowIdx(y),
+                Utils.getColIdx(x));
         if (hunger < SEARCH_FOOD_THRESHOLD) {
-            GameObject prey = Utils.search(myFoodType, model,
-                    Utils.getRowIdx(y),
-                    Utils.getColIdx(x));
             if (prey != null) {
                 if (myFoodMenu.remove(prey)) {
                     model.removeObjectFromMap(prey);
                     reduceHunger();
                 }
             }
+        } else if (prey instanceof Plant && myFoodType != Species.ANIMAL) {
+            myFoodMenu.remove(prey);
+            model.removeObjectFromMap(prey);
+            reduceHunger();
         }
     }
 

@@ -19,7 +19,6 @@ public class Generator {
 
     private final Cell[][] cells;
     private final List<Animal> animals;
-    final List<Animal> femaleAnimals;
     private final List<Plant> plants;
 
     private final Model model;
@@ -28,13 +27,66 @@ public class Generator {
         this.model = model;
         cells = new Cell[Const.M][Const.N];
         animals = new CopyOnWriteArrayList<>();
-        femaleAnimals = new CopyOnWriteArrayList<>();
         plants = new CopyOnWriteArrayList<>();
     }
 
     public void addRandomPlant() {
         Plant plant = new Plant(model);
         plants.add(plant);
+    }
+
+
+    Animal createFemaleHerbivore(int x, int y) {
+        return new FemaleAnimal<>(x, y, model, Herbivore.getInstance());
+    }
+
+    Animal createFemaleOmnivore(int x, int y) {
+        return new FemaleAnimal<>(x, y, model, Omnivore.getInstance());
+    }
+
+    Animal createFemaleCarnivore(int x, int y) {
+        return new FemaleAnimal<>(x, y, model, Carnivore.getInstance());
+    }
+
+    Animal createMaleHerbivore(int x, int y) {
+        return new MaleAnimal<>(x, y, model, Herbivore.getInstance());
+    }
+
+    Animal createMaleOmnivore(int x, int y) {
+        return new MaleAnimal<>(x, y, model, Omnivore.getInstance());
+    }
+
+    Animal createMaleCarnivore(int x, int y) {
+        return new MaleAnimal<>(x, y, model, Carnivore.getInstance());
+    }
+
+    Animal createRandomFemaleAnimal(int x, int y) {
+        switch (Utils.getRandom(0, 3)) {
+            case 0:
+                return createFemaleCarnivore(x, y);
+            case 1:
+                return createFemaleHerbivore(x, y);
+            default:
+                return createFemaleOmnivore(x, y);
+        }
+    }
+
+    Animal createRandomMaleAnimal(int x, int y) {
+        switch (Utils.getRandom(0, 3)) {
+            case 0:
+                return createMaleCarnivore(x, y);
+            case 1:
+                return createMaleHerbivore(x, y);
+            default:
+                return createMaleOmnivore(x, y);
+        }
+    }
+
+    public Animal createRandomAnimal(int x, int y) {
+        if (Utils.getRandom(0, 2) == 0) {
+            return createRandomFemaleAnimal(x, y);
+        }
+        return createRandomMaleAnimal(x, y);
     }
 
     public List<Plant> generatePlants() {
@@ -44,89 +96,35 @@ public class Generator {
         }
         return plants;
     }
-
-    Animal createFemaleHerbivore() {
-        return new FemaleAnimal<>(model, Herbivore.getInstance());
-    }
-
-    Animal createFemaleOmnivore() {
-        return new FemaleAnimal<>(model, Omnivore.getInstance());
-    }
-
-    Animal createFemaleCarnivore() {
-        return new FemaleAnimal<>(model, Carnivore.getInstance());
-    }
-
-    Animal createMaleHerbivore() {
-        return new MaleAnimal<>(model, Herbivore.getInstance());
-    }
-
-    Animal createMaleOmnivore() {
-        return new MaleAnimal<>(model, Omnivore.getInstance());
-    }
-
-    Animal createMaleCarnivore() {
-        return new MaleAnimal<>(model, Carnivore.getInstance());
-    }
-
-    Animal createRandomFemaleAnimal() {
-        switch (Utils.getRandom(0, 3)) {
-            case 0:
-                return createFemaleCarnivore();
-            case 1:
-                return createFemaleHerbivore();
-            default:
-                return createFemaleOmnivore();
-        }
-    }
-
-    Animal createRandomMaleAnimal() {
-        switch (Utils.getRandom(0, 3)) {
-            case 0:
-                return createMaleCarnivore();
-            case 1:
-                return createMaleHerbivore();
-            default:
-                return createMaleOmnivore();
-        }
-    }
-
-    public Animal createRandomAnimal() {
-        if (Utils.getRandom(0, 2) == 0) {
-            return createRandomFemaleAnimal();
-        }
-        return createRandomMaleAnimal();
-    }
-
     public List<Animal> generateAnimals() {
         //CREATE FEMALE ANIMALS
         List<Animal> tempAnimals = new ArrayList<>();
-        for (int i = 0; i < 1000; i++) {
-            FemaleAnimal<Herbivore> animal = new FemaleAnimal<>(model, Herbivore.getInstance());
+        for (int i = 0; i < 200; i++) {
+            FemaleAnimal<Herbivore> animal = new FemaleAnimal<>(-1, -1, model, Herbivore.getInstance());
             tempAnimals.add(animal);
         }
-        for (int i = 0; i < 1; i++) {
-            FemaleAnimal<Omnivore> animal = new FemaleAnimal<>(model, Omnivore.getInstance());
+        for (int i = 0; i < 100; i++) {
+            FemaleAnimal<Carnivore> animal = new FemaleAnimal<>(-1, -1, model, Carnivore.getInstance());
             tempAnimals.add(animal);
         }
         for (int i = 0; i < 10; i++) {
-            FemaleAnimal<Carnivore> animal = new FemaleAnimal<>(model, Carnivore.getInstance());
+            FemaleAnimal<Omnivore> animal = new FemaleAnimal<>(-1, -1, model, Omnivore.getInstance());
             tempAnimals.add(animal);
         }
-        femaleAnimals.addAll(tempAnimals);
-        //create male male ANIMALS
+        //create Male ANIMALS
+        for (int i = 0; i < 200; i++) {
+            MaleAnimal<Herbivore> animal = new MaleAnimal<>(-1, -1, model, Herbivore.getInstance());
+            tempAnimals.add(animal);
+        }
+        for (int i = 0; i < 100; i++) {
+            MaleAnimal<Carnivore> animal = new MaleAnimal<>(-1, -1, model, Carnivore.getInstance());
+            tempAnimals.add(animal);
+        }
         for (int i = 0; i < 10; i++) {
-            MaleAnimal<Carnivore> animal = new MaleAnimal<>(model, Carnivore.getInstance());
+            MaleAnimal<Omnivore> animal = new MaleAnimal<>(-1, -1, model, Omnivore.getInstance());
             tempAnimals.add(animal);
         }
-        for (int i = 0; i < 1000; i++) {
-            MaleAnimal<Herbivore> animal = new MaleAnimal<>(model, Herbivore.getInstance());
-            tempAnimals.add(animal);
-        }
-        for (int i = 0; i < 1; i++) {
-            MaleAnimal<Omnivore> animal = new MaleAnimal<>(model, Omnivore.getInstance());
-            tempAnimals.add(animal);
-        }
+
         animals.addAll(tempAnimals);
         return animals;
     }
@@ -135,7 +133,7 @@ public class Generator {
         //create cells
         for (int i = 0; i < Const.M; ++i) {
             for (int j = 0; j < Const.N; ++j) {
-                cells[i][j] = new Cell();
+                cells[i][j] = new Cell(i,j);
             }
         }
         return cells;

@@ -10,17 +10,15 @@ import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Animal;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Cell;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.FamousAnimal;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.FemaleAnimal;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.OnScreenInfo;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Plant;
 
 import java.util.List;
-import java.util.Random;
 
 public class Model {
     public final Cell[][] cells;
     public final List<Animal> animals;
-    public final List<Animal> femaleAnimals;
     public final List<Plant> plants;
     private final String tag = "model";
     private FamousAnimal famousAnimal;
@@ -36,7 +34,6 @@ public class Model {
         cells = generator.generateSells();
         animals = generator.generateAnimals();
         plants = generator.generatePlants();
-        femaleAnimals = generator.femaleAnimals;
     }
 
     public void addOnePlant() {
@@ -44,18 +41,6 @@ public class Model {
         Plant plant = new Plant(randomPlant, this);
         plants.add(plant);
 
-    }
-
-    Plant getRandomSetElement() {
-        int size = plants.size();
-        int item = new Random().nextInt(size); // In real life, the Random object should be rather more shared than this
-        int i = 0;
-        for (Plant obj : plants) {
-            if (i == item)
-                return obj;
-            i++;
-        }
-        return null;
     }
 
     public void setFamousAnimal(Animal animal) {
@@ -69,8 +54,6 @@ public class Model {
         iAmLeavingThisCell(animal.getX(), animal.getY(), animal);
         //todo add explosion effect which will be class that will work for a couple of seconds
         animals.remove(animal);
-        if (animal instanceof FemaleAnimal)
-            femaleAnimals.remove(animal);
     }
 
     public void removePlant(Plant plant) {
@@ -92,7 +75,14 @@ public class Model {
     int anpth = 0;
 
     public void update(Rect clipBoundsCanvas, float mScaleFactor) {
-        onScreenInfo.update(animals.size(), femaleAnimals.size(), plants.size(), clipBoundsCanvas, mScaleFactor);
+        if (dgath < deleteGhostAnimalThreshold) {
+            ++dgath;
+        } else {
+            deleteGhostAnimals();
+            dgath = 0;
+        }
+        deleteGhostAnimals();
+        onScreenInfo.update(animals.size(), 0, plants.size(), clipBoundsCanvas, mScaleFactor);
         if (!plants.isEmpty())
             if (anpth < addingNewPlantThreshold) {
                 ++anpth;
@@ -103,6 +93,18 @@ public class Model {
         animals.forEach(Animal::update);
         if (famousAnimal != null)
             famousAnimal.update(mScaleFactor);
+        showGhostAnimals();
+    }
+
+    int deleteGhostAnimalThreshold=1000;
+    int dgath = 0;
+
+    private void deleteGhostAnimals() {
+        for (int i = 0; i < Const.M; ++i) {
+            for (int j = 0; j < Const.N; ++j) {
+                cells[i][j].update();
+            }
+        }
     }
 
 
@@ -127,9 +129,7 @@ public class Model {
         System.out.println("#################hi from birth control#################");
     }
 
-    public void addChild(Animal animal) {
-        if (animal instanceof FemaleAnimal)
-            femaleAnimals.add(animal);
+    public void addChild(Animal animal) {//should be added to concrete place on the map
         animals.add(animal);
     }
 
@@ -149,9 +149,20 @@ public class Model {
         cells[Utils.getRowIdx(prey.getY())][Utils.getColIdx(prey.getX())].removeMeFromHere(prey);
         if (prey instanceof Animal) {
             animals.remove(prey);
-            if (prey instanceof FemaleAnimal)
-                femaleAnimals.remove(prey);
         } else
             plants.remove(prey);
+    }
+
+    public void showGhostAnimals() {
+        if (animals.size() < 20) {
+            Log.i(tag, "**** " + animals.size());
+            //create cells
+            for (int i = 0; i < Const.M; ++i) {
+                for (int j = 0; j < Const.N; ++j) {
+                    for (GameObject gameObjects : cells[i][j].getObjectResidingHere())
+                        Log.i(tag, " " + gameObjects);
+                }
+            }
+        }
     }
 }
