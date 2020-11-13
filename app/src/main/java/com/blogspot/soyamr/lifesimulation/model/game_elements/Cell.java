@@ -1,4 +1,4 @@
-package com.blogspot.soyamr.lifesimulation.model;
+package com.blogspot.soyamr.lifesimulation.model.game_elements;
 
 
 import android.graphics.Color;
@@ -40,15 +40,15 @@ public class Cell extends GameObject {
         paint.setARGB(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
     }
 
-    void putMeHerePlease(GameObject gameObject) {
+    public void putMeHerePlease(GameObject gameObject) {
         this.gameObjects.add(gameObject);
     }
 
-    void removeMeFromHere(GameObject gameObject) {
+    public void removeMeFromHere(GameObject gameObject) {
         this.gameObjects.remove(gameObject);
     }
 
-    List<GameObject> getObjectResidingHere() {
+    public List<GameObject> getObjectResidingHere() {
         return gameObjects;
     }
 

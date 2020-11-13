@@ -1,9 +1,13 @@
-package com.blogspot.soyamr.lifesimulation.model;
+package com.blogspot.soyamr.lifesimulation.model.game_elements;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+
+import com.blogspot.soyamr.lifesimulation.model.game_elements.Animal;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.MaleAnimal;
 
 public class FamousAnimal extends GameObject {
     Animal animal;
@@ -56,6 +60,8 @@ public class FamousAnimal extends GameObject {
         canvas.drawText("idontwant           : " + animal.iDoNotWant, x, y + space, textAndRectPaint);
         canvas.drawText("idontwant CTR : " + animal.rsidwv, x, y + 2 * space, textAndRectPaint);
         canvas.drawText("one direction    : " + animal.mtodth, x, y + 3 * space, textAndRectPaint);
+        canvas.drawText("my menu size    : " + animal.myFoodMenu.size(), x, y + 4 * space, textAndRectPaint);
+        canvas.drawText("myFoodType    : " + animal.myFoodType, x, y + 5 * space, textAndRectPaint);
         canvas.drawRect(rect, paint);
     }
 
@@ -63,7 +69,7 @@ public class FamousAnimal extends GameObject {
     int right = 50;
     int space;
 
-    void update(float mScaleFactor) {
+   public void update(float mScaleFactor) {
         x = animal.getX();
         y = animal.getY();
 

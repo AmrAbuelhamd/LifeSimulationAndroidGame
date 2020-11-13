@@ -1,22 +1,33 @@
-package com.blogspot.soyamr.lifesimulation.model;
+package com.blogspot.soyamr.lifesimulation.model.game_elements;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import com.blogspot.soyamr.lifesimulation.GameThread;
 import com.blogspot.soyamr.lifesimulation.Utils;
+import com.blogspot.soyamr.lifesimulation.model.FantasticColors;
+import com.blogspot.soyamr.lifesimulation.model.Model;
+import com.blogspot.soyamr.lifesimulation.model.types.AnimalSpecie;
+import com.blogspot.soyamr.lifesimulation.model.types.Carnivore;
+import com.blogspot.soyamr.lifesimulation.model.types.Species;
 
-public class FemaleAnimal extends Animal {
+public class FemaleAnimal<T extends AnimalSpecie<Species>> extends Animal {
 
+    T mySpecie;
 
-    FemaleAnimal(Model model) {
-        super(model);
+    public FemaleAnimal(Model model, T myType) {
+        super(model, myType.getFoodType());
+        this.mySpecie = myType;
+
         model.putMeHerePlease(x, y, this);
         setInitialColor();
     }
 
-    public FemaleAnimal(int x, int y, Model model) {
-        super(x, y, model);
+    public FemaleAnimal(int x, int y, Model model, T myType) {
+        super(x, y, model, myType.getFoodType());
+        this.mySpecie = myType;
+
         model.putMeHerePlease(x, y, this);
         setInitialColor();
     }
@@ -30,18 +41,18 @@ public class FemaleAnimal extends Animal {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        if(inRelation){
+        if (inRelation) {
             paint.setStyle(Paint.Style.STROKE);
             paint.setStrokeWidth(10);
             paint.setColor(Color.RED);
-            canvas.drawRect(rect,paint);
+            canvas.drawRect(rect, paint);
             setInitialColor();
         }
     }
 
     @Override
     public void update() {
-        model.iAmLeavingThisCell(x, y,this);
+        model.iAmLeavingThisCell(x, y, this);
         if (!myTurn && !inRelation) {
             moveRandomly();
         } else {
@@ -57,6 +68,11 @@ public class FemaleAnimal extends Animal {
             }
         }
         super.update();
+    }
+
+    @Override
+    protected boolean isSuitableFood(GameObject current) {
+        return mySpecie.isSuitableFood(current);
     }
 
 
@@ -83,9 +99,9 @@ public class FemaleAnimal extends Animal {
 
     public void marriage() {
         if (Utils.getRandom(0, 2) == 0) {
-            model.addChild(new FemaleAnimal(x, y,model));
+            model.addChild(new FemaleAnimal<>(x, y, model, new Carnivore()));
         } else {
-            model.addChild(new MaleAnimal(x, y, model));
+            model.addChild(new MaleAnimal<>(x, y, model, new Carnivore()));
         }
     }
 }

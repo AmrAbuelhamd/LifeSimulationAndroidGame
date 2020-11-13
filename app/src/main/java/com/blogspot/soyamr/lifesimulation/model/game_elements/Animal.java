@@ -1,7 +1,10 @@
-package com.blogspot.soyamr.lifesimulation.model;
+package com.blogspot.soyamr.lifesimulation.model.game_elements;
 
 
+import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.Utils;
+import com.blogspot.soyamr.lifesimulation.model.Model;
+import com.blogspot.soyamr.lifesimulation.model.types.Species;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,18 +12,20 @@ import java.util.ListIterator;
 
 
 public abstract class Animal extends GameObject {
-    List<GameObject> myFoodMenu;
-    int hunger = 100;
+    public List<GameObject> myFoodMenu;
+    public int hunger = 50;
     final Model model;
-    boolean inRelation = false;
-    boolean iDoNotWant;
+    public boolean inRelation = false;
+    public boolean iDoNotWant;
     boolean myTurn = true;//todo enable this variable agian when animals > 1000, and make small documentation on it in readme
     private String tag = "Animal";
 
+    public Species myFoodType;
 
-    Animal(Model model) {
-        x = Utils.getRandom(0, Utils.Const.N) * width;
-        y = Utils.getRandom(0, Utils.Const.M) * height;
+    Animal(Model model, Species myFoodType) {
+        this.myFoodType = myFoodType;
+        x = Utils.getRandom(0, Const.N) * width;
+        y = Utils.getRandom(0, Const.M) * height;
         myFoodMenu = new ArrayList<>();
 
         rect.set(x, y, x + width, y + height);
@@ -28,7 +33,8 @@ public abstract class Animal extends GameObject {
         setIdoNotWant();
     }
 
-    Animal(int x, int y, Model model) {
+    Animal(int x, int y, Model model, Species myFoodType) {
+        this.myFoodType = myFoodType;
         this.x = x;
         this.y = y;
         myFoodMenu = new ArrayList<>();
@@ -46,7 +52,7 @@ public abstract class Animal extends GameObject {
     }
 
     final int increasingHungerThreshold = 100;
-    int ihth = 0;
+    public int ihth = 0;
 
     //search for food or move randomly
     public void update() {
@@ -82,13 +88,14 @@ public abstract class Animal extends GameObject {
     }
 
     private void checkIfAnimalOnSameCellWithPlant() {
-        List<GameObject> gameObjects = model.getObjectResidingHere(Utils.getRowIndex(y), Utils.getColumnIndex(x));
-        for (GameObject current : gameObjects) {
-            if (current instanceof Plant) {
-                model.removePlant((Plant) current);
+        GameObject prey = Utils.search(myFoodType, model,
+                Utils.getRowIdx(y),
+                Utils.getColIdx(x));
+        if (prey != null) {
+            if (isSuitableFood(prey)) {
+                model.removeObjectFromMap(prey);
                 reduceHunger();
-                myFoodMenu.removeIf(el -> el.x == x && el.y == y);
-                break;
+                myFoodMenu.remove(prey);
             }
         }
     }
@@ -103,7 +110,7 @@ public abstract class Animal extends GameObject {
         return true;
     }
 
-    int mtodth = 50;
+    public int mtodth = 50;
     int movingToOneDirectionThreshold = 30;
     int[] direction = new int[2];
 
@@ -112,7 +119,7 @@ public abstract class Animal extends GameObject {
             return true;
         }
         if (myFoodMenu.isEmpty())
-            myFoodMenu = Utils.searchAroundAnimal(ANIMAL_FOOD_VISION_RANG, x, y, model, Utils.Const.SearchFor.PLANT);
+            myFoodMenu = Utils.searchAroundAnimal(ANIMAL_FOOD_VISION_RANG, x, y, model, myFoodType);
         if (myFoodMenu.isEmpty()) {
             moveToOneDirectionSetUp();
             return true;
@@ -134,15 +141,22 @@ public abstract class Animal extends GameObject {
         ListIterator<GameObject> iter = myFoodMenu.listIterator();
         while (iter.hasNext()) {
             GameObject current = iter.next();
-            if (Utils.search(Utils.Const.SearchFor.PLANT, model,
-                    Utils.getRowIndex(current.y), Utils.getColumnIndex(current.x)) != null) {
-                return current;
+            if (Utils.search(myFoodType, model,
+                    Utils.getRowIdx(current.y),
+                    Utils.getColIdx(current.x)
+            ) != null) {
+                if (isSuitableFood(current))
+                    return current;
+                else
+                    iter.remove();
             } else {
                 iter.remove();
             }
         }
         return null;
     }
+
+    protected abstract boolean isSuitableFood(GameObject current);
 
     void moveToOneDirectionSetUp() {
         mtodth = 0;
@@ -152,22 +166,21 @@ public abstract class Animal extends GameObject {
     }
 
     private void moveThere() {
-//        Log.i(tag, "moving to one direction");
         x += width * direction[0];
         y += height * direction[1];
         boolean flag = false;
         if (this.x < 0) {
             this.x = 0;
             flag = true;
-        } else if (this.x > Utils.Const.FIELD_WIDTH - width) {
-            this.x = Utils.Const.FIELD_WIDTH - width;
+        } else if (this.x > Const.FIELD_WIDTH - width) {
+            this.x = Const.FIELD_WIDTH - width;
             flag = true;
         }
         if (this.y < 0) {
             this.y = 0;
             flag = true;
-        } else if (this.y > Utils.Const.FIELD_HEIGHT - height) {
-            this.y = Utils.Const.FIELD_HEIGHT - height;
+        } else if (this.y > Const.FIELD_HEIGHT - height) {
+            this.y = Const.FIELD_HEIGHT - height;
             flag = true;
         }
         if (flag)
@@ -175,7 +188,6 @@ public abstract class Animal extends GameObject {
     }
 
     void moveToward(int targetX, int targetY) {
-
         // four cases
         if (targetX < x)
             x -= width;

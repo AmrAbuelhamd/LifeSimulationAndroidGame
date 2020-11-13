@@ -1,29 +1,35 @@
-package com.blogspot.soyamr.lifesimulation.model;
+package com.blogspot.soyamr.lifesimulation.model.game_elements;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.blogspot.soyamr.lifesimulation.Utils;
+import com.blogspot.soyamr.lifesimulation.model.FantasticColors;
+import com.blogspot.soyamr.lifesimulation.model.Model;
+import com.blogspot.soyamr.lifesimulation.model.types.AnimalSpecie;
+import com.blogspot.soyamr.lifesimulation.model.types.Species;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-public class MaleAnimal extends Animal {
+public class MaleAnimal<T extends AnimalSpecie<Species>> extends Animal {
 
-
+    T mySpecie;
     private FemaleAnimal myLove;
     private List<GameObject> myCrushes;
 
-    MaleAnimal(Model model) {
-        super(model);
+    public MaleAnimal(Model model, T myType) {
+        super(model, myType.getFoodType());
+        this.mySpecie = myType;
         model.putMeHerePlease(x, y, this);
         setInitialColor();
     }
 
-    public MaleAnimal(int x, int y, Model model) {
-        super(x, y, model);
+    public MaleAnimal(int x, int y, Model model, T myType) {
+        super(x, y, model, myType.getFoodType());
+        mySpecie = myType;
         model.putMeHerePlease(x, y, this);
         setInitialColor();
     }
@@ -103,7 +109,7 @@ public class MaleAnimal extends Animal {
             return true;
         }
         if (myCrushes.isEmpty())
-            myCrushes = Utils.searchAroundAnimal(ANIMAL_WOMEN_VISION_RANG, x, y, model, Utils.Const.SearchFor.FEMALE_ANIMAL);
+            myCrushes = Utils.searchAroundAnimal(ANIMAL_WOMEN_VISION_RANG, x, y, model, Species.FEMALE_ANIMAL);
         if (myCrushes.isEmpty()) {
             moveToOneDirectionSetUp();
             return true;
@@ -122,10 +128,11 @@ public class MaleAnimal extends Animal {
         moveToward(myLove.x, myLove.y);
         return true;
     }
-    FemaleAnimal getNextTarget(){
+
+    FemaleAnimal getNextTarget() {
         ListIterator<GameObject> iter = myCrushes.listIterator();
         while (iter.hasNext()) {
-            FemaleAnimal current =(FemaleAnimal) iter.next();
+            FemaleAnimal current = (FemaleAnimal) iter.next();
             if (current.wannaBeInRelationship()) {
                 return current;
             } else {
@@ -133,5 +140,10 @@ public class MaleAnimal extends Animal {
             }
         }
         return null;
+    }
+
+    @Override
+    protected boolean isSuitableFood(GameObject current) {
+        return mySpecie.isSuitableFood(current);
     }
 }

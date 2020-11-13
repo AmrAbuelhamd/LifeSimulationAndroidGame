@@ -1,10 +1,7 @@
 package com.blogspot.soyamr.lifesimulation;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,8 +44,8 @@ public class MainActivity extends Activity {
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
         int width = displayMetrics.widthPixels;
-        Utils.Const.SCREEN_WIDTH = width;
-        Utils.Const.SCREEN_HEIGHT = height;
+        Const.SCREEN_WIDTH = width;
+        Const.SCREEN_HEIGHT = height;
     }
 
     boolean firstTime = true;

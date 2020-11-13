@@ -1,23 +1,25 @@
-package com.blogspot.soyamr.lifesimulation.model;
+package com.blogspot.soyamr.lifesimulation.model.game_elements;
 
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.Utils;
+import com.blogspot.soyamr.lifesimulation.model.Model;
 
 public class Plant extends GameObject {
 
 
-    Plant(Model model) {
+    public Plant(Model model) {
         paint.setColor(Color.CYAN);
         paint.setStyle(Paint.Style.FILL);
 
-        x = Utils.getRandom(0, Utils.Const.N) * width;
-        y = Utils.getRandom(0, Utils.Const.M) * height;
+        x = Utils.getRandom(0, Const.N) * width;
+        y = Utils.getRandom(0, Const.M) * height;
         rect.set(x, y, x + width, y + height);
         model.putMeHerePlease(x, y, this);
     }
-    Plant(Plant nearToThisPlant, Model model) {
+    public Plant(Plant nearToThisPlant, Model model) {
 
         paint.setColor(Color.CYAN);
         paint.setStyle(Paint.Style.FILL);

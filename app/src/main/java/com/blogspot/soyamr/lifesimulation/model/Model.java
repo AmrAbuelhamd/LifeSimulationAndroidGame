@@ -5,7 +5,14 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.Log;
 
+import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.Utils;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.Animal;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.Cell;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.FamousAnimal;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.FemaleAnimal;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.Plant;
 
 import java.util.List;
 import java.util.Random;
@@ -13,21 +20,22 @@ import java.util.Random;
 public class Model {
     public final Cell[][] cells;
     public final List<Animal> animals;
+    public final List<Animal> femaleAnimals;
     public final List<Plant> plants;
     private final String tag = "model";
     private FamousAnimal famousAnimal;
     private final FantasticColors fantasticColors;
-    private OnScreenInfo onScreenInfo;
+    private final OnScreenInfo onScreenInfo;
 
     public Model(Context context) {
         fantasticColors = new FantasticColors(context);
-        DataGenerator dataGenerator = new DataGenerator(this);
+        Generator generator = new Generator(this);
         onScreenInfo = new OnScreenInfo();
 
-        cells = dataGenerator.generateSells();
-        animals = dataGenerator.generateAnimals();
-        plants = dataGenerator.generatePlants();
-
+        cells = generator.generateSells();
+        animals = generator.generateAnimals();
+        plants = generator.generatePlants();
+        femaleAnimals = generator.femaleAnimals;
     }
 
     public void addOnePlant() {
@@ -57,13 +65,15 @@ public class Model {
     }
 
     public void deleteMePlease(Animal animal) {
-//        iAmLeavingThisCell(animal.getX(), animal.getY(), animal);
+        iAmLeavingThisCell(animal.getX(), animal.getY(), animal);
         //todo add explosion effect which will be class that will work for a couple of seconds
         animals.remove(animal);
+        if (animal instanceof FemaleAnimal)
+            femaleAnimals.remove(animal);
     }
 
     public void removePlant(Plant plant) {
-        cells[Utils.getRowIndex(plant.y)][Utils.getColumnIndex(plant.x)].removeMeFromHere(plant);
+        cells[Utils.getRowIdx(plant.getY())][Utils.getColIdx(plant.getX())].removeMeFromHere(plant);
         plants.remove(plant);
     }
 
@@ -81,7 +91,7 @@ public class Model {
     int anpth = 0;
 
     public void update(Rect clipBoundsCanvas, float mScaleFactor) {
-        onScreenInfo.update(animals.size(), plants.size(), clipBoundsCanvas, mScaleFactor);
+        onScreenInfo.update(animals.size(), femaleAnimals.size(), plants.size(), clipBoundsCanvas, mScaleFactor);
         if (!plants.isEmpty())
             if (anpth < addingNewPlantThreshold) {
                 ++anpth;
@@ -106,22 +116,24 @@ public class Model {
 
     public void controlBirthPlease() {
         if (animals.size() > 300) {
-            GameObject.SEARCH_PARTNER_THRESHOLD = Utils.Const.SEARCH_PARTNER_THRESHOLD_PROHIBIT;
-            GameObject.SEARCH_FOOD_THRESHOLD = Utils.Const.SEARCH_FOOD_THRESHOLD_HIGH;
+            GameObject.SEARCH_PARTNER_THRESHOLD = Const.SEARCH_PARTNER_THRESHOLD_PROHIBIT;
+            GameObject.SEARCH_FOOD_THRESHOLD = Const.SEARCH_FOOD_THRESHOLD_HIGH;
             ;
         } else if (animals.size() < 100) {
-            GameObject.SEARCH_PARTNER_THRESHOLD = Utils.Const.SEARCH_PARTNER_THRESHOLD_NORMAL;
-            GameObject.SEARCH_FOOD_THRESHOLD = Utils.Const.SEARCH_FOOD_THRESHOLD_NORMAL;
+            GameObject.SEARCH_PARTNER_THRESHOLD = Const.SEARCH_PARTNER_THRESHOLD_NORMAL;
+            GameObject.SEARCH_FOOD_THRESHOLD = Const.SEARCH_FOOD_THRESHOLD_NORMAL;
         }
         System.out.println("#################hi from birth control#################");
     }
 
     public void addChild(Animal animal) {
+        if (animal instanceof FemaleAnimal)
+            femaleAnimals.add(animal);
         animals.add(animal);
     }
 
     public void putMeHerePlease(int x, int y, GameObject gameObject) {
-        cells[Utils.getRowIndex(y)][Utils.getColumnIndex(x)].putMeHerePlease(gameObject);
+        cells[Utils.getRowIdx(y)][Utils.getColIdx(x)].putMeHerePlease(gameObject);
     }
 
     public List<GameObject> getObjectResidingHere(int i, int j) {
@@ -129,6 +141,16 @@ public class Model {
     }
 
     public void iAmLeavingThisCell(int x, int y, Animal animal) {
-        cells[Utils.getRowIndex(y)][Utils.getColumnIndex(x)].removeMeFromHere(animal);
+        cells[Utils.getRowIdx(y)][Utils.getColIdx(x)].removeMeFromHere(animal);
+    }
+
+    public void removeObjectFromMap(GameObject prey) {
+        cells[Utils.getRowIdx(prey.getY())][Utils.getColIdx(prey.getX())].removeMeFromHere(prey);
+        if (prey instanceof Animal) {
+            animals.remove(prey);
+            if (prey instanceof FemaleAnimal)
+                femaleAnimals.remove(prey);
+        } else
+            plants.remove(prey);
     }
 }

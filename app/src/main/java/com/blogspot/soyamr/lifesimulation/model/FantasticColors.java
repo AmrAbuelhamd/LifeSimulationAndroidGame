@@ -27,7 +27,7 @@ public class FantasticColors {
     }
 
     private int getMaleColor(int level) {
-//        return context.getColor(R.color.m100);
+if(true)        return context.getColor(R.color.m100);
         switch (level) {
             case 100:
             case 90:
@@ -50,7 +50,7 @@ public class FantasticColors {
     }
 
     private int getFemaleColor(int level) {
-//        return context.getColor(R.color.f100);
+if(true)        return context.getColor(R.color.f100);
 
         switch (level) {
             case 100:
