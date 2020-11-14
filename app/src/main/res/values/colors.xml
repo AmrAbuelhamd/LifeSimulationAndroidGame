@@ -4,22 +4,62 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
 
+<!--    m0-->
+    <color name="mc100">#B71C1C</color>
+    <color name="mc80">#C62828</color>
+    <color name="mc60">#D32F2F</color>
+    <color name="mc40">#E53935</color>
+    <color name="mc20">#F44336</color>
+    <color name="mc0">#EF5350</color>
 
-    <color name="m100">#FFFFFF</color>
-    <color name="m80">#C3C3C3</color>
-    <color name="m60">#8e8e8e</color>
-    <color name="m40">#727272</color>
-    <color name="m20">#3E3D3D</color>
-    <color name="m0">#000000</color>
+    <color name="mh100">#1B5E20</color>
+    <color name="mh80">#2E7D32</color>
+    <color name="mh60">#388E3C</color>
+    <color name="mh40">#43A047</color>
+    <color name="mh20">#4CAF50</color>
+    <color name="mh0">#66BB6A</color>
 
-    <color name="f100">#FF0000</color>
-    <color name="f80">#D80000</color>
-    <color name="f60">#950000</color>
-    <color name="f40">#6E0101</color>
-    <color name="f20">#390000</color>
-    <color name="f0">#020000</color>
+    <color name="mo100">#4A148C</color>
+    <color name="mo80">#6A1B9A</color>
+    <color name="mo60">#7B1FA2</color>
+    <color name="mo40">#8E24AA</color>
+    <color name="mo20">#9C27B0</color>
+    <color name="mo0">#AB47BC</color>
 
+<!--    f16-->
+    <color name="fc100">#880E4F</color>
+    <color name="fc80">#AD1457</color>
+    <color name="fc60">#C2185B</color>
+    <color name="fc40">#D81B60</color>
+    <color name="fc20">#E91E63</color>
+    <color name="fc0">#EC407A</color>
 
+    <color name="fh100">#827717</color>
+    <color name="fh80">#9E9D24</color>
+    <color name="fh60">#AFB42B</color>
+    <color name="fh40">#C0CA33</color>
+    <color name="fh20">#CDDC39</color>
+    <color name="fh0">#D4E157</color>
 
+    <color name="fo100">#311B92</color>
+    <color name="fo80">#4527A0</color>
+    <color name="fo60">#512DA8</color>
+    <color name="fo40">#5E35B1</color>
+    <color name="fo20">#673AB7</color>
+    <color name="fo0">#7E57C2</color>
+    <color name="plant">#69F0AE</color>
+
+    400
+    #7E57C2
+    500
+    #673AB7
+    600
+    #5E35B1
+    700
+    #512DA8
+    800
+    #4527A0
+    900
+    #311B92
 
 </resources>

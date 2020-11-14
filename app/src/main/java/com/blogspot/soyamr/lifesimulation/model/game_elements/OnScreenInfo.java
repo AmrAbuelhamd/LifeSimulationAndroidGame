@@ -14,7 +14,7 @@ public class OnScreenInfo extends GameObject {
         paint.setTextSize(60);
         paint.setAntiAlias(true);
         paint.setColor(Color.YELLOW);
-        paint.setStyle(Paint.Style.STROKE);
+        paint.setStyle(Paint.Style.FILL);
 
     }
 
@@ -43,9 +43,9 @@ public class OnScreenInfo extends GameObject {
     public void draw(Canvas canvas) {
 
         canvas.drawText("total population: " + total, x, y, paint);
-        canvas.drawText("female population: " + femaleCount, x, y + space, paint);
-        canvas.drawText("male population: " + (int) (total - femaleCount), x, y + 2 * space, paint);
-        canvas.drawText("plants population: " + plantCount, x, y + 3 * space, paint);
+//        canvas.drawText("female population: " + femaleCount, x, y + space, paint);
+//        canvas.drawText("male population: " + (int) (total - femaleCount), x, y + 1 * space, paint);
+        canvas.drawText("plants population: " + plantCount, x, y + 1 * space, paint);
         canvas.drawText(GameThread.getFrameRate(), right, y + space, paint);
 
     }

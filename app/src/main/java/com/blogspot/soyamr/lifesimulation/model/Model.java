@@ -131,9 +131,9 @@ public class Model {
                 anpth = 0;
             }
     }
-
+    Bitmap bitmap;//todo make sure that this works
     private void createExplosionObject() {
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.explosion);
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.explosion);
         if (bitmap != null) {
             Explosion explosion = new Explosion(this, bitmap, Utils.getRandom(0, Const.N) * Const.CELL_WIDTH,
                     Utils.getRandom(0, Const.M) * Const.CELL_HEIGHT, 5, 5);

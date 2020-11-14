@@ -277,7 +277,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
                             lowerBoundRangeY - Const.CELL_HEIGHT,
                             model, Species.ANIMAL).stream().findFirst().orElse(null);
 
-                    model.setFamousAnimal(animal);
+                    model.setFamousAnimal(animal);//todo animal.makeMeFamous(); animal himself should do this.
 
                 }
                 break;

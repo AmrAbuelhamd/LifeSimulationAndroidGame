@@ -5,13 +5,15 @@ import android.graphics.Paint;
 
 import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.Utils;
+import com.blogspot.soyamr.lifesimulation.model.FantasticColors;
 import com.blogspot.soyamr.lifesimulation.model.Model;
+import com.blogspot.soyamr.lifesimulation.model.types.Species;
 
 public class Plant extends GameObject {
 
 
     public Plant(Model model) {
-        paint.setColor(Color.CYAN);
+        paint.setColor(model.getMeColor(FantasticColors.TYPE.plant,0));
         paint.setStyle(Paint.Style.FILL);
 
         x = Utils.getRandom(0, Const.N) * width;

@@ -1,11 +1,9 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.blogspot.soyamr.lifesimulation.Utils;
-import com.blogspot.soyamr.lifesimulation.model.FantasticColors;
 import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.types.AnimalSpecie;
 import com.blogspot.soyamr.lifesimulation.model.types.Species;
@@ -31,7 +29,7 @@ public class MaleAnimal<T extends AnimalSpecie<Species>> extends Animal {
     }
 
     void setInitialColor() {
-        paint.setColor(model.getMeColor(FantasticColors.TYPE.male, hunger));
+        paint.setColor(mySpecie.getMyColor(hunger, Species.MALE_ANIMAL));
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
         myCrushes = new ArrayList<>();
@@ -89,7 +87,7 @@ public class MaleAnimal<T extends AnimalSpecie<Species>> extends Animal {
         if (inRelation) {
             paint.setStyle(Paint.Style.STROKE);
             paint.setStrokeWidth(10);
-            paint.setColor(Color.WHITE);
+//            paint.setColor(Color.WHITE);
             canvas.drawRect(rect, paint);
             setInitialColor();
         }
@@ -97,7 +95,7 @@ public class MaleAnimal<T extends AnimalSpecie<Species>> extends Animal {
 
     @Override
     protected void changeColor() {
-        paint.setColor(model.getMeColor(FantasticColors.TYPE.male, hunger));
+        paint.setColor(mySpecie.getMyColor(hunger, Species.MALE_ANIMAL));
     }
 
     @Override

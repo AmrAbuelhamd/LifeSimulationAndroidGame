@@ -13,7 +13,7 @@ import java.util.ListIterator;
 
 public abstract class Animal extends GameObject {
     List<GameObject> myFoodMenu;
-    int hunger = 50;
+    int hunger = 100;
     Model model;
     public boolean inRelation = false;
     boolean iDoNotWant;
@@ -42,7 +42,7 @@ public abstract class Animal extends GameObject {
         model.putMeHerePlease(x, y, this);
     }
 
-    final int reSetIDoNotWantVariable = 250;
+    final int reSetIDoNotWantVariable = 50;
     int rsidwv = 0;
 
     protected void setIdoNotWant() {

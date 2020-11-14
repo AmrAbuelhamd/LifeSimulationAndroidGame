@@ -99,24 +99,24 @@ public class Generator {
     public List<Animal> generateAnimals() {
         //CREATE FEMALE ANIMALS
         List<Animal> tempAnimals = new ArrayList<>();
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 200; i++) {//200
             FemaleAnimal<Herbivore> animal = new FemaleAnimal<>(-1, -1, model, Herbivore.getInstance());
             tempAnimals.add(animal);
         }
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 100; i++) {//100
             FemaleAnimal<Carnivore> animal = new FemaleAnimal<>(-1, -1, model, Carnivore.getInstance());
             tempAnimals.add(animal);
         }
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {//10
             FemaleAnimal<Omnivore> animal = new FemaleAnimal<>(-1, -1, model, Omnivore.getInstance());
             tempAnimals.add(animal);
         }
         //create Male ANIMALS
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 200; i++) {//200
             MaleAnimal<Herbivore> animal = new MaleAnimal<>(-1, -1, model, Herbivore.getInstance());
             tempAnimals.add(animal);
         }
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 100; i++) {//100
             MaleAnimal<Carnivore> animal = new MaleAnimal<>(-1, -1, model, Carnivore.getInstance());
             tempAnimals.add(animal);
         }

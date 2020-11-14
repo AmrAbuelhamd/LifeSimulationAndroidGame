@@ -3,9 +3,7 @@ package com.blogspot.soyamr.lifesimulation.model.game_elements;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 
-import com.blogspot.soyamr.lifesimulation.model.FantasticColors;
 import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.types.AnimalSpecie;
 import com.blogspot.soyamr.lifesimulation.model.types.Species;
@@ -13,7 +11,7 @@ import com.blogspot.soyamr.lifesimulation.model.types.Species;
 public class FemaleAnimal<T extends AnimalSpecie<Species>> extends Animal {
 
     T mySpecie;
-    private String tag="Female Class";
+    private String tag = "Female Class";
 
     public FemaleAnimal(int x, int y, Model model, T myType) {
         super(x, y, model, myType.getFoodType());
@@ -26,7 +24,7 @@ public class FemaleAnimal<T extends AnimalSpecie<Species>> extends Animal {
     }
 
     private void setInitialColor() {
-        paint.setColor(Color.RED);
+        paint.setColor(mySpecie.getMyColor(hunger,Species.FEMALE_ANIMAL));
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
     }
@@ -37,7 +35,7 @@ public class FemaleAnimal<T extends AnimalSpecie<Species>> extends Animal {
         if (inRelation) {
             paint.setStyle(Paint.Style.STROKE);
             paint.setStrokeWidth(10);
-            paint.setColor(Color.RED);
+//            paint.setColor(Color.RED);
             canvas.drawRect(rect, paint);
             setInitialColor();
         }
@@ -68,10 +66,9 @@ public class FemaleAnimal<T extends AnimalSpecie<Species>> extends Animal {
         return mySpecie.isSuitableFood(current);
     }
 
-
     @Override
     protected void changeColor() {
-        paint.setColor(model.getMeColor(FantasticColors.TYPE.female, hunger));
+        paint.setColor(mySpecie.getMyColor(hunger,Species.FEMALE_ANIMAL));
     }
 
     @Override

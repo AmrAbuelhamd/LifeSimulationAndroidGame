@@ -57,6 +57,7 @@ public abstract class Utils {
 
 
     public static GameObject search(Species searchFor, Model model, int i, int j) {
+        //todo make use of enumerations to get the animals, i can put methods there .... enum.plant.get()...
         List<GameObject> objectSOnCell = model.getObjectResidingHere(i, j);
         if (searchFor == Species.ANIMAL) {
             for (GameObject currentObject : objectSOnCell)
