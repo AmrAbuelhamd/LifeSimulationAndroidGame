@@ -38,6 +38,7 @@ public abstract class Animal extends GameObject {
     int dfth = 0;
     AnimalDataManger animalDataManger;
 
+    //todo [important]  pattern builder
     public Animal(int x, int y, Model model, Type myType, GenderEnum genderEnum,
                   List<Type> myFoodTypeList) {
         super(myType, genderEnum);
@@ -67,6 +68,11 @@ public abstract class Animal extends GameObject {
     }
 
     //search for food or move randomly
+    //todo [impo] now it should do three things
+    // check love();check food(); moveBB();
+    // then in each one i take decesion on direction [to love, random, one direction, to food]
+    // according to that enum i will move.
+
     public void update() {
         model.iAmLeavingThisCell(x, y, this);
         if (!myTurn && !genderOperator.inRelation) {
@@ -140,7 +146,9 @@ public abstract class Animal extends GameObject {
         this.x = x + width * moveDirection[randomIndex][0];
         this.y = y + height * moveDirection[randomIndex][1];
     }
-
+    //todo[impo] move this to cell, she checks everytime animal added and resisidences more than one
+    // ask each animal type do you eat the others, if yes then remove them from cell and from animal
+    // foodlist and remove them from cell
     private void checkIfAnimalOnSameCellWithTarget() {
         GameObject prey = null;
         for (Type preyType : myFoodTypeList) {
@@ -301,4 +309,6 @@ public abstract class Animal extends GameObject {
     public void drawAdditionalInfo(Canvas canvas) {
         animalDataManger.draw(canvas);
     }
+
+    //add gender
 }

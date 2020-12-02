@@ -12,7 +12,7 @@ import static com.blogspot.soyamr.lifesimulation.Const.SEARCH_FOOD_THRESHOLD_NOR
 import static com.blogspot.soyamr.lifesimulation.Const.SEARCH_PARTNER_THRESHOLD_NORMAL;
 
 
-public abstract class GameObject {
+public abstract class GameObject /*implements famouseanimaslinterface*/ {
 
     public static final int ANIMAL_FOOD_VISION_RANG = 50;
     public static final int ANIMAL_WOMEN_VISION_RANG = 30;
@@ -72,6 +72,7 @@ public abstract class GameObject {
         return x;
     }
 
+    //getGender(); todo
     public int getY() {
         return y;
     }

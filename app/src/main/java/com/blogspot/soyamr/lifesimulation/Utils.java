@@ -9,6 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+
+/*
+
+1- Type.Java -> Utils.Java
+
+
+ */
 public abstract class Utils {
     public static final Random rand = new Random();
     static String tag = "search algorithm";
