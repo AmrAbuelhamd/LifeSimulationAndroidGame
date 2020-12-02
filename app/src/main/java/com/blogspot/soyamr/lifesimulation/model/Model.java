@@ -10,15 +10,17 @@ import android.util.Log;
 import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.R;
 import com.blogspot.soyamr.lifesimulation.Utils;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.Animal;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.FantasticColors;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Carrot;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Cell;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.Explosion;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.FamousAnimal;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.special_events.Explosion;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.screen_data.FamousAnimal;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.OnScreenInfo;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.Plant;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.screen_data.OnScreenInfo;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Plant;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -26,17 +28,23 @@ public class Model {
     public final Cell[][] cells;
     public final List<Animal> animals;
     public final List<Plant> plants;
+    public final Generator generator;
+    final int addingNewPlantThreshold = 20;
     private final String tag = "model";
-    private FamousAnimal famousAnimal;
     private final FantasticColors fantasticColors;
     private final OnScreenInfo onScreenInfo;
-    public final Generator generator;
     private final Context context;
     private final List<Explosion> explosionList;
-
+    int anpth = 0;
+    int disasterThreshold = 30;
+    int dth = 0;
+    Bitmap bitmap;
+    int deleteGhostAnimalThreshold = 1000;
+    int dgath = 0;
+    private FamousAnimal famousAnimal;
 
     public Model(Context context) {
-        explosionList = new ArrayList<>();
+        explosionList = new LinkedList<>();
         fantasticColors = new FantasticColors(context);
         generator = new Generator(this);
         onScreenInfo = new OnScreenInfo();
@@ -48,12 +56,12 @@ public class Model {
 
     public void addOnePlant() {
         Plant randomPlant = plants.get(Utils.getRandom(0, plants.size()));
-        Plant plant = new Plant(randomPlant, this);
+        Plant plant = new Carrot(randomPlant.getX(), randomPlant.getY(), this);
         plants.add(plant);
 
     }
 
-    public void setFamousAnimal(Animal animal) {
+    public void setFamousAnimal(GameObject animal) {
         if (animal == null)
             famousAnimal = null;
         else
@@ -63,11 +71,13 @@ public class Model {
     public void deleteMePlease(Animal animal) {
         iAmLeavingThisCell(animal.getX(), animal.getY(), animal);
         //todo add explosion effect which will be class that will work for a couple of seconds
+        animal.writeMyWill();
         animals.remove(animal);
     }
 
     public void removePlant(Plant plant) {
-        cells[Utils.getRowIdx(plant.getY())][Utils.getColIdx(plant.getX())].removeMeFromHere(plant);
+        iAmLeavingThisCell(plant.getX(), plant.getY(), plant);
+        plant.isAlive = false;
         plants.remove(plant);
     }
 
@@ -80,12 +90,6 @@ public class Model {
     public int getMeColor(FantasticColors.TYPE type, int level) {
         return fantasticColors.getColor(type, level);
     }
-
-    final int addingNewPlantThreshold = 20;
-    int anpth = 0;
-
-    int disasterThreshold = 30;
-    int dth = 0;
 
     public void update(Rect clipBoundsCanvas, float mScaleFactor) {
         updateGameParameters();
@@ -102,17 +106,17 @@ public class Model {
                 iterator.remove();
             }
         }
-        showGhostAnimals();
+//        showGhostAnimals();
     }
 
     private void updateGameParameters() {
         //delete ghost animals
-        if (dgath < deleteGhostAnimalThreshold) {
-            ++dgath;
-        } else {
-            deleteGhostAnimals();
-            dgath = 0;
-        }
+//        if (dgath < deleteGhostAnimalThreshold) {
+//            ++dgath;
+//        } else {
+//            deleteGhostAnimals();
+//            dgath = 0;
+//        }
         //create disaster
         if (dth < disasterThreshold) {
             ++dth;
@@ -131,7 +135,7 @@ public class Model {
                 anpth = 0;
             }
     }
-    Bitmap bitmap;//todo make sure that this works
+
     private void createExplosionObject() {
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.explosion);
         if (bitmap != null) {
@@ -165,9 +169,6 @@ public class Model {
             }
         }
     }
-
-    int deleteGhostAnimalThreshold = 1000;
-    int dgath = 0;
 
     private void deleteGhostAnimals() {
         for (int i = 0; i < Const.M; ++i) {
@@ -213,12 +214,13 @@ public class Model {
         return cells[i][j].getObjectResidingHere();
     }
 
-    public void iAmLeavingThisCell(int x, int y, Animal animal) {
-        cells[Utils.getRowIdx(y)][Utils.getColIdx(x)].removeMeFromHere(animal);
+    public void iAmLeavingThisCell(int x, int y, GameObject gameObject) {
+        cells[Utils.getRowIdx(y)][Utils.getColIdx(x)].removeMeFromHere(gameObject);
     }
 
     public void removeObjectFromMap(GameObject prey) {
         cells[Utils.getRowIdx(prey.getY())][Utils.getColIdx(prey.getX())].removeMeFromHere(prey);
+        prey.isAlive = false;
         if (prey instanceof Animal) {
             animals.remove(prey);
         } else

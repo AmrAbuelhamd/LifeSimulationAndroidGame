@@ -4,14 +4,16 @@ package com.blogspot.soyamr.lifesimulation.model.game_elements;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import com.blogspot.soyamr.lifesimulation.Const;
+
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 
-public class Cell extends GameObject {
-
+public class Cell {
+    int x, y;
     private List<GameObject> residences;
 
     private static final Paint paint;
@@ -26,11 +28,10 @@ public class Cell extends GameObject {
     private String tag = "cell";
 
     public Cell(int i, int j) {
-        x = j * width;
-        y = i * height;
-        residences = new CopyOnWriteArrayList<>();
+        x = j * Const.CELL_WIDTH;
+        y = i * Const.CELL_HEIGHT;
+        residences = new LinkedList<>();
     }
-
 
 
     void setRandomColor() {

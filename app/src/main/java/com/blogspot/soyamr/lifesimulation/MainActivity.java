@@ -1,6 +1,7 @@
 package com.blogspot.soyamr.lifesimulation;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -20,6 +21,12 @@ public class MainActivity extends Activity {
         setContentView(view);
         //hideSystemUI();
         getScreenSize();
+
+        printcolors();
+    }
+
+    private void printcolors() {
+        System.out.println("sdg - "+Color.parseColor("#FFFFFF")+"");
     }
 
     private void hideSystemUI() {

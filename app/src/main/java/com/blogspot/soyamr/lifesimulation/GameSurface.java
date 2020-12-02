@@ -13,12 +13,15 @@ import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
 
-import com.blogspot.soyamr.lifesimulation.model.game_elements.Animal;
-import com.blogspot.soyamr.lifesimulation.model.types.Species;
 import com.blogspot.soyamr.lifesimulation.model.Model;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.Plant;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Plant;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.blogspot.soyamr.lifesimulation.Const.Direction.DOWN;
@@ -28,12 +31,15 @@ import static com.blogspot.soyamr.lifesimulation.Const.Direction.UP;
 
 
 public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, Controller {
+    final int updateInfoThreshold = 50;
     private final ScaleListener scaleListener;
-    private GameThread gameThread;
     Rect clipBoundsCanvas;
 
 
     Model model;
+    int uith = 0;
+    boolean isClick = false;
+    private GameThread gameThread;
 
     public GameSurface(Context context) {
         super(context);
@@ -54,7 +60,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
         model.update(clipBoundsCanvas, scaleListener.mScaleFactor);
     }
 
-
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
@@ -71,9 +76,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
         canvas.restore();
     }
 
-    final int updateInfoThreshold = 50;
-    int uith = 0;
-
     public void updateLogInfo() {
         if (uith < updateInfoThreshold) {
             ++uith;
@@ -82,7 +84,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
             uith = 0;
         }
     }
-
 
     private void drawmyalgorithm(Canvas canvas) {
         Plant nearestPlant = null;
@@ -248,8 +249,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
         this.gameThread = new GameThread(this);
     }
 
-    boolean isClick = false;
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -272,12 +271,21 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
                     int rangeNumberY = y / Const.CELL_HEIGHT;
                     int lowerBoundRangeY = rangeNumberY * Const.CELL_HEIGHT;
 
-                    Animal animal = (Animal) Utils.searchAroundAnimal(Const.USER_CLICK_SEARCH_RANG
+                    GameObject gameObject = Utils.searchAroundAnimal(Const.USER_CLICK_SEARCH_RANG
                             , lowerBoundRangeX - Const.CELL_WIDTH,
-                            lowerBoundRangeY - Const.CELL_HEIGHT,
-                            model, Species.ANIMAL).stream().findFirst().orElse(null);
+                            lowerBoundRangeY - Const.CELL_HEIGHT, model,
+                            List.of(Type.RABBIT, Type.FOX, Type.WOLF, Type.PIG
+                                    , Type.MOUSE, Type.PERSON, Type.BEAR, Type.DEER,
+                                    Type.LION, Type.RACCOON,Type.APPLE,Type.CARROT,Type.OAT),
+                            GenderEnum.BOTH).stream().findFirst().orElse(null);
 
-                    model.setFamousAnimal(animal);//todo animal.makeMeFamous(); animal himself should do this.
+                    model.setFamousAnimal(gameObject);
+                    if (gameObject != null) {
+                        gameObject.makeMeFamous();
+                    } else {
+                        model.setFamousAnimal(null);
+                    }
+
 
                 }
                 break;

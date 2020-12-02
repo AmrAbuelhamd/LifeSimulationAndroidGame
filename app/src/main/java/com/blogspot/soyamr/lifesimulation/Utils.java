@@ -1,11 +1,9 @@
 package com.blogspot.soyamr.lifesimulation;
 
 import com.blogspot.soyamr.lifesimulation.model.Model;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.Animal;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.FemaleAnimal;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.Plant;
-import com.blogspot.soyamr.lifesimulation.model.types.Species;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +15,7 @@ public abstract class Utils {
 
     public static List<GameObject>
     searchAroundAnimal(int searchRange, int currentX, int currentY, Model model,
-                       Species searchFor) {
+                       List<Type> searchFor, GenderEnum genderEnum) {
         int iStart = getRowIdx(currentY) - searchRange;
         int jStart = getColIdx(currentX) - searchRange;
         iStart = Math.max(iStart, 0);
@@ -39,13 +37,14 @@ public abstract class Utils {
                 if (i == posI && j == posJ) {
                     continue;
                 }
-                GameObject currentObject = search(searchFor, model, i, j);
-                if (currentObject == null)
-                    continue;
-
-                currentObject.distance = getManhattanDistance(currentX, currentY,
-                        currentObject.getX(), currentObject.getY());
-                gameObjects.add(currentObject);
+                for (Type preyType : searchFor) {
+                    GameObject prey = preyType.getMeFromHere(model, i, j, genderEnum);
+                    if (prey != null) {
+                        prey.distance = getManhattanDistance(currentX, currentY,
+                                prey.getX(), prey.getY());
+                        gameObjects.add(prey);
+                    }
+                }
             }
         }
         gameObjects.sort((lhs, rhs) -> {
@@ -56,37 +55,37 @@ public abstract class Utils {
     }
 
 
-    public static GameObject search(Species searchFor, Model model, int i, int j) {
-        //todo make use of enumerations to get the animals, i can put methods there .... enum.plant.get()...
-        List<GameObject> objectSOnCell = model.getObjectResidingHere(i, j);
-        if (searchFor == Species.ANIMAL) {
-            for (GameObject currentObject : objectSOnCell)
-                if (currentObject instanceof Animal)
-                    return currentObject;
-        } else if (searchFor == Species.PLANT) {
-            for (GameObject currentObject : objectSOnCell)
-                if (currentObject instanceof Plant)
-                    return currentObject;
-        } else if (searchFor == Species.FEMALE_ANIMAL) {
-            for (GameObject currentObject : objectSOnCell)
-                if (currentObject instanceof FemaleAnimal)
-                    return currentObject;
-        } else if (searchFor == Species.BOTH) {
-            for (GameObject currentObject : objectSOnCell) {
-                if (currentObject instanceof Animal && ((Animal) currentObject).myFoodType != Species.BOTH
-                        && !((Animal) currentObject).inRelation
-                        || currentObject instanceof Plant)
-                    return currentObject;
-            }
-        } else if (searchFor == Species.HERBIVORE) {
-            for (GameObject currentObject : objectSOnCell) {
-                if (currentObject instanceof Animal && ((Animal) currentObject).myFoodType == Species.PLANT &&
-                        !((Animal) currentObject).inRelation)
-                    return currentObject;
-            }
-        }
-        return null;
-    }
+//    public static GameObject search(Species searchFor, Model model, int i, int j) {
+//        //todo make use of enumerations to get the animals, i can put methods there .... enum.plant.get()...
+//        List<GameObject> objectSOnCell = model.getObjectResidingHere(i, j);
+//        if (searchFor == Species.ANIMAL) {
+//            for (GameObject currentObject : objectSOnCell)
+//                if (currentObject instanceof Animal)
+//                    return currentObject;
+//        } else if (searchFor == Species.PLANT) {
+//            for (GameObject currentObject : objectSOnCell)
+//                if (currentObject instanceof Plant)
+//                    return currentObject;
+//        } else if (searchFor == Species.FEMALE_ANIMAL) {
+//            for (GameObject currentObject : objectSOnCell)
+//                if (currentObject instanceof FemaleAnimal)
+//                    return currentObject;
+//        } else if (searchFor == Species.BOTH) {
+//            for (GameObject currentObject : objectSOnCell) {
+//                if (currentObject instanceof Animal && ((Animal) currentObject).myFoodTypeList != Species.BOTH
+//                        && !((Animal) currentObject).inRelation
+//                        || currentObject instanceof Plant)
+//                    return currentObject;
+//            }
+//        } else if (searchFor == Species.HERBIVORE) {
+//            for (GameObject currentObject : objectSOnCell) {
+//                if (currentObject instanceof Animal && ((Animal) currentObject).myFoodTypeList == Species.PLANT &&
+//                        !((Animal) currentObject).inRelation)
+//                    return currentObject;
+//            }
+//        }
+//        return null;
+//    }
 
     public static int getManhattanDistance(int x1, int y1, int x2, int y2) {
         return Math.abs(x1 - x2) + Math.abs(y1 - y2);

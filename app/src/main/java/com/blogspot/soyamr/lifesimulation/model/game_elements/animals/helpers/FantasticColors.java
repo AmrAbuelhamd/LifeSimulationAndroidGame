@@ -1,4 +1,4 @@
-package com.blogspot.soyamr.lifesimulation.model;
+package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers;
 
 import android.content.Context;
 
@@ -15,7 +15,7 @@ public class FantasticColors {
         this.context = context;
     }
 
-    int getColor(TYPE type, int level) {
+    public int getColor(TYPE type, int level) {
         switch (type) {
             case female:
                 return getFemaleColor(level);

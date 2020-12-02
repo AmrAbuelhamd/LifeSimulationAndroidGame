@@ -1,43 +1,27 @@
-package com.blogspot.soyamr.lifesimulation.model.types;
+package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.carnivore;
 
 import com.blogspot.soyamr.lifesimulation.R;
-import com.blogspot.soyamr.lifesimulation.model.FantasticColors;
+import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.FantasticColors;
 
-public class Carnivore implements AnimalSpecie<Species> {
-    public static final Carnivore instance = new Carnivore();
+import java.util.List;
 
-    private Carnivore() {
+public abstract class Carnivore extends Animal {
+
+
+    public Carnivore(int x, int y, Model model, Type myType, GenderEnum genderEnum, List<Type> myFoodTypeList) {
+        super(x, y, model, myType, genderEnum, myFoodTypeList);
     }
 
-    public static Carnivore getInstance() {
-        return instance;
-    }
 
     @Override
-    public Species getType() {
-        return Species.CARNIVORE;
-    }
-
-    @Override
-    public Species getFoodType() {
-        return Species.HERBIVORE;
-    }
-
-    @Override
-    public boolean isSuitableFood(GameObject current) {
-        return true;
-    }
-
-    @Override
-    public boolean isSuitableGroom(Species groomType) {
-        return groomType == getType();
-    }
-
-    @Override
-    public int getMyColor(int hungerLevel, Species type) {
-        if (type == Species.MALE_ANIMAL)
-            switch (hungerLevel) {
+    public int getMyColor() {
+        if (genderEnum == GenderEnum.MALE)
+            switch (hunger) {
                 case 100:
                 case 90:
                     return FantasticColors.context.getColor(R.color.mc100);
@@ -57,7 +41,7 @@ public class Carnivore implements AnimalSpecie<Species> {
                     return FantasticColors.context.getColor(R.color.mc0);
             }
         else {
-            switch (hungerLevel) {
+            switch (hunger) {
                 case 100:
                 case 90:
                     return FantasticColors.context.getColor(R.color.fc100);

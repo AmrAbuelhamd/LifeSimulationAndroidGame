@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.blogspot.soyamr.lifesimulation.Const;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.carnivore.Carnivore;
 
 import static com.blogspot.soyamr.lifesimulation.Const.SEARCH_FOOD_THRESHOLD_NORMAL;
 import static com.blogspot.soyamr.lifesimulation.Const.SEARCH_PARTNER_THRESHOLD_NORMAL;
@@ -13,20 +14,13 @@ import static com.blogspot.soyamr.lifesimulation.Const.SEARCH_PARTNER_THRESHOLD_
 
 public abstract class GameObject {
 
-    public static  int SEARCH_FOOD_THRESHOLD = SEARCH_FOOD_THRESHOLD_NORMAL;
-    public static  int SEARCH_PARTNER_THRESHOLD = SEARCH_PARTNER_THRESHOLD_NORMAL;
     public static final int ANIMAL_FOOD_VISION_RANG = 50;
     public static final int ANIMAL_WOMEN_VISION_RANG = 30;
     public static final int SEARCH_FOOD_OPTIMIZATION_THRESHOLD = 40;//40
     public static final int SEARCH_WOMEN_OPTIMIZATION_THRESHOLD = 20;//20
-    public int distance;
     public static final int width = Const.CELL_WIDTH;
     public static final int height = Const.CELL_HEIGHT;
-    protected final Rect rect = new Rect();
-    protected final Paint paint = new Paint();
-    protected int x;
-    protected int y;
-    static final int[][] moveDirection = new int[][]{
+    public static final int[][] moveDirection = new int[][]{
             {0, -1},
             {1, -1},
             {1, 0},
@@ -36,8 +30,23 @@ public abstract class GameObject {
             {-1, 0},
             {-1, -1},
     };
+    public static int SEARCH_FOOD_THRESHOLD = SEARCH_FOOD_THRESHOLD_NORMAL;
+    public static int SEARCH_PARTNER_THRESHOLD = SEARCH_PARTNER_THRESHOLD_NORMAL;
+    protected final Rect rect = new Rect();
+    public final Paint paint = new Paint();
+    public int distance;
+    public Type type;
+    public GenderEnum genderEnum;
+    public boolean isAlive = true;
+    protected int x;
+    protected int y;
 
-    void reachedScreenEdge() {
+    public GameObject(Type myType, GenderEnum genderEnum) {
+        this.type = myType;
+        this.genderEnum = genderEnum;
+    }
+
+    public void reachedScreenEdge() {
         // When the game's character touches the edge of the screen, then stop it.
         if (this.x < 0) {
             this.x = 0;
@@ -54,9 +63,11 @@ public abstract class GameObject {
     public String getKey() {
         return x + " " + y;
     }
+
     public void draw(Canvas canvas) {
         canvas.drawRect(rect, paint);
     }
+
     public int getX() {
         return x;
     }
@@ -64,4 +75,7 @@ public abstract class GameObject {
     public int getY() {
         return y;
     }
+    public abstract void makeMeFamous();
+    public abstract void updateAdditionalInfoLocation(float mScaleFactor);
+    public abstract void drawAdditionalInfo(Canvas canvas);
 }
