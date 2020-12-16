@@ -13,7 +13,7 @@ public class Pig extends Omnivore {
 
     public Pig(int x, int y, Model model, GenderEnum genderEnum) {
         super(x, y, model, Type.PIG, genderEnum,
-                List.of(Type.RABBIT, Type.OAT));
+                List.of(Type.RABBIT, Type.CARROT));
     }
     @Override
     public void addChild() {

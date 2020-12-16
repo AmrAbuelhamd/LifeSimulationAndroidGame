@@ -12,7 +12,7 @@ public class Raccoon extends Omnivore {
 
     public Raccoon(int x, int y, Model model, GenderEnum genderEnum) {
         super(x, y, model, Type.RACCOON, genderEnum,
-                List.of(Type.RABBIT, Type.OAT));
+                List.of(Type.MOUSE, Type.OAT));
     }
     @Override
     public void addChild() {

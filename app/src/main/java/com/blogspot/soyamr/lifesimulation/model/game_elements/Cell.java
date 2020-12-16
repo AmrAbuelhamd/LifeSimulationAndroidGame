@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.blogspot.soyamr.lifesimulation.Const;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -13,9 +14,6 @@ import java.util.Random;
 
 
 public class Cell {
-    int x, y;
-    private List<GameObject> residences;
-
     private static final Paint paint;
 
     static {
@@ -25,7 +23,9 @@ public class Cell {
         paint.setColor(Color.GREEN);
     }
 
-    private String tag = "cell";
+    private final List<GameObject> residences;
+    private final String tag = "cell";
+    int x, y;
 
     public Cell(int i, int j) {
         x = j * Const.CELL_WIDTH;
@@ -41,6 +41,21 @@ public class Cell {
 
     public void putMeHerePlease(GameObject gameObject) {
         this.residences.add(gameObject);
+//        List<GameObject> toRemove = new LinkedList<>();
+//        if (residences.size() > 1) {
+//            residences.forEach(eater -> {
+//                if (eater instanceof Animal && eater.isAlive) {
+//                    residences.forEach(food -> {
+//                        if (food.isAlive) {
+//                            if (((Animal) eater).wannaEat(food)) {
+//                                toRemove.add(food);
+//                            }
+//                        }
+//                    });
+//                }
+//            });
+//        }
+//        toRemove.forEach(residences::remove);
     }
 
     public void removeMeFromHere(GameObject gameObject) {

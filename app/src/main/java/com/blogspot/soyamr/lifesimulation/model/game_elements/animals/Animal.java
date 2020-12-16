@@ -13,7 +13,6 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.An
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.Female;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.Gender;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.Male;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Plant;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -22,7 +21,7 @@ import java.util.ListIterator;
 
 public abstract class Animal extends GameObject {
 
-    final int increasingHungerThreshold = 100;
+    final int increasingHungerThreshold = 50;
     private final String tag = "Animal";
     public List<Type> myFoodTypeList;
     public int mtodth = 50;
@@ -70,11 +69,6 @@ public abstract class Animal extends GameObject {
         changeColor();
     }
 
-    //search for food or move randomly
-    //todo [impo] now it should do three things
-    // check love();check food(); moveBB();
-    // then in each one i take decesion on direction [to love, random, one direction, to food]
-    // according to that enum i will move.
     NextMove searchForLove() {
         if (genderOperator.inRelation) {
             return genderOperator.takeRequiredActions();
@@ -85,6 +79,12 @@ public abstract class Animal extends GameObject {
     }
 
     public void update() {
+        boolean isDead = updateHunger();
+        if (isDead) {
+            isAlive = false;
+            model.deleteMePlease(this);
+            return;
+        }
         model.iAmLeavingThisCell(x, y, this);
 
         nextMove = searchForLove();
@@ -109,15 +109,10 @@ public abstract class Animal extends GameObject {
                 moveRandomly();
             }
         }//use flag*/
-        boolean isDead = updateHunger();
-        if (isDead) {
-            model.deleteMePlease(this);
-            isAlive = false;
-            return;
-        }
+
         genderOperator.updateIDoNotWant();
         reachedScreenEdge();
-        checkIfAnimalOnSameCellWithTarget();
+//        checkIfAnimalOnSameCellWithTarget();
         model.putMeHerePlease(x, y, this);
         genderOperator.setRect();
     }
@@ -130,7 +125,7 @@ public abstract class Animal extends GameObject {
             case NOTHING:
                 break;
             case TO_FOOD:
-                moveToward(myFood.getX(), myFood.getY());
+                moveToFood(myFood.getX(), myFood.getY());
                 break;
             case ONE_DIRECTION:
                 moveToOneDirection();
@@ -188,29 +183,40 @@ public abstract class Animal extends GameObject {
         this.y = y + height * moveDirection[randomIndex][1];
     }
 
+    public boolean wannaEat(GameObject food) {
+        if (hunger > SEARCH_FOOD_THRESHOLD) {
+            if (myFoodMenu.remove(food)) {
+                reduceHunger();
+                model.removeObjectFromMap(food);
+                return true;
+            }
+        }
+        return false;
+    }
+
     //todo[impo] move this to cell, she checks everytime animal added and resisidences more than one
     // ask each animal type do you eat the others, if yes then remove them from cell and from animal
     // foodlist and remove them from cell
-    private void checkIfAnimalOnSameCellWithTarget() {
-        GameObject prey = null;
-        for (Type preyType : myFoodTypeList) {
-            prey = preyType.getMeFromHere(model, Utils.getRowIdx(y), Utils.getColIdx(x), GenderEnum.BOTH);
-            if (prey != null)
-                break;
-        }
-        if (hunger < SEARCH_FOOD_THRESHOLD) {
-            if (prey != null) {
-                if (myFoodMenu.remove(prey)) {
-                    model.removeObjectFromMap(prey);
-                    reduceHunger();
-                }
-            }
-        } else if (prey instanceof Plant) {
-            myFoodMenu.remove(prey);
-            model.removeObjectFromMap(prey);
-            reduceHunger();
-        }
-    }
+//    private void checkIfAnimalOnSameCellWithTarget() {
+//        GameObject prey = null;
+//        for (Type preyType : myFoodTypeList) {
+//            prey = preyType.getMeFromHere(model, Utils.getRowIdx(y), Utils.getColIdx(x), GenderEnum.BOTH);
+//            if (prey != null)
+//                break;
+//        }
+//        if (hunger < SEARCH_FOOD_THRESHOLD) {
+//            if (prey != null) {
+//                if (myFoodMenu.remove(prey)) {
+//                    model.removeObjectFromMap(prey);
+//                    reduceHunger();
+//                }
+//            }
+//        } else if (prey instanceof Plant) {
+//            myFoodMenu.remove(prey);
+//            model.removeObjectFromMap(prey);
+//            reduceHunger();
+//        }
+//    }
 
     public NextMove worthSearching() {
         if (mtodth < movingToOneDirectionThreshold) {
@@ -224,6 +230,14 @@ public abstract class Animal extends GameObject {
         NextMove result;
         if (hunger > SEARCH_FOOD_THRESHOLD)
             return NextMove.MOVE_RANDOMLY;
+        if (myFood != null) {
+            if (myFood.isAlive) {
+                return NextMove.TO_FOOD;
+            } else {
+                myFoodMenu.remove(myFood);
+                myFood = null;
+            }
+        }
         if ((result = worthSearching()) != NextMove.NOT_SET) {
             return result;
         }
@@ -239,13 +253,13 @@ public abstract class Animal extends GameObject {
         if (target == null)
             return NextMove.MOVE_RANDOMLY;
 
-        //move the ANIMAL towards the plant
+        //move the ANIMAL towards the food
         myFood = target;
         return NextMove.TO_FOOD;
     }
 
     private GameObject getNextTarget() {
-        if (dfth < 50) {
+        if (dfth < deleteFarThreshold) {
             ++dfth;
         } else {
             dfth = 0;
@@ -285,7 +299,19 @@ public abstract class Animal extends GameObject {
             direction = moveDirection[Utils.getRandom(0, moveDirection.length)];
     }
 
+    void moveToFood(int targetX, int targetY) {
+        if (targetX == x && targetY == y) {
+            myFoodMenu.remove(myFood);
+            model.removeObjectFromMap(myFood);
+            reduceHunger();
+            myFood = null;
+            return;
+        }
+        moveToward(targetX, targetY);
+    }
+
     public void moveToward(int targetX, int targetY) {
+
         // four cases
         if (targetX < x)
             x -= width;

@@ -11,7 +11,7 @@ import java.util.List;
 public class Bear extends Omnivore{
     public Bear(int x, int y, Model model, GenderEnum genderEnum) {
         super(x, y, model, Type.BEAR, genderEnum,
-                List.of(Type.OAT, Type.DEER));
+                List.of(Type.APPLE, Type.DEER));
     }
 
 

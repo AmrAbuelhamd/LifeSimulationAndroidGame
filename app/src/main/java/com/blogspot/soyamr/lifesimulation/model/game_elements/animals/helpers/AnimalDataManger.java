@@ -62,7 +62,7 @@ public class AnimalDataManger {
         canvas.drawText("in relationship  : " + animal.genderOperator.inRelation, x, y, textAndRectPaint);
         canvas.drawText("idontwant           : " + animal.genderOperator.iDoNotWant, x, y + space, textAndRectPaint);
         canvas.drawText("idontwant CTR : " + animal.genderOperator.rsidwv, x, y + 2 * space, textAndRectPaint);
-        canvas.drawText("moving in one direction: " + (animal.mtodth < animal.movingToOneDirectionThreshold)
+        canvas.drawText("in one direction: " + (animal.mtodth < animal.movingToOneDirectionThreshold)
                 , x, y + 3 * space, textAndRectPaint);
         canvas.drawText("my menu size    : " + animal.myFoodMenu.size(), x, y + 4 * space, textAndRectPaint);
         canvas.drawText("myType    : " + animal.type, x, y + 5 * space, textAndRectPaint);

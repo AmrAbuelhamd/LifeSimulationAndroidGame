@@ -161,8 +161,8 @@ public class Model {
             for (int j = jStart; j < jEnd; ++j) {
                 List<GameObject> poorObjects = cells[i][j].getObjectResidingHere();
                 poorObjects.forEach(ob -> {
+                    ob.isAlive = false;
                     if (ob instanceof Animal) {
-                        ob.isAlive = false;
                         deleteMePlease((Animal) ob);
                     } else
                         removePlant((Plant) ob);
@@ -225,7 +225,7 @@ public class Model {
         if (prey instanceof Animal) {
             animals.remove(prey);
         } else
-            plants.remove(prey);
+            plants.remove((Plant) prey);
     }
 
     public void showGhostAnimals() {//need optimization

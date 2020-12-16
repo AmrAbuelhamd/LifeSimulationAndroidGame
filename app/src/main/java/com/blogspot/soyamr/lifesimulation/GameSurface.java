@@ -279,7 +279,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
                                     Type.LION, Type.RACCOON,Type.APPLE,Type.CARROT,Type.OAT),
                             GenderEnum.BOTH).stream().findFirst().orElse(null);
 
-                    model.setFamousAnimal(gameObject);
+//                    model.setFamousAnimal(gameObject);
                     if (gameObject != null) {
                         gameObject.makeMeFamous();
                     } else {
