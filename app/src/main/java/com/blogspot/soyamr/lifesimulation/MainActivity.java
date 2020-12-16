@@ -24,6 +24,7 @@ public class MainActivity extends Activity {
         getScreenSize();
 
         //printcolors();
+
     }
 
     private void printcolors() {
@@ -83,6 +84,8 @@ public class MainActivity extends Activity {
         System.out.println(" " + Color.parseColor("#4DB6AC") + " ");
         System.out.println(" " + Color.parseColor("#80CBC4") + " ");
         System.out.println(" " + Color.parseColor("#B2DFDB") + " ");
+
+        System.out.println("women crwon  "+Color.parseColor("#C51162"));
     }
 
     private void hideSystemUI() {

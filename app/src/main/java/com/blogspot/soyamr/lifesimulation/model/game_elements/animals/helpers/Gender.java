@@ -1,5 +1,8 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
+
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
 
@@ -37,4 +40,8 @@ public abstract class Gender {
     public abstract boolean wannaBeInRelationShip(Type type);
 
     public abstract boolean searchForPartner();
+
+    public abstract void draw(Canvas canvas);
+
+    public abstract void setRect();
 }

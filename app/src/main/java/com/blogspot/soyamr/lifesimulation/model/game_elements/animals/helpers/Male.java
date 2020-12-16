@@ -1,12 +1,13 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers;
 
+import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -66,6 +67,17 @@ public class Male extends Gender {
         myCrushes.remove(myLove);
         animal.moveToward(myLove.getX(), myLove.getY());
         return true;
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        canvas.drawRect(animal.rect, animal.paint);
+    }
+
+    @Override
+    public void setRect() {
+        animal.rect.set(animal.getX(), animal.getY(), animal.getX() + GameObject.width,
+                animal.getY() + GameObject.height);
     }
 
     Animal getNextTarget2() {

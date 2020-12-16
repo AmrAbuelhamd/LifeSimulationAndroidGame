@@ -57,7 +57,6 @@ public abstract class Animal extends GameObject {
         this.y = y;
         this.myFoodTypeList = myFoodType;
         myFoodMenu = new LinkedList<>();
-        rect.set(x, y, x + width, y + height);
         this.model = model;
         model.putMeHerePlease(x, y, this);
         if (genderEnum == GenderEnum.FEMALE)
@@ -65,6 +64,8 @@ public abstract class Animal extends GameObject {
         else
             genderOperator = new Male(this);
         genderOperator.setIdoNotWant();
+        genderOperator.setRect();
+
         changeColor();
     }
 
@@ -100,7 +101,7 @@ public abstract class Animal extends GameObject {
         reachedScreenEdge();
         checkIfAnimalOnSameCellWithTarget();
         model.putMeHerePlease(x, y, this);
-        rect.set(x, y, x + width, y + height);
+        genderOperator.setRect();
     }
 
     private boolean updateHunger() {
@@ -280,6 +281,11 @@ public abstract class Animal extends GameObject {
         if (hunger != 100)
             hunger += 10;
         changeColor();
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        genderOperator.draw(canvas);
     }
 
     public void doCermony() {

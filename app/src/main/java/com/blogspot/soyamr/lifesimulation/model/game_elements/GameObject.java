@@ -32,7 +32,7 @@ public abstract class GameObject /*implements famouseanimaslinterface*/ {
     };
     public static int SEARCH_FOOD_THRESHOLD = SEARCH_FOOD_THRESHOLD_NORMAL;
     public static int SEARCH_PARTNER_THRESHOLD = SEARCH_PARTNER_THRESHOLD_NORMAL;
-    protected final Rect rect = new Rect();
+    public final Rect rect = new Rect();
     public final Paint paint = new Paint();
     public int distance;
     public Type type;
