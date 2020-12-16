@@ -45,11 +45,13 @@ public abstract class Utils {
                     continue;
                 }
                 for (Type preyType : searchFor) {
-                    GameObject prey = preyType.getMeFromHere(model, i, j, genderEnum);
-                    if (prey != null) {
-                        prey.distance = getManhattanDistance(currentX, currentY,
-                                prey.getX(), prey.getY());
-                        gameObjects.add(prey);
+                    List<GameObject> preys = preyType.getMeFromHere(model, i, j, genderEnum);
+                    if (!preys.isEmpty()) {
+                        preys.forEach(ob -> {
+                            ob.distance = getManhattanDistance(currentX, currentY,
+                                    ob.getX(), ob.getY());
+                        });
+                        gameObjects.addAll(preys);
                     }
                 }
             }

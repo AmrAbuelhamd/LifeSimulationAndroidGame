@@ -2,19 +2,21 @@ package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers;
 
 import android.graphics.Canvas;
 
+import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
 
 public abstract class Gender {
-    final int reSetIDoNotWantVariable = 300;
     public int rsidwv = 0;
     public boolean iDoNotWant;
     public boolean inRelation = false;
     public Animal myLove;
+    int reSetIDoNotWantVariable = 300;
     Animal animal;
 
     public Gender(Animal animal) {
         this.animal = animal;
+        reSetIDoNotWantVariable = Utils.getRandom(250, 350);
     }
 
     public abstract void doCeremony();
@@ -37,6 +39,8 @@ public abstract class Gender {
 
 
     public abstract Animal.NextMove takeRequiredActions();
+
+    public abstract void moveToMyLove();
 
     public abstract boolean wannaBeInRelationShip(Type type);
 

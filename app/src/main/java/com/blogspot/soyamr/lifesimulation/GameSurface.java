@@ -285,8 +285,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
                     } else {
                         model.setFamousAnimal(null);
                     }
-
-
                 }
                 break;
             case MotionEvent.ACTION_MOVE:

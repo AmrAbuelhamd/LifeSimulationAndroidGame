@@ -25,12 +25,14 @@ public class Male extends Gender {
 
     @Override
     public Animal.NextMove takeRequiredActions() {
+        return Animal.NextMove.TO_LOVE;
+    }
+
+    @Override
+    public void moveToMyLove() {
+        animal.moveToward(myLove.getX(), myLove.getY());
         if (arrived()) {
             doCeremony();
-            return Animal.NextMove.MOVE_RANDOMLY;
-        } else {
-            return Animal.NextMove.TO_LOVE;
-
         }
     }
 
@@ -65,7 +67,7 @@ public class Male extends Gender {
         animal.paint.setStrokeWidth(10);
         myLove = target;
         myCrushes.remove(myLove);
-       return Animal.NextMove.TO_LOVE;
+        return Animal.NextMove.TO_LOVE;
     }
 
     @Override

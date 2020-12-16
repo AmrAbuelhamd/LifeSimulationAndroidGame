@@ -19,18 +19,7 @@ public class Female extends Gender {
 
     public Female(Animal animal) {
         super(animal);
-        //this will never be used, but in case it's been called then animal will be to 0, 0 coordinates
-        myLove = new Animal(0,0,animal.model,Type.FOX, GenderEnum.MALE, List.of(Type.APPLE)) {
-            @Override
-            public void addChild() {
 
-            }
-
-            @Override
-            public int getMyColor() {
-                return 0;
-            }
-        };
 
 //        strokePaint.setStyle(Paint.Style.STROKE);
 //        strokePaint.setColor(-3862174);
@@ -73,6 +62,11 @@ public class Female extends Gender {
     @Override
     public Animal.NextMove takeRequiredActions() {
         return waitLoveToArrive();
+    }
+
+    @Override
+    public void moveToMyLove() {
+
     }
 
     @Override

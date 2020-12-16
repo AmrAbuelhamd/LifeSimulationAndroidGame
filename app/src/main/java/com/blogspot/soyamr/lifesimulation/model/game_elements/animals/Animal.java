@@ -21,10 +21,10 @@ import java.util.ListIterator;
 
 public abstract class Animal extends GameObject {
 
-    final int increasingHungerThreshold = 50;
+    int increasingHungerThreshold = 50;
     private final String tag = "Animal";
     public List<Type> myFoodTypeList;
-    public int mtodth = 50;
+    public int mtodth = 0;
     public int hunger = 100;
     public List<GameObject> myFoodMenu;
     public Model model;
@@ -67,6 +67,14 @@ public abstract class Animal extends GameObject {
         genderOperator.setRect();
 
         changeColor();
+
+        setThresholds();
+    }
+
+    private void setThresholds() {
+        increasingHungerThreshold = Utils.getRandom(30,60);
+        movingToOneDirectionThreshold = Utils.getRandom(20,40);
+        deleteFarThreshold = Utils.getRandom(40,60);
     }
 
     NextMove searchForLove() {
@@ -131,7 +139,7 @@ public abstract class Animal extends GameObject {
                 moveToOneDirection();
                 break;
             case TO_LOVE:
-                moveToward(genderOperator.myLove.getX(), genderOperator.myLove.getY());
+                genderOperator.moveToMyLove();
                 break;
             default:
                 throw new RuntimeException("something big bad happened");
@@ -300,14 +308,13 @@ public abstract class Animal extends GameObject {
     }
 
     void moveToFood(int targetX, int targetY) {
+        moveToward(targetX, targetY);
         if (targetX == x && targetY == y) {
             myFoodMenu.remove(myFood);
             model.removeObjectFromMap(myFood);
             reduceHunger();
             myFood = null;
-            return;
         }
-        moveToward(targetX, targetY);
     }
 
     public void moveToward(int targetX, int targetY) {

@@ -2,6 +2,7 @@ package com.blogspot.soyamr.lifesimulation.model.game_elements;
 
 import com.blogspot.soyamr.lifesimulation.model.Model;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /*
@@ -39,14 +40,14 @@ public enum Type {
     PERSON;
 
 
-    public GameObject getMeFromHere(Model model, int i, int j, GenderEnum genderEnum) {
-        GameObject result = null;
+    public List<GameObject> getMeFromHere(Model model, int i, int j, GenderEnum genderEnum) {
+        List<GameObject> result = new LinkedList<>();
         List<GameObject> objectSOnCell = model.getObjectResidingHere(i, j);
 
         for (GameObject currentObject : objectSOnCell)
-            if (currentObject.type == this && (genderEnum == GenderEnum.BOTH || genderEnum == currentObject.genderEnum)) {
-                result = currentObject;
-                break;
+            if (currentObject.isAlive && currentObject.type == this &&
+                    (genderEnum == GenderEnum.BOTH || genderEnum == currentObject.genderEnum)) {
+                result.add(currentObject);
             }
 
         return result;
