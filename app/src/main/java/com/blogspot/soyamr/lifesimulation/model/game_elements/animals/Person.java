@@ -11,7 +11,7 @@ import java.util.List;
 public class Person extends Animal {
     public Person(int x, int y, Model model, GenderEnum genderEnum) {
         super(x, y, model, Type.PERSON, genderEnum,
-                List.of(Type.APPLE, Type.APPLE, Type.RABBIT, Type.PIG));
+                List.of(Type.APPLE, Type.RABBIT, Type.PIG,Type.CARROT));
     }
 
     @Override

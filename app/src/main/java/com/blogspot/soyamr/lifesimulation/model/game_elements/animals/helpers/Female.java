@@ -5,8 +5,11 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
+
+import java.util.List;
 
 import static com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject.SEARCH_FOOD_THRESHOLD;
 
@@ -16,6 +19,19 @@ public class Female extends Gender {
 
     public Female(Animal animal) {
         super(animal);
+        //this will never be used, but in case it's been called then animal will be to 0, 0 coordinates
+        myLove = new Animal(0,0,animal.model,Type.FOX, GenderEnum.MALE, List.of(Type.APPLE)) {
+            @Override
+            public void addChild() {
+
+            }
+
+            @Override
+            public int getMyColor() {
+                return 0;
+            }
+        };
+
 //        strokePaint.setStyle(Paint.Style.STROKE);
 //        strokePaint.setColor(-3862174);
 //        strokePaint.setStrokeWidth(2);
@@ -50,17 +66,18 @@ public class Female extends Gender {
         animal.addChild();
     }
 
-    void waitLoveToArrive() {
+    Animal.NextMove waitLoveToArrive() {
+        return Animal.NextMove.NOTHING;
     }
 
     @Override
-    public void takeRequiredActions() {
-        waitLoveToArrive();
+    public Animal.NextMove takeRequiredActions() {
+        return waitLoveToArrive();
     }
 
     @Override
-    public boolean searchForPartner() {
-        return false;
+    public Animal.NextMove searchForPartner() {
+        return Animal.NextMove.NOT_SET;
     }
 
     @Override

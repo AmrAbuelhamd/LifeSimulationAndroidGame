@@ -73,7 +73,7 @@ public class Explosion extends GameObject {
     }
 
     @Override
-    protected int getMyColor() {
+    public int getMyColor() {
         return 0;
     }
 

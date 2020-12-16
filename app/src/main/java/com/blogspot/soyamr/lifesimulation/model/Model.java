@@ -10,14 +10,16 @@ import android.util.Log;
 import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.R;
 import com.blogspot.soyamr.lifesimulation.Utils;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Carrot;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Cell;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.special_events.Explosion;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.screen_data.FamousAnimal;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.screen_data.OnScreenInfo;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Apple;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Carrot;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Oat;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Plant;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.screen_data.FamousAnimal;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.screen_data.OnScreenInfo;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.special_events.Explosion;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -53,9 +55,15 @@ public class Model {
 
     public void addOnePlant() {
         Plant randomPlant = plants.get(Utils.getRandom(0, plants.size()));
-        Plant plant = new Carrot(randomPlant.getX(), randomPlant.getY(), this);
-        plants.add(plant);
+        Plant plant;
+        if (Utils.getRandom(0, 3) == 0)
+            plant = new Carrot(randomPlant.getX(), randomPlant.getY(), this);
+        else if (Utils.getRandom(0, 3) == 1)
+            plant = new Apple(randomPlant.getX(), randomPlant.getY(), this);
+        else
+            plant = new Oat(randomPlant.getX(), randomPlant.getY(), this);
 
+        plants.add(plant);
     }
 
     public void setFamousAnimal(GameObject animal) {
@@ -68,7 +76,6 @@ public class Model {
     public void deleteMePlease(Animal animal) {
         iAmLeavingThisCell(animal.getX(), animal.getY(), animal);
         //todo add explosion effect which will be class that will work for a couple of seconds
-        animal.writeMyWill();
         animals.remove(animal);
     }
 
@@ -154,9 +161,10 @@ public class Model {
             for (int j = jStart; j < jEnd; ++j) {
                 List<GameObject> poorObjects = cells[i][j].getObjectResidingHere();
                 poorObjects.forEach(ob -> {
-                    if (ob instanceof Animal)
+                    if (ob instanceof Animal) {
+                        ob.isAlive = false;
                         deleteMePlease((Animal) ob);
-                    else
+                    } else
                         removePlant((Plant) ob);
                 });
             }

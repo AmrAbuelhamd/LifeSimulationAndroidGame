@@ -1,7 +1,6 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers;
 
 import android.graphics.Canvas;
-import android.graphics.Paint;
 
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
@@ -11,7 +10,9 @@ public abstract class Gender {
     public int rsidwv = 0;
     public boolean iDoNotWant;
     public boolean inRelation = false;
+    public Animal myLove;
     Animal animal;
+
     public Gender(Animal animal) {
         this.animal = animal;
     }
@@ -24,7 +25,7 @@ public abstract class Gender {
     }
 
     public void updateIDoNotWant() {
-        if (iDoNotWant == true) {
+        if (iDoNotWant) {
             if (rsidwv < reSetIDoNotWantVariable) {
                 ++rsidwv;
             } else {
@@ -35,11 +36,11 @@ public abstract class Gender {
     }
 
 
-    public abstract void takeRequiredActions();
+    public abstract Animal.NextMove takeRequiredActions();
 
     public abstract boolean wannaBeInRelationShip(Type type);
 
-    public abstract boolean searchForPartner();
+    public abstract Animal.NextMove searchForPartner();
 
     public abstract void draw(Canvas canvas);
 

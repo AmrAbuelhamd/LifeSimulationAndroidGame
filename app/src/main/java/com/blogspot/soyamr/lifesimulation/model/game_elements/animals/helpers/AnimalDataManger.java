@@ -43,7 +43,7 @@ public class AnimalDataManger {
         textAndRectPaint.setStyle(Paint.Style.FILL);
         textAndRectPaint.setTextSize(30);
         textAndRectPaint.setAntiAlias(true);
-        textAndRectPaint.setColor(Color.YELLOW);
+        textAndRectPaint.setColor(animal.getMyColor());
 
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(2);

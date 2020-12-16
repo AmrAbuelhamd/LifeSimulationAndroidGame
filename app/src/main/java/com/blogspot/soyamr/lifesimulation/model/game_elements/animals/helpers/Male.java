@@ -16,7 +16,6 @@ import java.util.ListIterator;
 import static com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject.ANIMAL_WOMEN_VISION_RANG;
 
 public class Male extends Gender {
-    private Animal myLove;
     private List<GameObject> myCrushes;
 
     public Male(Animal animal) {
@@ -25,12 +24,13 @@ public class Male extends Gender {
     }
 
     @Override
-    public void takeRequiredActions() {
+    public Animal.NextMove takeRequiredActions() {
         if (arrived()) {
             doCeremony();
-            animal.moveRandomly();
+            return Animal.NextMove.MOVE_RANDOMLY;
         } else {
-            animal.moveToward(myLove.getX(), myLove.getY());
+            return Animal.NextMove.TO_LOVE;
+
         }
     }
 
@@ -40,24 +40,24 @@ public class Male extends Gender {
     }
 
     @Override
-    public boolean searchForPartner() {
-        if (!animal.worthSearching()) {
-            return true;
+    public Animal.NextMove searchForPartner() {
+        Animal.NextMove result;
+        if ((result = animal.worthSearching()) != Animal.NextMove.NOT_SET) {
+            return result;
         }
         if (myCrushes.isEmpty())
             myCrushes = Utils.searchAroundAnimal(ANIMAL_WOMEN_VISION_RANG, animal.getX(), animal.getY(),
                     animal.model, List.of(animal.type),
                     GenderEnum.FEMALE);
         if (myCrushes.isEmpty()) {
-            animal.moveToOneDirectionSetUp();
-            return true;
+            return animal.moveToOneDirectionSetUp();
         }
         //make sure that crushes that i kept in my list still available
         //if not delete it
         Animal target = getNextTarget2();
 
         if (target == null)
-            return false;
+            return Animal.NextMove.MOVE_RANDOMLY;
         //if true this means she already engaged
         //no broken hearts in my game :)
         inRelation = true;
@@ -65,8 +65,7 @@ public class Male extends Gender {
         animal.paint.setStrokeWidth(10);
         myLove = target;
         myCrushes.remove(myLove);
-        animal.moveToward(myLove.getX(), myLove.getY());
-        return true;
+       return Animal.NextMove.TO_LOVE;
     }
 
     @Override
