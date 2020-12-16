@@ -1,16 +1,9 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.carnivore;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-
-import com.blogspot.soyamr.lifesimulation.R;
 import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.FantasticColors;
 
 import java.util.List;
 
@@ -30,6 +23,16 @@ public class Fox extends Carnivore {
             model.addChild(new Fox(x, y, model, GenderEnum.MALE));
         else
             model.addChild(new Fox(x, y, model, GenderEnum.FEMALE));
+    }
+
+    @Override
+    public int getMyColor() {
+        if (hunger > 60)
+            return -688361;
+        else if (hunger > 30)
+            return -415707;
+        else
+            return -278483;
     }
 
 //    @Override

@@ -8,10 +8,11 @@ import android.graphics.Rect;
 import com.blogspot.soyamr.lifesimulation.GameThread;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 
-public class OnScreenInfo extends GameObject {
-
+public class OnScreenInfo {
+    public final Paint paint = new Paint();
+    protected int x;
+    protected int y;
     public OnScreenInfo() {
-        super(null,null);
         paint.setTextSize(60);
         paint.setAntiAlias(true);
         paint.setColor(Color.YELLOW);
@@ -40,7 +41,6 @@ public class OnScreenInfo extends GameObject {
         }
     }
 
-    @Override
     public void draw(Canvas canvas) {
 
         canvas.drawText("total population: " + total, x, y, paint);
@@ -49,17 +49,5 @@ public class OnScreenInfo extends GameObject {
         canvas.drawText("plants population: " + plantCount, x, y + 1 * space, paint);
         canvas.drawText(GameThread.getFrameRate(), right, y + space, paint);
 
-    }
-
-    @Override
-    public void makeMeFamous() {
-    }
-
-    @Override
-    public void updateAdditionalInfoLocation(float mScaleFactor) {
-    }
-
-    @Override
-    public void drawAdditionalInfo(Canvas canvas) {
     }
 }

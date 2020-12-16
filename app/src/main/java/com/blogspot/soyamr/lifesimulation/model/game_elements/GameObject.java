@@ -79,4 +79,6 @@ public abstract class GameObject /*implements famouseanimaslinterface*/ {
     public abstract void makeMeFamous();
     public abstract void updateAdditionalInfoLocation(float mScaleFactor);
     public abstract void drawAdditionalInfo(Canvas canvas);
+
+    protected abstract int getMyColor();
 }

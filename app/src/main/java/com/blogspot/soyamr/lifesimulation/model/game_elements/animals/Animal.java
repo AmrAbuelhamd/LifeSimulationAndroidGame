@@ -2,6 +2,7 @@ package com.blogspot.soyamr.lifesimulation.model.game_elements.animals;
 
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 
 import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.Utils;
@@ -274,8 +275,6 @@ public abstract class Animal extends GameObject {
     protected void changeColor() {
         paint.setColor(getMyColor());
     }
-
-    protected abstract int getMyColor();
 
     public void reduceHunger() {
         if (hunger != 100)

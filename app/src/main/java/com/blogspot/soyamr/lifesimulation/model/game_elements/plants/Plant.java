@@ -1,17 +1,14 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements.plants;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.blogspot.soyamr.lifesimulation.Const;
-import com.blogspot.soyamr.lifesimulation.R;
 import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.FantasticColors;
 
 public abstract class Plant extends GameObject {
     public Model model;
@@ -31,7 +28,7 @@ public abstract class Plant extends GameObject {
             x += moveDirection[index][0] * width;
             y += moveDirection[index][1] * height;
         }
-        paint.setColor(FantasticColors.context.getColor(R.color.plant));
+        paint.setColor(getMyColor());
         paint.setStyle(Paint.Style.FILL);
 
         this.x = x;
@@ -45,7 +42,7 @@ public abstract class Plant extends GameObject {
         textAndRectPaint.setStyle(Paint.Style.FILL);
         textAndRectPaint.setTextSize(30);
         textAndRectPaint.setAntiAlias(true);
-        textAndRectPaint.setColor(Color.YELLOW);
+        textAndRectPaint.setColor(getMyColor());
         xDraw = getX() - 40;
         yDraw = getY() - 20/*- ANIMAL_WOMEN_VISION_RANG * GameObject.height * 1*/;
     }

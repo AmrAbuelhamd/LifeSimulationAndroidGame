@@ -72,6 +72,11 @@ public class Explosion extends GameObject {
 
     }
 
+    @Override
+    protected int getMyColor() {
+        return 0;
+    }
+
     public boolean isFinish() {
         return finish;
     }

@@ -22,4 +22,14 @@ public class Pig extends Omnivore {
         else
             model.addChild(new Pig(x, y, model, GenderEnum.FEMALE));
     }
+
+    @Override
+    public int getMyColor() {
+        if (hunger > 60)
+            return -720809;
+        else if (hunger > 30)
+            return -49023;
+        else
+            return -32597;
+    }
 }

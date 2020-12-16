@@ -21,4 +21,13 @@ public class Raccoon extends Omnivore {
         else
             model.addChild(new Raccoon(x, y, model, GenderEnum.FEMALE));
     }
+    @Override
+    public int getMyColor() {
+        if (hunger > 60)
+            return -16743537;
+        else if (hunger > 30)
+            return -16738393;
+        else
+            return -16732991;
+    }
 }

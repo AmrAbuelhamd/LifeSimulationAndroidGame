@@ -21,4 +21,14 @@ public class Deer extends Herbivore {
         else
             model.addChild(new Deer(x, y, model, GenderEnum.FEMALE));
     }
+
+    @Override
+    public int getMyColor() {
+        if (hunger > 60)
+            return -13784;
+        else if (hunger > 30)
+            return -10929;
+        else
+            return -8062;
+    }
 }

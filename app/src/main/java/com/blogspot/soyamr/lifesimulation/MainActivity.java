@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 public class MainActivity extends Activity {
     GameSurface gameSurface;
+    boolean firstTime = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,11 +23,66 @@ public class MainActivity extends Activity {
         //hideSystemUI();
         getScreenSize();
 
-        printcolors();
+        //printcolors();
     }
 
     private void printcolors() {
-        System.out.println("sdg - "+Color.parseColor("#FFFFFF")+"");
+        System.out.println("carrot");
+        System.out.println(" " + Color.parseColor("#E65100") + " ");
+        System.out.println("oat");
+        System.out.println(" " + Color.parseColor("#A1887F") + " ");
+        System.out.println("apple");
+        System.out.println(" " + Color.parseColor("#BF360C") + " ");
+
+        System.out.println("rabbit");
+        System.out.println(" " + Color.parseColor("#F48FB1") + " ");
+        System.out.println(" " + Color.parseColor("#F8BBD0") + " ");
+        System.out.println(" " + Color.parseColor("#FCE4EC") + " ");
+
+        System.out.println("mouse");
+        System.out.println(" " + Color.parseColor("#BDBDBD") + " ");
+        System.out.println(" " + Color.parseColor("#E0E0E0") + " ");
+        System.out.println(" " + Color.parseColor("#EEEEEE") + " ");
+
+        System.out.println("deer");
+        System.out.println(" " + Color.parseColor("#FFCA28") + " ");
+        System.out.println(" " + Color.parseColor("#FFD54F") + " ");
+        System.out.println(" " + Color.parseColor("#FFE082") + " ");
+
+        System.out.println("fox");
+        System.out.println(" " + Color.parseColor("#F57F17") + " ");
+        System.out.println(" " + Color.parseColor("#F9A825") + " ");
+        System.out.println(" " + Color.parseColor("#FBC02D") + " ");
+
+        System.out.println("wolf");
+        System.out.println(" " + Color.parseColor("#607D8B") + " ");
+        System.out.println(" " + Color.parseColor("#78909C") + " ");
+        System.out.println(" " + Color.parseColor("#90A4AE") + " ");
+
+        System.out.println("loin");
+        System.out.println(" " + Color.parseColor("#827717") + " ");
+        System.out.println(" " + Color.parseColor("#9E9D24") + " ");
+        System.out.println(" " + Color.parseColor("#AFB42B") + " ");
+
+        System.out.println("beer");
+        System.out.println(" " + Color.parseColor("#6D4C41") + " ");
+        System.out.println(" " + Color.parseColor("#795548") + " ");
+        System.out.println(" " + Color.parseColor("#8D6E63") + " ");
+
+        System.out.println("pig");
+        System.out.println(" " + Color.parseColor("#F50057") + " ");
+        System.out.println(" " + Color.parseColor("#FF4081") + " ");
+        System.out.println(" " + Color.parseColor("#FF80AB") + " ");
+
+        System.out.println("raccoon");
+        System.out.println(" " + Color.parseColor("#00838F") + " ");
+        System.out.println(" " + Color.parseColor("#0097A7") + " ");
+        System.out.println(" " + Color.parseColor("#00ACC1") + " ");
+
+        System.out.println("person");
+        System.out.println(" " + Color.parseColor("#4DB6AC") + " ");
+        System.out.println(" " + Color.parseColor("#80CBC4") + " ");
+        System.out.println(" " + Color.parseColor("#B2DFDB") + " ");
     }
 
     private void hideSystemUI() {
@@ -55,11 +111,10 @@ public class MainActivity extends Activity {
         Const.SCREEN_HEIGHT = height;
     }
 
-    boolean firstTime = true;
     @Override
     protected void onPause() {
         super.onPause();
-        if(!firstTime)
+        if (!firstTime)
             gameSurface.pause();
     }
 

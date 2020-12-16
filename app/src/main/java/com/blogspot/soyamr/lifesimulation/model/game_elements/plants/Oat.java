@@ -7,4 +7,9 @@ public class Oat extends Plant {
     public Oat(int x, int y, Model model) {
         super(x, y, model,Type.OAT);
     }
+
+    @Override
+    public int getMyColor() {
+       return -6190977;
+    }
 }

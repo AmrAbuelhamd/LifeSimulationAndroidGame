@@ -15,8 +15,13 @@ public class Person extends Animal {
     }
 
     @Override
-    protected int getMyColor() {
-        return -1;
+    public int getMyColor() {
+        if (hunger > 60)
+            return -11684180;
+        else if (hunger > 30)
+            return -8336444;
+        else
+            return -5054501;
     }
 
     @Override

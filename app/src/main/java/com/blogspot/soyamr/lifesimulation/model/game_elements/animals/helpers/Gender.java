@@ -4,7 +4,7 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
 
 public abstract class Gender {
-    final int reSetIDoNotWantVariable = 150;
+    final int reSetIDoNotWantVariable = 300;
     public int rsidwv = 0;
     public boolean iDoNotWant;
     public boolean inRelation = false;

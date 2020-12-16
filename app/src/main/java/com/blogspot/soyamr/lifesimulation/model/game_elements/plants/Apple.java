@@ -7,4 +7,9 @@ public class Apple extends Plant {
     public Apple(int x, int y, Model model) {
         super(x, y, model, Type.APPLE);
     }
+
+    @Override
+    public int getMyColor() {
+        return -4246004;
+    }
 }

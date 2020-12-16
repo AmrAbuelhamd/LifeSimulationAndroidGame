@@ -11,7 +11,6 @@ import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.R;
 import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.FantasticColors;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Carrot;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Cell;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.special_events.Explosion;
@@ -31,7 +30,6 @@ public class Model {
     public final Generator generator;
     final int addingNewPlantThreshold = 20;
     private final String tag = "model";
-    private final FantasticColors fantasticColors;
     private final OnScreenInfo onScreenInfo;
     private final Context context;
     private final List<Explosion> explosionList;
@@ -45,7 +43,6 @@ public class Model {
 
     public Model(Context context) {
         explosionList = new LinkedList<>();
-        fantasticColors = new FantasticColors(context);
         generator = new Generator(this);
         onScreenInfo = new OnScreenInfo();
         this.context = context;
@@ -85,10 +82,6 @@ public class Model {
         Log.i("number of animals: ", " " + animals.size());
         Log.i("number of plants: ", " " + plants.size());
         Log.i("----------------", " ------------------------");
-    }
-
-    public int getMeColor(FantasticColors.TYPE type, int level) {
-        return fantasticColors.getColor(type, level);
     }
 
     public void update(Rect clipBoundsCanvas, float mScaleFactor) {

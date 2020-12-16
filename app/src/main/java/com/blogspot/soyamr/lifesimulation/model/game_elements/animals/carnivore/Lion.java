@@ -19,4 +19,14 @@ public class Lion  extends Carnivore{
         else
             model.addChild(new Lion(x, y, model, GenderEnum.FEMALE));
     }
+
+    @Override
+    public int getMyColor() {
+        if (hunger > 60)
+            return -8227049;
+        else if (hunger > 30)
+            return -6382300;
+        else
+            return -5262293;
+    }
 }

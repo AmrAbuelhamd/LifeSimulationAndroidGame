@@ -7,4 +7,10 @@ public class Carrot extends Plant {
     public Carrot(int x, int y, Model model) {
         super(x, y, model, Type.CARROT);
     }
+
+
+    @Override
+    public int getMyColor() {
+        return -1683200;
+    }
 }

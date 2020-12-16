@@ -22,4 +22,14 @@ public class Bear extends Omnivore{
         else
             model.addChild(new Bear(x, y, model, GenderEnum.FEMALE));
     }
+
+    @Override
+    public int getMyColor() {
+        if (hunger > 60)
+            return -9614271;
+        else if (hunger > 30)
+            return -8825528;
+        else
+            return -7508381;
+    }
 }

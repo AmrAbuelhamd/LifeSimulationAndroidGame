@@ -22,4 +22,14 @@ public class Rabbit extends Herbivore{
         else
             model.addChild(new Rabbit(x, y, model, GenderEnum.FEMALE));
     }
+
+    @Override
+    public int getMyColor() {
+        if (hunger > 60)
+            return -749647;
+        else if (hunger > 30)
+            return -476208;
+        else
+            return -203540;
+    }
 }
