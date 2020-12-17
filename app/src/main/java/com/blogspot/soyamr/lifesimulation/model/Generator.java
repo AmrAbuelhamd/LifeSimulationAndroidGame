@@ -22,6 +22,7 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Oat;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Plant;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -36,8 +37,8 @@ public class Generator {
     public Generator(Model model) {
         this.model = model;
         cells = new Cell[Const.M][Const.N];
-        animals = new CopyOnWriteArrayList<>();
-        plants = new CopyOnWriteArrayList<>();
+        animals = new LinkedList<>();
+        plants = new LinkedList<>();
     }
 
     public void addRandomPlant() {

@@ -21,7 +21,8 @@ public class AnimalDataManger {
     Paint womenPaintRect;
     Paint manPaintRect;
     Paint textAndRectPaint;
-    Paint paint = new Paint();;
+    Paint paint = new Paint();
+    ;
     int size = 50;
     int right = 50;
     int space;
@@ -34,7 +35,9 @@ public class AnimalDataManger {
 
         manPaintRect.setStyle(Paint.Style.STROKE);
         manPaintRect.setStrokeWidth(2);
-        manPaintRect.setColor(Color.CYAN);
+        if (!animal.myFoodMenu.isEmpty())
+            manPaintRect.setColor(animal.myFoodMenu.get(0).getMyColor());
+        else manPaintRect.setColor(Color.CYAN);
 
         womenPaintRect.setStyle(Paint.Style.STROKE);
         womenPaintRect.setStrokeWidth(2);
@@ -49,6 +52,7 @@ public class AnimalDataManger {
         paint.setStrokeWidth(2);
         paint.setColor(Color.YELLOW);
     }
+
     public void draw(Canvas canvas) {
 
         canvas.drawRect(rectFoodVision, manPaintRect);
@@ -78,6 +82,7 @@ public class AnimalDataManger {
             canvas.drawRect(rect, womenPaintRect);
         }
     }
+
     public void update(float mScaleFactor) {
         x = animal.getX();
         y = animal.getY();

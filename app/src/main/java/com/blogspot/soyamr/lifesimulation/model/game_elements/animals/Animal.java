@@ -90,7 +90,7 @@ public abstract class Animal extends GameObject {
         if (isAlive) {
             boolean isDead = updateHunger();
             if (isDead) {
-                isAlive = false;
+//                isAlive = false;
                 model.deleteMePlease(this);
                 return;
             }
@@ -204,7 +204,7 @@ public abstract class Animal extends GameObject {
         if (hunger > SEARCH_FOOD_THRESHOLD) {
             if (myFoodMenu.remove(food)) {
                 reduceHunger();
-                model.removeObjectFromMap(food);
+                //model.removeObjectFromMap(food);
                 return true;
             }
         }
@@ -320,7 +320,7 @@ public abstract class Animal extends GameObject {
         moveToward(targetX, targetY);
         if (targetX == x && targetY == y) {
             myFoodMenu.remove(myFood);
-            model.removeObjectFromMap(myFood);
+            model.deleteMePlease(myFood);
             reduceHunger();
             myFood = null;
         }

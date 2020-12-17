@@ -21,6 +21,7 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.screen_data.Famous
 import com.blogspot.soyamr.lifesimulation.model.game_elements.screen_data.OnScreenInfo;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.special_events.Explosion;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -41,6 +42,8 @@ public class Model {
     Bitmap bitmap;
     int deleteGhostAnimalThreshold = 1000;
     int dgath = 0;
+    List<GameObject> objectsToRemove = new ArrayList<>(400);
+    List<Animal> animalsToAdd = new ArrayList<>(400);
     private FamousAnimal famousAnimal;
 
     public Model(Context context) {
@@ -73,10 +76,13 @@ public class Model {
             this.famousAnimal = new FamousAnimal(animal);
     }
 
-    public void deleteMePlease(Animal animal) {
+    public void deleteMePlease(GameObject animal) {
         iAmLeavingThisCell(animal.getX(), animal.getY(), animal);
         //todo add explosion effect which will be class that will work for a couple of seconds
-        animals.remove(animal);
+//        animals.remove(animal);
+        animal.isAlive = false;
+        objectsToRemove.add(animal);
+
     }
 
     public void removePlant(Plant plant) {
@@ -106,6 +112,14 @@ public class Model {
                 iterator.remove();
             }
         }
+
+        objectsToRemove.forEach(deadObject -> {
+            if (deadObject instanceof Animal)
+                animals.remove(deadObject);
+            else if (deadObject instanceof Plant)
+                plants.remove(deadObject);
+        });
+        animals.addAll(animalsToAdd);
 //        showGhostAnimals();
     }
 
@@ -160,13 +174,12 @@ public class Model {
         for (; i < iEnd; ++i) {
             for (int j = jStart; j < jEnd; ++j) {
                 List<GameObject> poorObjects = cells[i][j].getObjectResidingHere();
-                poorObjects.forEach(ob -> {
-                    ob.isAlive = false;
-                    if (ob instanceof Animal) {
-                        deleteMePlease((Animal) ob);
-                    } else
-                        removePlant((Plant) ob);
-                });
+                //                    ob.isAlive = false;
+                //                    if (ob instanceof Animal) {
+                //                        deleteMePlease((Animal) ob);
+                //                    } else
+                //                        removePlant((Plant) ob);
+                poorObjects.forEach(this::deleteMePlease);
             }
         }
     }
@@ -181,6 +194,9 @@ public class Model {
 
 
     public void draw(Canvas canvas) {
+        objectsToRemove.clear();
+        animalsToAdd.clear();
+
         animals.forEach(animal -> animal.draw(canvas));
         plants.forEach(plant -> plant.draw(canvas));
         explosionList.forEach(explosion -> explosion.draw(canvas));
@@ -204,7 +220,8 @@ public class Model {
     }
 
     public void addChild(Animal animal) {//should be added to concrete place on the map
-        animals.add(animal);
+        //animals.add(animal);
+        animalsToAdd.add(animal);
     }
 
     public void putMeHerePlease(int x, int y, GameObject gameObject) {
@@ -219,6 +236,7 @@ public class Model {
         cells[Utils.getRowIdx(y)][Utils.getColIdx(x)].removeMeFromHere(gameObject);
     }
 
+    //toremove
     public void removeObjectFromMap(GameObject prey) {
         cells[Utils.getRowIdx(prey.getY())][Utils.getColIdx(prey.getX())].removeMeFromHere(prey);
         prey.isAlive = false;
