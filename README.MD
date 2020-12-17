@@ -95,3 +95,10 @@ then copy them into  CopyOnWriteArrayList
         }
  optimization, instead of updating the animal varialbe, i should just update him, and ignore the others,
  it has problem becasue it will not update the last few animals
+
+
+ CAUTION
+ NEVER EVER DELETE ELEMENT FROM LIST ON WHICH YOU ARE ITERATING ON. the mistake was that i am
+  iterating on each animal to update his position, while updating if he ate something i was
+  directly deleting that object from my animals list [ON WHICH I WAS ITERATING] and this caused the
+  the freezing canvas problem, also same on adding new child.

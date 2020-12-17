@@ -33,16 +33,14 @@ public class Explosion extends GameObject {
 
     public void update() {
         this.colIndex++;
-
         if (this.colIndex >= this.colCount) {
             this.colIndex = 0;
             this.rowIndex++;
-
+            model.removeObjectsInThisArea(x, y, x + width, y + height);
             if (this.rowIndex >= this.rowCount) {
                 this.finish = true;
             }
         }
-        model.removeObjectsInThisArea(x, y, x + width, y + height);
     }
 
     protected Bitmap createSubImageAt(int row, int col) {

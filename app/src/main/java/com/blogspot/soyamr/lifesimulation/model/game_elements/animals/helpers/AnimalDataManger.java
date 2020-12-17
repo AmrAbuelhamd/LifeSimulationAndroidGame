@@ -35,9 +35,7 @@ public class AnimalDataManger {
 
         manPaintRect.setStyle(Paint.Style.STROKE);
         manPaintRect.setStrokeWidth(2);
-        if (!animal.myFoodMenu.isEmpty())
-            manPaintRect.setColor(animal.myFoodMenu.get(0).getMyColor());
-        else manPaintRect.setColor(Color.CYAN);
+
 
         womenPaintRect.setStyle(Paint.Style.STROKE);
         womenPaintRect.setStrokeWidth(2);
@@ -54,10 +52,14 @@ public class AnimalDataManger {
     }
 
     public void draw(Canvas canvas) {
-
+        if (!animal.myFoodMenu.isEmpty())
+            manPaintRect.setColor(animal.myFoodMenu.get(0).getMyColor());
+        else manPaintRect.setColor(Color.CYAN);
         canvas.drawRect(rectFoodVision, manPaintRect);
 
         if (animal.genderEnum == GenderEnum.MALE) {
+            if(animal.genderOperator.myLove!=null)
+                womenPaintRect.setColor(animal.genderOperator.myLove.getMyColor());
             canvas.drawRect(rectWomenVision, womenPaintRect);
         }
 

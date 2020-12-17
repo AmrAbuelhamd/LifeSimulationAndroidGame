@@ -89,6 +89,8 @@ public class Male extends Gender {
 
     @Override
     public void doCeremony() {
+        if(myLove==null)
+            throw new RuntimeException("myLove is null");
         myLove.doCermony();
         myLove = null;
         inRelation = false;

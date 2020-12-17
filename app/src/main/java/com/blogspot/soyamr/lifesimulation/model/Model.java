@@ -34,7 +34,6 @@ public class Model {
     final int addingNewPlantThreshold = 20;
     private final String tag = "model";
     private final OnScreenInfo onScreenInfo;
-    private final Context context;
     private final List<Explosion> explosionList;
     int anpth = 0;
     int disasterThreshold = 30;
@@ -50,10 +49,10 @@ public class Model {
         explosionList = new LinkedList<>();
         generator = new Generator(this);
         onScreenInfo = new OnScreenInfo();
-        this.context = context;
         cells = generator.generateSells();
         animals = generator.generateAnimals();
         plants = generator.generatePlants();
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.explosion);
     }
 
     public void addOnePlant() {
@@ -137,24 +136,25 @@ public class Model {
         } else {
             // Create Explosion object.
             createExplosionObject();
-            disasterThreshold = Utils.getRandom(20, 30);
+            disasterThreshold = Utils.getRandom(5, 10);
             dth = 0;
         }
         //add new plant
-        if (!plants.isEmpty())
+        if (!plants.isEmpty()) {
             if (anpth < addingNewPlantThreshold) {
                 ++anpth;
             } else {
                 addOnePlant();
                 anpth = 0;
             }
+        }
     }
 
     private void createExplosionObject() {
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.explosion);
         if (bitmap != null) {
-            Explosion explosion = new Explosion(this, bitmap, Utils.getRandom(0, Const.N) * Const.CELL_WIDTH,
-                    Utils.getRandom(0, Const.M) * Const.CELL_HEIGHT, 5, 5);
+            Explosion explosion = new Explosion(this, bitmap,
+                    Math.max(0, Utils.getRandom(0, Const.N) * Const.CELL_WIDTH - bitmap.getWidth() / 5),
+                    Math.max(0, Utils.getRandom(0, Const.M) * Const.CELL_HEIGHT - bitmap.getHeight() / 5), 5, 5);
             this.explosionList.add(explosion);
         }
     }
@@ -174,12 +174,13 @@ public class Model {
         for (; i < iEnd; ++i) {
             for (int j = jStart; j < jEnd; ++j) {
                 List<GameObject> poorObjects = cells[i][j].getObjectResidingHere();
-                //                    ob.isAlive = false;
-                //                    if (ob instanceof Animal) {
-                //                        deleteMePlease((Animal) ob);
-                //                    } else
-                //                        removePlant((Plant) ob);
-                poorObjects.forEach(this::deleteMePlease);
+                poorObjects.forEach(deadObject -> {
+                    if (deadObject instanceof Animal)
+                        animals.remove(deadObject);
+                    else if (deadObject instanceof Plant)
+                        plants.remove(deadObject);
+                });
+                cells[i][j].clear();
             }
         }
     }
@@ -196,9 +197,13 @@ public class Model {
     public void draw(Canvas canvas) {
         objectsToRemove.clear();
         animalsToAdd.clear();
-
-        animals.forEach(animal -> animal.draw(canvas));
+//        for(Cell[] cellRow :cells){
+//            for(Cell cell:cellRow){
+//                cell.draw(canvas);
+//            }
+//        }
         plants.forEach(plant -> plant.draw(canvas));
+        animals.forEach(animal -> animal.draw(canvas));
         explosionList.forEach(explosion -> explosion.draw(canvas));
 
         if (famousAnimal != null)

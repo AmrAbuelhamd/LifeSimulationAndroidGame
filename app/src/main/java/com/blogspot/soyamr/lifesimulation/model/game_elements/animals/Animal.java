@@ -135,6 +135,8 @@ public abstract class Animal extends GameObject {
             case NOTHING:
                 break;
             case TO_FOOD:
+                if(myFood==null)
+                    throw new RuntimeException("myfood is null");
                 moveToFood(myFood.getX(), myFood.getY());
                 break;
             case ONE_DIRECTION:
