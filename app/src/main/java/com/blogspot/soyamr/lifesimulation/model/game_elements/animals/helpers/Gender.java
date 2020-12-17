@@ -40,8 +40,6 @@ public abstract class Gender {
 
     public abstract Animal.NextMove takeRequiredActions();
 
-    public abstract void moveToMyLove();
-
     public abstract boolean wannaBeInRelationShip(Type type);
 
     public abstract Animal.NextMove searchForPartner();

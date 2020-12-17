@@ -173,7 +173,7 @@ public class Generator {
             tempAnimals.add(animal);
         }
         //person
-        for (int i = 0; i < 200; i++) {//200
+        for (int i = 0; i < 20; i++) {//200
             Animal animal = new Person(-1, -1, model, GenderEnum.MALE);
             tempAnimals.add(animal);
             animal = new Person(-1, -1, model, GenderEnum.FEMALE);

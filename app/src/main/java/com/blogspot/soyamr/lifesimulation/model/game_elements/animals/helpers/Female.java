@@ -65,11 +65,6 @@ public class Female extends Gender {
     }
 
     @Override
-    public void moveToMyLove() {
-
-    }
-
-    @Override
     public Animal.NextMove searchForPartner() {
         return Animal.NextMove.NOT_SET;
     }

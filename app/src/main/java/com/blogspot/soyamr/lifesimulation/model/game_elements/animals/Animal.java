@@ -21,7 +21,6 @@ import java.util.ListIterator;
 
 public abstract class Animal extends GameObject {
 
-    int increasingHungerThreshold = 50;
     private final String tag = "Animal";
     public List<Type> myFoodTypeList;
     public int mtodth = 0;
@@ -32,6 +31,7 @@ public abstract class Animal extends GameObject {
     public int ihth = 0;
     public int movingToOneDirectionThreshold = 30;
     public NextMove nextMove;
+    int increasingHungerThreshold = 50;
     boolean myTurn = true;//todo enable this variable agian when animals > 1000, and make small documentation on it in readme
     int[] direction = new int[2];
     int deleteFarThreshold = 50;
@@ -72,9 +72,9 @@ public abstract class Animal extends GameObject {
     }
 
     private void setThresholds() {
-        increasingHungerThreshold = Utils.getRandom(30,60);
-        movingToOneDirectionThreshold = Utils.getRandom(20,40);
-        deleteFarThreshold = Utils.getRandom(40,60);
+        increasingHungerThreshold = Utils.getRandom(60, 91);
+        movingToOneDirectionThreshold = Utils.getRandom(20, 41);
+        deleteFarThreshold = Utils.getRandom(40, 61);
     }
 
     NextMove searchForLove() {
@@ -87,18 +87,19 @@ public abstract class Animal extends GameObject {
     }
 
     public void update() {
-        boolean isDead = updateHunger();
-        if (isDead) {
-            isAlive = false;
-            model.deleteMePlease(this);
-            return;
-        }
-        model.iAmLeavingThisCell(x, y, this);
+        if (isAlive) {
+            boolean isDead = updateHunger();
+            if (isDead) {
+                isAlive = false;
+                model.deleteMePlease(this);
+                return;
+            }
+            model.iAmLeavingThisCell(x, y, this);
 
-        nextMove = searchForLove();
-        if (nextMove == NextMove.NOT_SET)
-            nextMove = searchForFood();
-        nextStep();
+            nextMove = searchForLove();
+            if (nextMove == NextMove.NOT_SET)
+                nextMove = searchForFood();
+            nextStep();
 
        /* if (!myTurn && !genderOperator.inRelation) {
             moveRandomly();
@@ -118,11 +119,12 @@ public abstract class Animal extends GameObject {
             }
         }//use flag*/
 
-        genderOperator.updateIDoNotWant();
-        reachedScreenEdge();
+            genderOperator.updateIDoNotWant();
+            reachedScreenEdge();
 //        checkIfAnimalOnSameCellWithTarget();
-        model.putMeHerePlease(x, y, this);
-        genderOperator.setRect();
+            model.putMeHerePlease(x, y, this);
+            genderOperator.setRect();
+        }
     }
 
     private void nextStep() {
@@ -139,10 +141,17 @@ public abstract class Animal extends GameObject {
                 moveToOneDirection();
                 break;
             case TO_LOVE:
-                genderOperator.moveToMyLove();
+                moveToLove(genderOperator.myLove.getX(), genderOperator.myLove.getY());
                 break;
             default:
-                throw new RuntimeException("something big bad happened");
+                throw new RuntimeException("SOMETHING BIG baaaad HAPPENED");
+        }
+    }
+
+    private void moveToLove(int x, int y) {
+        moveToward(x, y);
+        if (x == this.x && y == this.y) {
+            doCermony();
         }
     }
 

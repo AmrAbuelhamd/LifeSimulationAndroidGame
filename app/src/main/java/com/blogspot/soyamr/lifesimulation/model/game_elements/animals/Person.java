@@ -11,10 +11,10 @@ import java.util.List;
 public class Person extends Animal {
     public Person(int x, int y, Model model, GenderEnum genderEnum) {
         super(x, y, model, Type.PERSON, genderEnum,
-                //List.of(Type.APPLE, Type.RABBIT, Type.PIG,Type.CARROT)
-                List.of(Type.RABBIT, Type.FOX, Type.WOLF, Type.PIG
-                        , Type.MOUSE, Type.BEAR, Type.DEER,
-                        Type.LION, Type.RACCOON,Type.APPLE,Type.CARROT,Type.OAT)
+                List.of(Type.APPLE, Type.RABBIT, Type.PIG,Type.CARROT)
+//                List.of(Type.RABBIT, Type.FOX, Type.WOLF, Type.PIG
+//                        , Type.MOUSE, Type.BEAR, Type.DEER,
+//                        Type.LION, Type.RACCOON,Type.APPLE,Type.CARROT,Type.OAT)
         );
     }
 

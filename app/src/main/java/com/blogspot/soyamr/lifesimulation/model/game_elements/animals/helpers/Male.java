@@ -23,17 +23,10 @@ public class Male extends Gender {
         myCrushes = new LinkedList<>();
     }
 
+    //todo if she is dead then delete her
     @Override
     public Animal.NextMove takeRequiredActions() {
         return Animal.NextMove.TO_LOVE;
-    }
-
-    @Override
-    public void moveToMyLove() {
-        animal.moveToward(myLove.getX(), myLove.getY());
-        if (arrived()) {
-            doCeremony();
-        }
     }
 
     @Override
