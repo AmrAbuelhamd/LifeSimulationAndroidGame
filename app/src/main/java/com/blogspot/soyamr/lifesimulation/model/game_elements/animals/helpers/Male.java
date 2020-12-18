@@ -9,6 +9,7 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -20,7 +21,7 @@ public class Male extends Gender {
 
     public Male(Animal animal) {
         super(animal);
-        myCrushes = new LinkedList<>();
+        myCrushes = new ArrayList<>();
     }
 
     //todo if she is dead then delete her

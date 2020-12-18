@@ -36,8 +36,8 @@ public class Generator {
     public Generator(Model model) {
         this.model = model;
         cells = new Cell[Const.M][Const.N];
-        animals = new LinkedList<>();
-        plants = new LinkedList<>();
+        animals = new ArrayList<>();
+        plants = new ArrayList<>();
     }
 
     public void addRandomPlant() {

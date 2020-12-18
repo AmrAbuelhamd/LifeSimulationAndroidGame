@@ -63,39 +63,6 @@ public abstract class Utils {
         return gameObjects;
     }
 
-
-//    public static GameObject search(Species searchFor, Model model, int i, int j) {
-//        //todo make use of enumerations to get the animals, i can put methods there .... enum.plant.get()...
-//        List<GameObject> objectSOnCell = model.getObjectResidingHere(i, j);
-//        if (searchFor == Species.ANIMAL) {
-//            for (GameObject currentObject : objectSOnCell)
-//                if (currentObject instanceof Animal)
-//                    return currentObject;
-//        } else if (searchFor == Species.PLANT) {
-//            for (GameObject currentObject : objectSOnCell)
-//                if (currentObject instanceof Plant)
-//                    return currentObject;
-//        } else if (searchFor == Species.FEMALE_ANIMAL) {
-//            for (GameObject currentObject : objectSOnCell)
-//                if (currentObject instanceof FemaleAnimal)
-//                    return currentObject;
-//        } else if (searchFor == Species.BOTH) {
-//            for (GameObject currentObject : objectSOnCell) {
-//                if (currentObject instanceof Animal && ((Animal) currentObject).myFoodTypeList != Species.BOTH
-//                        && !((Animal) currentObject).inRelation
-//                        || currentObject instanceof Plant)
-//                    return currentObject;
-//            }
-//        } else if (searchFor == Species.HERBIVORE) {
-//            for (GameObject currentObject : objectSOnCell) {
-//                if (currentObject instanceof Animal && ((Animal) currentObject).myFoodTypeList == Species.PLANT &&
-//                        !((Animal) currentObject).inRelation)
-//                    return currentObject;
-//            }
-//        }
-//        return null;
-//    }
-
     public static int getManhattanDistance(int x1, int y1, int x2, int y2) {
         return Math.abs(x1 - x2) + Math.abs(y1 - y2);
     }
@@ -105,11 +72,11 @@ public abstract class Utils {
     }
 
     public static int getRowIdx(int index) {
-        return index / Const.CELL_HEIGHT;
+        return Math.max(0, index / Const.CELL_HEIGHT);
     }
 
     public static int getColIdx(int index) {
-        return index / Const.CELL_WIDTH;
+        return Math.max(0, index / Const.CELL_WIDTH);
     }
 
 }

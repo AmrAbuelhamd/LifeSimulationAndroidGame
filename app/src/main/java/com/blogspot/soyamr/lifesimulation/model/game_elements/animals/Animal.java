@@ -14,6 +14,7 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.Fe
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.Gender;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.Male;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -56,7 +57,7 @@ public abstract class Animal extends GameObject {
         this.x = x;
         this.y = y;
         this.myFoodTypeList = myFoodType;
-        myFoodMenu = new LinkedList<>();
+        myFoodMenu = new ArrayList<>();
         this.model = model;
         model.putMeHerePlease(x, y, this);
         if (genderEnum == GenderEnum.FEMALE)
@@ -169,12 +170,6 @@ public abstract class Animal extends GameObject {
         return false;
     }
 
-    private void cleanMyPreysList() {
-        if (hunger > SEARCH_FOOD_THRESHOLD) {
-            deleteVeryFarPreys();
-        }
-    }
-
     //cause game to be slow
     private void deleteVeryFarPreys() {
         ListIterator<GameObject> iter = myFoodMenu.listIterator();
@@ -201,17 +196,6 @@ public abstract class Animal extends GameObject {
         int randomIndex = Utils.getRandom(0, 8);
         this.x = x + width * moveDirection[randomIndex][0];
         this.y = y + height * moveDirection[randomIndex][1];
-    }
-
-    public boolean wannaEat(GameObject food) {
-        if (hunger > SEARCH_FOOD_THRESHOLD) {
-            if (myFoodMenu.remove(food)) {
-                reduceHunger();
-                //model.removeObjectFromMap(food);
-                return true;
-            }
-        }
-        return false;
     }
 
     //todo[impo] move this to cell, she checks everytime animal added and resisidences more than one

@@ -34,9 +34,10 @@ public abstract class Plant extends GameObject {
         this.x = x;
         this.y = y;
         reachedScreenEdge();
+        reachedScreenEdge();
 
-        rect.set(x, y, x + width, y + height);
-        model.putMeHerePlease(x, y, this);
+        rect.set(this.x, this.y, this.x + width, this.y + height);
+        model.putMeHerePlease(this.x, this.y, this);
 
         textAndRectPaint = new Paint();
         textAndRectPaint.setStyle(Paint.Style.FILL);

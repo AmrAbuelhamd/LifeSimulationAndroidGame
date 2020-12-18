@@ -10,11 +10,15 @@ import java.util.concurrent.TimeUnit;
 
 public class GameThread {
 
-    private final Controller gameSurface;
-    private final SurfaceHolder surfaceHolder;
+    private static String frameRate;
     final long waitTime = 100;
     final ScheduledExecutorService executor;
-
+    private final Controller gameSurface;
+    private final SurfaceHolder surfaceHolder;
+    Canvas canvas;
+    private long lastTime;
+    private long delta;
+    private int frameCount;
 
     public GameThread(Controller gameSurface) {
         this.gameSurface = gameSurface;
@@ -22,13 +26,17 @@ public class GameThread {
 
         executor = Executors.newSingleThreadScheduledExecutor();
         initialize();
-        executor.scheduleWithFixedDelay(this::run, 0, waitTime, TimeUnit.MILLISECONDS);
+        executor.scheduleWithFixedDelay(new Runnable() {
+            @Override
+            public void run() {
+                GameThread.this.run();
+            }
+        }, 0, waitTime, TimeUnit.MILLISECONDS);
     }
 
-    private static String frameRate;
-    private long lastTime;
-    private long delta;
-    private  int frameCount;
+    public static String getFrameRate() {
+        return frameRate;
+    }
 
     public void initialize() {
         lastTime = System.currentTimeMillis();
@@ -47,10 +55,6 @@ public class GameThread {
         }
     }
 
-    public static String getFrameRate() {
-        return frameRate;
-    }
-
     public void run() {
         calculate();
 
@@ -59,7 +63,7 @@ public class GameThread {
         }
         this.gameSurface.update();
         // Get Canvas from Holder and lock it.
-        Canvas canvas = this.surfaceHolder.lockCanvas();
+        canvas = this.surfaceHolder.lockCanvas();
 //        this.gameSurface.myDraw(canvas);
         gameSurface.invalidate();
         this.surfaceHolder.unlockCanvasAndPost(canvas);

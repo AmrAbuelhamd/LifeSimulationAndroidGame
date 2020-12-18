@@ -16,18 +16,18 @@ public class MalePerson extends Person {
     }
 
     Status nextMove = Status.NOT_SET;
-//    @Override
-//    public void update() {
-////        if (isAlive) {
-////            boolean isDead = updateHunger();
-////            if (isDead) {
-//////                isAlive = false;
-////                model.deleteMePlease(this);
-////                return;
-////            }
-////            model.iAmLeavingThisCell(x, y, this);
-////        }
-//    }
+    @Override
+    public void update() {
+        if (isAlive) {
+            boolean isDead = updateHunger();
+            if (isDead) {
+//                isAlive = false;
+                model.deleteMePlease(this);
+                return;
+            }
+            model.iAmLeavingThisCell(x, y, this);
+        }
+    }
 
     void searchPartner(FemalePerson femalePerson) {
         HusbandCallbacks callbacks = femalePerson.wannaBeInRelationShip();

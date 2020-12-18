@@ -6,7 +6,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.blogspot.soyamr.lifesimulation.Const;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.carnivore.Carnivore;
 
 import static com.blogspot.soyamr.lifesimulation.Const.SEARCH_FOOD_THRESHOLD_NORMAL;
 import static com.blogspot.soyamr.lifesimulation.Const.SEARCH_PARTNER_THRESHOLD_NORMAL;
@@ -65,7 +64,8 @@ public abstract class GameObject /*implements famouseanimaslinterface*/ {
     }
 
     public void draw(Canvas canvas) {
-        canvas.drawRect(rect, paint);
+        if (isAlive)
+            canvas.drawRect(rect, paint);
     }
 
     public int getX() {
@@ -76,8 +76,11 @@ public abstract class GameObject /*implements famouseanimaslinterface*/ {
     public int getY() {
         return y;
     }
+
     public abstract void makeMeFamous();
+
     public abstract void updateAdditionalInfoLocation(float mScaleFactor);
+
     public abstract void drawAdditionalInfo(Canvas canvas);
 
     public abstract int getMyColor();

@@ -8,6 +8,7 @@ import android.graphics.Rect;
 
 import com.blogspot.soyamr.lifesimulation.Const;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -32,7 +33,7 @@ public class Cell {
     public Cell(int i, int j) {
         x = j * Const.CELL_WIDTH;
         y = i * Const.CELL_HEIGHT;
-        residences = new LinkedList<>();
+        residences = new ArrayList<>();
 //        rect.set(x, y, x + GameObject.width, y + GameObject.height);
 
     }

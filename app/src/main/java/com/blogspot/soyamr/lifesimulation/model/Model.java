@@ -51,10 +51,10 @@ public class Model {
     private List<HomeSweetHome> homeList;
 
     public Model(Context context) {
-        explosionList = new LinkedList<>();
+        explosionList = new ArrayList<>();
         generator = new Generator(this);
         onScreenInfo = new OnScreenInfo();
-        homeList = new LinkedList<>();
+        homeList = new ArrayList<>();
         cells = generator.generateSells();
         animals = generator.generateAnimals();
         plants = generator.generatePlants();
@@ -81,19 +81,11 @@ public class Model {
             this.famousAnimal = new FamousAnimal(animal);
     }
 
-    public void deleteMePlease(GameObject animal) {
-        iAmLeavingThisCell(animal.getX(), animal.getY(), animal);
-        //todo add explosion effect which will be class that will work for a couple of seconds
-//        animals.remove(animal);
-        animal.isAlive = false;
-        objectsToRemove.add(animal);
+    public void deleteMePlease(GameObject object) {
+        iAmLeavingThisCell(object.getX(), object.getY(), object);
+        object.isAlive = false;
+        objectsToRemove.add(object);
 
-    }
-
-    public void removePlant(Plant plant) {
-        iAmLeavingThisCell(plant.getX(), plant.getY(), plant);
-        plant.isAlive = false;
-        plants.remove(plant);
     }
 
     public void updateLogInfo() {
@@ -122,20 +114,13 @@ public class Model {
     }
 
     private void updateGameParameters() {
-        //delete ghost animals
-//        if (dgath < deleteGhostAnimalThreshold) {
-//            ++dgath;
-//        } else {
-//            deleteGhostAnimals();
-//            dgath = 0;
-//        }
         //create disaster
         if (dth < disasterThreshold) {
             ++dth;
         } else {
             // Create Explosion object.
             createExplosionObject();
-            disasterThreshold = Utils.getRandom(5, 10);
+            disasterThreshold = Utils.getRandom(10, 30);
             dth = 0;
         }
         //add new plant
@@ -186,6 +171,7 @@ public class Model {
             for (int j = jStart; j < jEnd; ++j) {
                 List<GameObject> poorObjects = cells[i][j].getObjectResidingHere();
                 poorObjects.forEach(deadObject -> {
+                    deadObject.isAlive = false;
                     if (deadObject instanceof Animal)
                         animals.remove(deadObject);
                     else if (deadObject instanceof Plant)
@@ -196,20 +182,8 @@ public class Model {
         }
     }
 
-    private void deleteGhostAnimals() {
-        for (int i = 0; i < Const.M; ++i) {
-            for (int j = 0; j < Const.N; ++j) {
-                cells[i][j].update();
-            }
-        }
-    }
-
     public void draw(Canvas canvas) {
-//        for(Cell[] cellRow :cells){
-//            for(Cell cell:cellRow){
-//                cell.draw(canvas);
-//            }
-//        }
+
         animalsToAdd.clear();
 
         HomeSweetHome[] homeSweetHomes = homeList.toArray(new HomeSweetHome[0]);
@@ -218,14 +192,14 @@ public class Model {
         }
         Plant[] plants1 = plants.toArray(new Plant[0]);
         for (Plant plant : plants1) {
-            plant.draw(canvas);
+            if (plant != null)
+                plant.draw(canvas);
         }
         Animal[] animals1 = animals.toArray(new Animal[0]);
         for (Animal animal : animals1) {
             if (animal != null)
                 animal.draw(canvas);
         }
-//        explosionList.forEach(explosion ->explosion.draw(canvas));
         Explosion[] explosions = explosionList.toArray(new Explosion[0]);
         for (Explosion explosion : explosions) {
             explosion.draw(canvas);
@@ -237,25 +211,12 @@ public class Model {
         onScreenInfo.draw(canvas);
     }
 
-    public void controlBirthPlease() {
-        if (animals.size() > 300) {
-            GameObject.SEARCH_PARTNER_THRESHOLD = Const.SEARCH_PARTNER_THRESHOLD_PROHIBIT;
-            GameObject.SEARCH_FOOD_THRESHOLD = Const.SEARCH_FOOD_THRESHOLD_HIGH;
-            ;
-        } else if (animals.size() < 100) {
-            GameObject.SEARCH_PARTNER_THRESHOLD = Const.SEARCH_PARTNER_THRESHOLD_NORMAL;
-            GameObject.SEARCH_FOOD_THRESHOLD = Const.SEARCH_FOOD_THRESHOLD_NORMAL;
-        }
-        System.out.println("#################hi from birth control#################");
-    }
-
     public void addChild(Animal animal) {//should be added to concrete place on the map
-        //animals.add(animal);
         animalsToAdd.add(animal);
     }
 
     public void putMeHerePlease(int x, int y, GameObject gameObject) {
-        cells[Math.max(Utils.getRowIdx(y), 0)][Math.max(Utils.getColIdx(x), 0)].putMeHerePlease(gameObject);
+        cells[Utils.getRowIdx(y)][Utils.getColIdx(x)].putMeHerePlease(gameObject);
     }
 
     public List<GameObject> getObjectResidingHere(int i, int j) {
@@ -264,29 +225,6 @@ public class Model {
 
     public void iAmLeavingThisCell(int x, int y, GameObject gameObject) {
         cells[Utils.getRowIdx(y)][Utils.getColIdx(x)].removeMeFromHere(gameObject);
-    }
-
-    //toremove
-    public void removeObjectFromMap(GameObject prey) {
-        cells[Utils.getRowIdx(prey.getY())][Utils.getColIdx(prey.getX())].removeMeFromHere(prey);
-        prey.isAlive = false;
-        if (prey instanceof Animal) {
-            animals.remove(prey);
-        } else
-            plants.remove((Plant) prey);
-    }
-
-    public void showGhostAnimals() {//need optimization
-        if (animals.size() < 20) {
-            Log.i(tag, "**** " + animals.size());
-            //create cells
-            for (int i = 0; i < Const.M; ++i) {
-                for (int j = 0; j < Const.N; ++j) {
-                    for (GameObject gameObjects : cells[i][j].getObjectResidingHere())
-                        Log.i(tag, " " + gameObjects);
-                }
-            }
-        }
     }
 
     public void addHome(HomeSweetHome homeSweetHome) {

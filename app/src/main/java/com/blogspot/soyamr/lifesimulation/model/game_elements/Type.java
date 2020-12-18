@@ -2,6 +2,7 @@ package com.blogspot.soyamr.lifesimulation.model.game_elements;
 
 import com.blogspot.soyamr.lifesimulation.model.Model;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public enum Type {
 
 
     public List<GameObject> getMeFromHere(Model model, int i, int j, GenderEnum genderEnum) {
-        List<GameObject> result = new LinkedList<>();
+        List<GameObject> result = new ArrayList<>();
         List<GameObject> objectSOnCell = model.getObjectResidingHere(i, j);
 
         for (GameObject currentObject : objectSOnCell)
