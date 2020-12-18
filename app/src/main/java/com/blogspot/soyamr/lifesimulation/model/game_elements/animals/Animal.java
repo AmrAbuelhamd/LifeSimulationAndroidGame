@@ -126,13 +126,14 @@ public abstract class Animal extends GameObject {
             genderOperator.setRect();
         }
     }
-
+//todo [impo] pattern state
+//todo [impo] pattern command
     private void nextStep() {
         switch (nextMove) {
             case MOVE_RANDOMLY:
                 moveRandomly();
                 break;
-            case NOTHING:
+            case NOTHING://todo at the end
                 break;
             case TO_FOOD:
                 if(myFood==null)
@@ -157,7 +158,7 @@ public abstract class Animal extends GameObject {
         }
     }
 
-    private boolean updateHunger() {
+    protected boolean updateHunger() {
         if (ihth < increasingHungerThreshold) {
             ++ihth;
         } else {
@@ -368,8 +369,10 @@ public abstract class Animal extends GameObject {
 
     @Override
     public void draw(Canvas canvas) {
-        genderOperator.draw(canvas);
-        nextMove = NextMove.NOT_SET;
+        if(isAlive) {
+            genderOperator.draw(canvas);
+            nextMove = NextMove.NOT_SET;
+        }
     }
 
     public void doCermony() {

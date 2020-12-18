@@ -51,7 +51,7 @@ public class Generator {
 
     public List<Plant> generatePlants() {
         //create plants
-        for (int i = 0; i < 50; i++) {//500
+        for (int i = 0; i < 500; i++) {//500
             addRandomPlant();
         }
         return plants;

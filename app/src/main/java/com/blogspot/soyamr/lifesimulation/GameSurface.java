@@ -68,6 +68,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
         canvas.scale(scaleListener.mScaleFactor, scaleListener.mScaleFactor, scaleListener.focusX, scaleListener.focusY);
         canvas.translate(scaleListener.mPosX, scaleListener.mPosY);
         clipBoundsCanvas = canvas.getClipBounds();
+//        model.update(clipBoundsCanvas, scaleListener.mScaleFactor);
 
         model.draw(canvas);
 //        drawWhite(canvas);

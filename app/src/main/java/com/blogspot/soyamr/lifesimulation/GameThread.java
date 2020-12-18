@@ -57,14 +57,13 @@ public class GameThread {
         if (!surfaceHolder.getSurface().isValid()) {
             return;
         }
-        if(surfaceHolder==null)
-            throw new RuntimeException("surface is null");
+        this.gameSurface.update();
         // Get Canvas from Holder and lock it.
         Canvas canvas = this.surfaceHolder.lockCanvas();
-        this.gameSurface.update();
-//        this.gameSurface.draw(canvas);
+//        this.gameSurface.myDraw(canvas);
         gameSurface.invalidate();
         this.surfaceHolder.unlockCanvasAndPost(canvas);
+        //
     }
 
 }

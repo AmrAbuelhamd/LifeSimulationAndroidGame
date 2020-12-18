@@ -20,7 +20,7 @@ public abstract class Plant extends GameObject {
     public Plant(int x, int y, Model model, Type type) {
         super(type, GenderEnum.BOTH);
         this.model = model;
-        if (x == -1 && y == -1) {
+        if (x == -1 || y == -1) {
             x = Utils.getRandom(0, Const.N) * width;
             y = Utils.getRandom(0, Const.M) * height;
         } else {

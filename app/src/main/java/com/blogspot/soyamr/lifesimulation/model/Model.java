@@ -28,8 +28,9 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class Model {
-    public final Cell[][] cells;
+    public final Cell[][] cells;//todo impo use key-value try
     public final List<Animal> animals;
+    //todo impo delete every 150 tiks -> just try
     public final List<Plant> plants;
     public final Generator generator;
     final int addingNewPlantThreshold = 20;
@@ -44,6 +45,8 @@ public class Model {
     int dgath = 0;
     List<GameObject> objectsToRemove = new ArrayList<>(400);
     List<Animal> animalsToAdd = new ArrayList<>(400);
+    int deleteDeadTH = 150;
+    int ddth = 0;
     private FamousAnimal famousAnimal;
     private List<HomeSweetHome> homeList;
 
@@ -114,14 +117,6 @@ public class Model {
             }
         }
         explosionList.forEach(Explosion::update);
-
-
-        objectsToRemove.forEach(deadObject -> {
-            if (deadObject instanceof Animal)
-                animals.remove(deadObject);
-            else if (deadObject instanceof Plant)
-                plants.remove(deadObject);
-        });
         animals.addAll(animalsToAdd);
 //        showGhostAnimals();
     }
@@ -151,6 +146,18 @@ public class Model {
                 addOnePlant();
                 anpth = 0;
             }
+        }
+        if (ddth < deleteDeadTH) {
+            ++ddth;
+        } else {
+            objectsToRemove.forEach(deadObject -> {
+                if (deadObject instanceof Animal)
+                    animals.remove(deadObject);
+                else if (deadObject instanceof Plant)
+                    plants.remove(deadObject);
+            });
+            objectsToRemove.clear();
+            ddth = 0;
         }
     }
 
@@ -197,15 +204,14 @@ public class Model {
         }
     }
 
-
     public void draw(Canvas canvas) {
-        objectsToRemove.clear();
-        animalsToAdd.clear();
 //        for(Cell[] cellRow :cells){
 //            for(Cell cell:cellRow){
 //                cell.draw(canvas);
 //            }
 //        }
+        animalsToAdd.clear();
+
         HomeSweetHome[] homeSweetHomes = homeList.toArray(new HomeSweetHome[0]);
         for (HomeSweetHome h : homeSweetHomes) {
             h.draw(canvas);
@@ -215,8 +221,9 @@ public class Model {
             plant.draw(canvas);
         }
         Animal[] animals1 = animals.toArray(new Animal[0]);
-        for (Animal animal : animals) {
-            animal.draw(canvas);
+        for (Animal animal : animals1) {
+            if (animal != null)
+                animal.draw(canvas);
         }
 //        explosionList.forEach(explosion ->explosion.draw(canvas));
         Explosion[] explosions = explosionList.toArray(new Explosion[0]);
@@ -248,7 +255,7 @@ public class Model {
     }
 
     public void putMeHerePlease(int x, int y, GameObject gameObject) {
-        cells[Utils.getRowIdx(y)][Utils.getColIdx(x)].putMeHerePlease(gameObject);
+        cells[Math.max(Utils.getRowIdx(y), 0)][Math.max(Utils.getColIdx(x), 0)].putMeHerePlease(gameObject);
     }
 
     public List<GameObject> getObjectResidingHere(int i, int j) {

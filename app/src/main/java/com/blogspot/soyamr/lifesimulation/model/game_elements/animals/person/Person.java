@@ -3,12 +3,14 @@ package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person;
 import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.HomeSweetHome;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
 
 import java.util.List;
 
 public abstract class Person extends Animal {
+    HomeSweetHome homeSweetHome;
     public Person(int x, int y, Model model, GenderEnum genderEnum) {
         super(x, y, model, Type.PERSON, genderEnum,
                 List.of(Type.APPLE, Type.RABBIT, Type.PIG,Type.CARROT)

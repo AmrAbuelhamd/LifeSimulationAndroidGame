@@ -15,16 +15,34 @@ public class MalePerson extends Person {
 
     }
 
-    @Override
-    public void update() {
-        if (boo == 1) {
-            boo++;
-        }
-    }
+    Status nextMove = Status.NOT_SET;
+//    @Override
+//    public void update() {
+////        if (isAlive) {
+////            boolean isDead = updateHunger();
+////            if (isDead) {
+//////                isAlive = false;
+////                model.deleteMePlease(this);
+////                return;
+////            }
+////            model.iAmLeavingThisCell(x, y, this);
+////        }
+//    }
 
+    void searchPartner(FemalePerson femalePerson) {
+        HusbandCallbacks callbacks = femalePerson.wannaBeInRelationShip();
+//        femalePerson.
+
+        callbacks.setWifeHome(homeSweetHome);
+
+    }
 
     @Override
     public void addChild() {
         throw new RuntimeException("man should give birth");
+    }
+
+    enum Status {
+        NOT_SET, SEARCH_HOME, GO_NEAREST_HOME, WAIT_HOME, WANNA_EAT, ONE_DIRECTION
     }
 }
