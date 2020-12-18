@@ -7,19 +7,19 @@ import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 
 public class Explosion extends GameObject {
-    private int rowIndex = 0;
-    private int colIndex = -1;
     final int rowCount;
     final int colCount;
     final Model model;
-    private boolean finish = false;
-    Bitmap image;
     final int width;
     final int height;
+    Bitmap image;
+    private int rowIndex = 0;
+    private int colIndex = -1;
+    private boolean finish = false;
 
 
     public Explosion(Model model, Bitmap image, int x, int y, int rowC, int colC) {
-        super(null,null);
+        super(null, null);
         this.x = x;
         this.y = y;
         this.rowCount = rowC;
@@ -32,7 +32,7 @@ public class Explosion extends GameObject {
     }
 
     public void update() {
-        this.colIndex++;
+        ++this.colIndex;
         if (this.colIndex >= this.colCount) {
             this.colIndex = 0;
             this.rowIndex++;
@@ -45,6 +45,8 @@ public class Explosion extends GameObject {
 
     protected Bitmap createSubImageAt(int row, int col) {
         // createBitmap(bitmap, x, y, width, height).
+        if (col == -1)
+            col = 0;
         return Bitmap.createBitmap(image, col * width, row * height, width, height);
     }
 

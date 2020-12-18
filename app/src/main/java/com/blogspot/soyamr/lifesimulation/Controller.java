@@ -10,4 +10,5 @@ public interface Controller {
     void draw(Canvas canvas);
 
     SurfaceHolder getHolder();
+    void invalidate();
 }

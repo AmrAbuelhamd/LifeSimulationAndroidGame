@@ -12,6 +12,7 @@ import com.blogspot.soyamr.lifesimulation.R;
 import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Cell;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.HomeSweetHome;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Apple;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Carrot;
@@ -44,11 +45,13 @@ public class Model {
     List<GameObject> objectsToRemove = new ArrayList<>(400);
     List<Animal> animalsToAdd = new ArrayList<>(400);
     private FamousAnimal famousAnimal;
+    private List<HomeSweetHome> homeList;
 
     public Model(Context context) {
         explosionList = new LinkedList<>();
         generator = new Generator(this);
         onScreenInfo = new OnScreenInfo();
+        homeList = new LinkedList<>();
         cells = generator.generateSells();
         animals = generator.generateAnimals();
         plants = generator.generatePlants();
@@ -100,7 +103,6 @@ public class Model {
         updateGameParameters();
         onScreenInfo.update(animals.size(), 0, plants.size(), clipBoundsCanvas, mScaleFactor);
         animals.forEach(Animal::update);
-        explosionList.forEach(Explosion::update);
         if (famousAnimal != null)
             famousAnimal.update(mScaleFactor);
 
@@ -111,6 +113,8 @@ public class Model {
                 iterator.remove();
             }
         }
+        explosionList.forEach(Explosion::update);
+
 
         objectsToRemove.forEach(deadObject -> {
             if (deadObject instanceof Animal)
@@ -152,7 +156,7 @@ public class Model {
 
     private void createExplosionObject() {
         if (bitmap != null) {
-            Explosion explosion = new Explosion(this, bitmap,
+            Explosion explosion = new Explosion(this, bitmap.copy(bitmap.getConfig(), true),
                     Math.max(0, Utils.getRandom(0, Const.N) * Const.CELL_WIDTH - bitmap.getWidth() / 5),
                     Math.max(0, Utils.getRandom(0, Const.M) * Const.CELL_HEIGHT - bitmap.getHeight() / 5), 5, 5);
             this.explosionList.add(explosion);
@@ -202,9 +206,23 @@ public class Model {
 //                cell.draw(canvas);
 //            }
 //        }
-        plants.forEach(plant -> plant.draw(canvas));
-        animals.forEach(animal -> animal.draw(canvas));
-        explosionList.forEach(explosion -> explosion.draw(canvas));
+        HomeSweetHome[] homeSweetHomes = homeList.toArray(new HomeSweetHome[0]);
+        for (HomeSweetHome h : homeSweetHomes) {
+            h.draw(canvas);
+        }
+        Plant[] plants1 = plants.toArray(new Plant[0]);
+        for (Plant plant : plants1) {
+            plant.draw(canvas);
+        }
+        Animal[] animals1 = animals.toArray(new Animal[0]);
+        for (Animal animal : animals) {
+            animal.draw(canvas);
+        }
+//        explosionList.forEach(explosion ->explosion.draw(canvas));
+        Explosion[] explosions = explosionList.toArray(new Explosion[0]);
+        for (Explosion explosion : explosions) {
+            explosion.draw(canvas);
+        }
 
         if (famousAnimal != null)
             famousAnimal.draw(canvas);
@@ -262,5 +280,9 @@ public class Model {
                 }
             }
         }
+    }
+
+    public void addHome(HomeSweetHome homeSweetHome) {
+        homeList.add(homeSweetHome);
     }
 }

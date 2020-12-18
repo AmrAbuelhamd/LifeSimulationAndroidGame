@@ -56,7 +56,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
     }
 
     public void update() {
-        updateLogInfo();
+        //updateLogInfo();
         model.update(clipBoundsCanvas, scaleListener.mScaleFactor);
     }
 
@@ -228,6 +228,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
         resume();
+        setWillNotDraw(false);
     }
 
     // Implements method of SurfaceHolder.Callback
