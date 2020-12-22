@@ -23,7 +23,6 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.screen_data.OnScre
 import com.blogspot.soyamr.lifesimulation.model.game_elements.special_events.Explosion;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -171,11 +170,13 @@ public class Model {
             for (int j = jStart; j < jEnd; ++j) {
                 List<GameObject> poorObjects = cells[i][j].getObjectResidingHere();
                 poorObjects.forEach(deadObject -> {
-                    deadObject.isAlive = false;
-                    if (deadObject instanceof Animal)
+                    if (deadObject instanceof Animal) {
                         animals.remove(deadObject);
-                    else if (deadObject instanceof Plant)
+                        deadObject.isAlive = false;
+                    } else if (deadObject instanceof Plant) {
                         plants.remove(deadObject);
+                        deadObject.isAlive = false;
+                    }
                 });
                 cells[i][j].clear();
             }
@@ -186,10 +187,6 @@ public class Model {
 
         animalsToAdd.clear();
 
-        HomeSweetHome[] homeSweetHomes = homeList.toArray(new HomeSweetHome[0]);
-        for (HomeSweetHome h : homeSweetHomes) {
-            h.draw(canvas);
-        }
         Plant[] plants1 = plants.toArray(new Plant[0]);
         for (Plant plant : plants1) {
             if (plant != null)
@@ -200,6 +197,12 @@ public class Model {
             if (animal != null)
                 animal.draw(canvas);
         }
+
+        HomeSweetHome[] homeSweetHomes = homeList.toArray(new HomeSweetHome[0]);
+        for (HomeSweetHome h : homeSweetHomes) {
+            h.draw(canvas);
+        }
+
         Explosion[] explosions = explosionList.toArray(new Explosion[0]);
         for (Explosion explosion : explosions) {
             explosion.draw(canvas);
@@ -229,5 +232,11 @@ public class Model {
 
     public void addHome(HomeSweetHome homeSweetHome) {
         homeList.add(homeSweetHome);
+    }
+
+    public void hideMe(GameObject nearestFood) {
+        nearestFood.isAlive = false;//hiding it from map.
+        objectsToRemove.add(nearestFood);
+        iAmLeavingThisCell(nearestFood.getX(), nearestFood.getY(), nearestFood);
     }
 }

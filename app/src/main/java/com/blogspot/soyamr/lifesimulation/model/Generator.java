@@ -58,7 +58,7 @@ public class Generator {
     }
 
     public List<Animal> generateAnimals() {
-        int totalForEach = 20;
+        int totalForEach = 2;
         //CREATE FEMALE ANIMALS
         List<Animal> tempAnimals = new ArrayList<>();
         for (int i = 0; i < totalForEach; i++) {//20
@@ -120,7 +120,7 @@ public class Generator {
             tempAnimals.add(animal);
         }
         //person
-        for (int i = 0; i < totalForEach; i++) {//20
+        for (int i = 0; i < 150; i++) {//20
             Animal animal = new MalePerson(-1, -1, model, GenderEnum.MALE);
             tempAnimals.add(animal);
             animal = new FemalePerson(-1, -1, model, GenderEnum.FEMALE);

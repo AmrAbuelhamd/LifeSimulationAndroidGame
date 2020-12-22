@@ -64,8 +64,8 @@ public class GameThread {
         this.gameSurface.update();
         // Get Canvas from Holder and lock it.
         canvas = this.surfaceHolder.lockCanvas();
-//        this.gameSurface.myDraw(canvas);
-        gameSurface.invalidate();
+        this.gameSurface.myDraw(canvas);
+//        gameSurface.invalidate();
         this.surfaceHolder.unlockCanvasAndPost(canvas);
         //
     }

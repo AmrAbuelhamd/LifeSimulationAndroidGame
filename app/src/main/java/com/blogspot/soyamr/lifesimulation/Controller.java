@@ -7,7 +7,7 @@ public interface Controller {
 
     void update();
 
-    void draw(Canvas canvas);
+    void myDraw(Canvas canvas);
 
     SurfaceHolder getHolder();
     void invalidate();

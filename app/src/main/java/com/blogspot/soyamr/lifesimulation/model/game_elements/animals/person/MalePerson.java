@@ -1,40 +1,58 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person;
 
+import android.graphics.Color;
+import android.graphics.Paint;
+
 import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.HomeSweetHome;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.GoingHome;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.GoingToFood;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.GoingToNearHome;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.NotSet;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.OneDirection;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.SearchFood;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.SearchPartner;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.WaitHome;
+
+import java.util.List;
 
 public class MalePerson extends Person {
-    int boo = 1;
+
+    public final int HOUSE_VISION = ANIMAL_FOOD_VISION_RANG * 2;
+    public HomeSweetHome nearestHome;
+    public GameObject nearestFood;
+    public HusbandCallbacks wifeCallbacks;
+    public boolean isMarried = false;
+    public State goingToNearHome = new GoingToNearHome();
+    public State oneDirection = new OneDirection();
+    public State waitHome = new WaitHome();
+    public State goingToFood = new GoingToFood();
+    public State noteSet = new NotSet();
+    public State searchFood = new SearchFood();
+    public State searchPartner = new SearchPartner();
+    public State goingHome = new GoingHome();
+
 
     public MalePerson(int x, int y, Model model, GenderEnum genderEnum) {
-        super(x, y, model, genderEnum);
-        HomeSweetHome homeSweetHome = new HomeSweetHome(this.x + GameObject.width, this.y + GameObject.height, model);
-        model.addHome(homeSweetHome);
-
+        super(x, y, model, genderEnum, List.of(Type.RABBIT, Type.PIG));
+        homePaint.setStyle(Paint.Style.STROKE);
+        homePaint.setColor(Color.YELLOW);
+        homePaint.setTextSize(100F);
+        currentState = noteSet;
     }
 
-    Status nextMove = Status.NOT_SET;
+
     @Override
     public void update() {
-        if (isAlive) {
-            boolean isDead = updateHunger();
-            if (isDead) {
-//                isAlive = false;
-                model.deleteMePlease(this);
-                return;
-            }
-            model.iAmLeavingThisCell(x, y, this);
-        }
-    }
+        if (!checkBeforeUpdate())
+            return;
 
-    void searchPartner(FemalePerson femalePerson) {
-        HusbandCallbacks callbacks = femalePerson.wannaBeInRelationShip();
-//        femalePerson.
+        currentState.update(this);
 
-        callbacks.setWifeHome(homeSweetHome);
-
+        afterUpdate();
     }
 
     @Override
@@ -42,7 +60,14 @@ public class MalePerson extends Person {
         throw new RuntimeException("man should give birth");
     }
 
-    enum Status {
-        NOT_SET, SEARCH_HOME, GO_NEAREST_HOME, WAIT_HOME, WANNA_EAT, ONE_DIRECTION
+    public void buildHome(int x, int y) {
+        homeSweetHome = new HomeSweetHome(x, y, model);
+        homeRect.set(x - width / 2, y - height / 2,
+                x + width + width / 2, y + height + height / 2);
+    }
+
+    public void showMyHome() {
+        model.addHome(homeSweetHome);
+        wifeCallbacks.setWifeHome(homeSweetHome);
     }
 }

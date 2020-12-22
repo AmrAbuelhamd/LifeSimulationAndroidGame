@@ -2,21 +2,19 @@ package com.blogspot.soyamr.lifesimulation.model.game_elements;
 
 
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
 
 import com.blogspot.soyamr.lifesimulation.Const;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Plant;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
 
 
 public class Cell {
-//    private static final Paint paint;
+    //    private static final Paint paint;
 //    private static final Rect rect;
     static {
 //        paint = new Paint();
@@ -85,11 +83,7 @@ public class Cell {
         }
     }
 
-    public void deleteEveryOne() {
-        residences.clear();
-    }
-
     public void clear() {
-        residences.clear();
+        residences.removeIf(it -> it instanceof Animal || it instanceof Plant);
     }
 }

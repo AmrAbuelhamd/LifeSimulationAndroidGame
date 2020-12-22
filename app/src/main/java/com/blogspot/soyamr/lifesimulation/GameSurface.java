@@ -61,7 +61,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    public void myDraw(Canvas canvas) {
         super.draw(canvas);
 
         canvas.save();

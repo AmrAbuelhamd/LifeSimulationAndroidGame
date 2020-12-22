@@ -48,7 +48,7 @@ public class Explosion extends GameObject {
         if (col == -1)
             col = 0;
         return Bitmap.createBitmap(image, Math.min(col * width, image.getWidth()),
-                Math.min(row * height, image.getHeight()), width, height);
+                Math.min(row * height, image.getHeight()), Math.min(width, image.getWidth()), Math.min(height, image.getHeight()));
     }
 
     public void draw(Canvas canvas) {
