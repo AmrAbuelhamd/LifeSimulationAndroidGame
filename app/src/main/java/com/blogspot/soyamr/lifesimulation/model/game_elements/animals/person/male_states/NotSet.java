@@ -7,7 +7,7 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.Sta
 public class NotSet implements State {
     @Override
     public void update(Person person) {
-        MalePerson p = (MalePerson) person;//toask is this good practice
+        MalePerson p = (MalePerson) person;//toask is this good practice //baaad
         p.homeSweetHome = null;
         p.wifeCallbacks = null;
         if (person.hunger < Person.SEARCH_FOOD_THRESHOLD) {

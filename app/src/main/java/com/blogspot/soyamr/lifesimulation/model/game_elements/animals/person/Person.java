@@ -32,9 +32,9 @@ public abstract class Person extends Animal {
 
     public Person(int x, int y, Model model, GenderEnum genderEnum, List<Type> foodList) {
         super(x, y, model, Type.PERSON, genderEnum, foodList);
-        homePaint.setStyle(Paint.Style.STROKE);
         homePaint.setColor(Color.YELLOW);
-        homePaint.setTextSize(100F);
+        homePaint.setStrokeWidth(3F);
+        homePaint.setTextSize(20F);
     }
 
     void setHomeRect() {
@@ -86,9 +86,11 @@ public abstract class Person extends Animal {
     public void drawAdditionalInfo(Canvas canvas) {
         super.drawAdditionalInfo(canvas);
         if (homeSweetHome != null) {
+            homePaint.setStyle(Paint.Style.STROKE);
             canvas.drawRect(homeRect, homePaint);
+            homePaint.setStyle(Paint.Style.FILL);
             canvas.drawText("stock " + homeSweetHome.getStockSize(), (float) homeSweetHome.getX(),
-                    (float) homeSweetHome.getY() - height * 2, paint);
+                    (float) homeSweetHome.getY() - height * 2, homePaint);
         }
     }
 

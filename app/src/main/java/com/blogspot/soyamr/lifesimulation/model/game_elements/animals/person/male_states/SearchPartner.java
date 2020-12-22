@@ -32,7 +32,7 @@ public class SearchPartner implements State {
         }
         //here i have a wife
         p.isMarried = true;
-        searchHome(p);
+        searchHome(p);//just return state
     }
 
     //toask should all methods launched from update return value to update, or they can take
