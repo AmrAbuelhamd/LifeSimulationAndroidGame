@@ -1,6 +1,7 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person;
 
 import android.graphics.Rect;
+import android.util.Log;
 
 import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.Model;
@@ -24,6 +25,7 @@ public class FemalePerson extends Person implements HusbandCallbacks {
     public State oneDirection = new OneDirection();
     public State goingToFood = new GoingToFood();
     public State waitHome = new WaitHome();
+    private final String tag = "FFFemalePerson";
 
     public FemalePerson(int x, int y, Model model, GenderEnum genderEnum) {
         super(x, y, model, genderEnum, List.of(Type.APPLE, Type.CARROT));
@@ -37,6 +39,7 @@ public class FemalePerson extends Person implements HusbandCallbacks {
             model.addChild(new FemalePerson(x, y, model, GenderEnum.FEMALE));
         else
             model.addChild(new MalePerson(x, y, model, GenderEnum.MALE));
+        Log.i(tag,"yraaaa new baby");
     }
 
 
