@@ -252,6 +252,10 @@ public class Model {
     }
 
     public List<GameObject> getObjectResidingHere(int i, int j) {
+        if (j >= Const.N)
+            j = Const.N - 1;
+        if (i >= Const.M)
+            i = Const.M - 1;
         return cells[i][j].getObjectResidingHere();
     }
 
