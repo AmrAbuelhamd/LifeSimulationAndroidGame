@@ -1,5 +1,7 @@
-package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states;
+package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.female_states;
 
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.Female;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.FemalePerson;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.MalePerson;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.Person;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.State;
@@ -7,8 +9,8 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.Sta
 public class WaitHome implements State {
     @Override
     public void update(Person person) {
-        MalePerson p = (MalePerson) person;
-        if (p.hunger < Person.SEARCH_PARTNER_THRESHOLD) {
+        FemalePerson p = (FemalePerson) person;
+        if (p.hunger < Person.SEARCH_FOOD_THRESHOLD) {
             while (p.hunger!=100){
                 if (p.homeSweetHome.getFood() != null) {
                     p.reduceHunger();
@@ -19,10 +21,6 @@ public class WaitHome implements State {
             }
         } else if (!p.homeSweetHome.isStockFull()) {
             p.currentState = p.searchFood;
-        } else if (!p.genderOperator.iDoNotWant) {//note that if i don't have anything to do, i will just wait home and keep asking for sex
-            if (p.wifeCallbacks.wannaMakeLove()) {//if she agrees then she will add child directly, no need to take actions
-                p.genderOperator.setIdoNotWant();
-            }
         }
     }
 }

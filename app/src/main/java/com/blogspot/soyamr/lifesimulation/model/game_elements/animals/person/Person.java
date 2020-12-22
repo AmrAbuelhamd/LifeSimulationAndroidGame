@@ -1,10 +1,12 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.blogspot.soyamr.lifesimulation.model.Model;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.HomeSweetHome;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
@@ -14,12 +16,24 @@ import java.util.List;
 
 public abstract class Person extends Animal {
     public HomeSweetHome homeSweetHome;
+    public State currentState;
+    public GameObject nearestFood;
+    public boolean isMarried = false;
     Paint homePaint = new Paint();
     Rect homeRect = new Rect();
-    public State currentState;
+
 
     public Person(int x, int y, Model model, GenderEnum genderEnum, List<Type> foodList) {
-        super(x, y, model, Type.PERSON, genderEnum, foodList );
+        super(x, y, model, Type.PERSON, genderEnum, foodList);
+        homePaint.setStyle(Paint.Style.STROKE);
+        homePaint.setColor(Color.YELLOW);
+        homePaint.setTextSize(100F);
+    }
+
+    void setHomeRect() {
+        homeRect.set(homeSweetHome.getX() - width / 2, homeSweetHome.getY() - height / 2,
+                homeSweetHome.getX() + width + width / 2, homeSweetHome.getY() + height + height / 2);
+
     }
 
     void afterUpdate() {
@@ -41,6 +55,7 @@ public abstract class Person extends Animal {
         }
         return false;
     }
+
     @Override
     public int getMyColor() {
         if (hunger > 60)

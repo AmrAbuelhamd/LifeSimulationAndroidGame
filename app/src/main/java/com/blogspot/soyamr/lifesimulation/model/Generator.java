@@ -43,8 +43,8 @@ public class Generator {
     public void addRandomPlant() {
         Plant plant = new Carrot(-1, -1, model);
         plants.add(plant);
-        plant = new Oat(-1, -1, model);
-        plants.add(plant);
+//        plant = new Oat(-1, -1, model);
+//        plants.add(plant);
         plant = new Apple(-1, -1, model);
         plants.add(plant);
     }
@@ -94,7 +94,7 @@ public class Generator {
             tempAnimals.add(animal);
         }
 
-        for (int i = 0; i < totalForEach; i++) {//20
+        for (int i = 0; i < 250; i++) {//20
             Animal animal = new Rabbit(-1, -1, model, GenderEnum.MALE);
             tempAnimals.add(animal);
             animal = new Rabbit(-1, -1, model, GenderEnum.FEMALE);
@@ -107,7 +107,7 @@ public class Generator {
             animal = new Bear(-1, -1, model, GenderEnum.FEMALE);
             tempAnimals.add(animal);
         }
-        for (int i = 0; i < totalForEach; i++) {//20
+        for (int i = 0; i < 250; i++) {//20
             Animal animal = new Pig(-1, -1, model, GenderEnum.MALE);
             tempAnimals.add(animal);
             animal = new Pig(-1, -1, model, GenderEnum.FEMALE);
@@ -120,7 +120,7 @@ public class Generator {
             tempAnimals.add(animal);
         }
         //person
-        for (int i = 0; i < 150; i++) {//20
+        for (int i = 0; i < 100; i++) {//20
             Animal animal = new MalePerson(-1, -1, model, GenderEnum.MALE);
             tempAnimals.add(animal);
             animal = new FemalePerson(-1, -1, model, GenderEnum.FEMALE);

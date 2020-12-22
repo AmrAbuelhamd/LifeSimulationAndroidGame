@@ -119,7 +119,7 @@ public class Model {
         } else {
             // Create Explosion object.
             createExplosionObject();
-            disasterThreshold = Utils.getRandom(10, 30);
+            disasterThreshold = Utils.getRandom(100, 300);
             dth = 0;
         }
         //add new plant

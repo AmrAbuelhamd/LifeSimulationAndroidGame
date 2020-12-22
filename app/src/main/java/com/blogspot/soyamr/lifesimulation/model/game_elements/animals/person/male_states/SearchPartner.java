@@ -68,7 +68,6 @@ public class SearchPartner implements State {
                 || newY > Const.FIELD_HEIGHT - Person.height ||
                 newX < 0 || newY < 0 || home != null);
 
-        p.homeSweetHome = new HomeSweetHome(newX, newY, p.model);//very important
         p.buildHome(newX, newY);
         p.currentState = p.goingToNearHome;
     }
