@@ -9,10 +9,10 @@ public class WaitHome implements State {
     public void update(Person person) {
         MalePerson p = (MalePerson) person;
         if (p.hunger < Person.SEARCH_PARTNER_THRESHOLD) {
-            while (p.hunger!=100){
+            while (p.hunger != 100) {
                 if (p.homeSweetHome.getFood() != null) {
                     p.reduceHunger();
-                }else{
+                } else {
                     p.currentState = p.searchFood;
                     break;
                 }

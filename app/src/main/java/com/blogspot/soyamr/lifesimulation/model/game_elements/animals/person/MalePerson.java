@@ -8,12 +8,9 @@ import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.HomeSweetHome;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.GoingHome;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.GoingToFood;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.GoingToNearHome;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.NotSet;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.OneDirection;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.SearchFood;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.SearchPartner;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.WaitHome;
 
@@ -26,11 +23,8 @@ public class MalePerson extends Person {
     public State goingToNearHome = new GoingToNearHome();
     public State oneDirection = new OneDirection();
     public State waitHome = new WaitHome();
-    public State goingToFood = new GoingToFood();
     public State noteSet = new NotSet();
-    public State searchFood = new SearchFood();
     public State searchPartner = new SearchPartner();
-    public State goingHome = new GoingHome();
     Paint womenColor = new Paint();
 
     public MalePerson(int x, int y, Model model, GenderEnum genderEnum) {
@@ -70,6 +64,21 @@ public class MalePerson extends Person {
         if (isMarried) {
             canvas.drawRect(wifeCallbacks.getRect(), womenColor);
         }
+    }
+
+    @Override
+    public State getOneDirectionState() {
+        return oneDirection;
+    }
+
+    @Override
+    public State getWaitHomeState() {
+        return waitHome;
+    }
+
+    @Override
+    public State getNotSetState() {
+        return noteSet;
     }
 
     public void showMyHome() {

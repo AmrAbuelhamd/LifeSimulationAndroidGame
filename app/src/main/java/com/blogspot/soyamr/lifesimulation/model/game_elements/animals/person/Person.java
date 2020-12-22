@@ -11,6 +11,9 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.HomeSweetHome;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state.GoingHome;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state.GoingToFood;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state.SearchFood;
 
 import java.util.List;
 
@@ -21,6 +24,10 @@ public abstract class Person extends Animal {
     public boolean isMarried = false;
     Paint homePaint = new Paint();
     Rect homeRect = new Rect();
+    public State searchFood = new SearchFood();
+    public State goingToFood = new GoingToFood();
+    public State goingHome = new GoingHome();
+
 
 
     public Person(int x, int y, Model model, GenderEnum genderEnum, List<Type> foodList) {
@@ -89,4 +96,10 @@ public abstract class Person extends Animal {
         homeSweetHome.getFood();
         reduceHunger();
     }
+
+    public abstract State getOneDirectionState();
+
+    public abstract State getWaitHomeState();
+
+    public abstract State getNotSetState();
 }

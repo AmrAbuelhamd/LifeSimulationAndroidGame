@@ -5,7 +5,6 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.Per
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.State;
 
 public class NotSet implements State {
-
     @Override
     public void update(Person person) {
         MalePerson p = (MalePerson) person;//toask is this good practice

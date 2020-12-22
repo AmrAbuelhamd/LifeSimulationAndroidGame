@@ -16,7 +16,7 @@ public abstract class Gender {
 
     public Gender(Animal animal) {
         this.animal = animal;
-        reSetIDoNotWantVariable = Utils.getRandom(550, 750);
+        reSetIDoNotWantVariable = Utils.getRandom(250, 350);//550 750
     }
 
     public abstract void doCeremony();

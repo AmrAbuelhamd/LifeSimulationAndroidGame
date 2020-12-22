@@ -1,9 +1,9 @@
-package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states;
+package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state;
 
 import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.MalePerson;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.FemalePerson;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.Person;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.State;
 
@@ -12,15 +12,13 @@ import java.util.List;
 public class SearchFood implements State {
     @Override
     public void update(Person person) {
-        MalePerson p = (MalePerson) person;
         List<GameObject> foodList = Utils.searchAroundAnimal(Person.ANIMAL_FOOD_VISION_RANG
-                , p.getX(), p.getY(), p.model, p.myFoodTypeList, GenderEnum.BOTH);
+                , person.getX(), person.getY(), person.model, person.myFoodTypeList, GenderEnum.BOTH);
         if (foodList.isEmpty()) {
-            p.currentState = p.oneDirection;
+            person.currentState = person.getOneDirectionState();
             return;
         }
-        p.nearestFood = foodList.get(0);
-        p.currentState = p.goingToFood;
-
+        person.nearestFood = foodList.get(0);
+        person.currentState = person.goingToFood;
     }
 }
