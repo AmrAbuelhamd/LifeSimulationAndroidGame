@@ -23,8 +23,6 @@ public class MainActivity extends Activity {
         //hideSystemUI();
         getScreenSize();
 
-        //printcolors();
-
     }
 
     private void printcolors() {
@@ -85,7 +83,7 @@ public class MainActivity extends Activity {
         System.out.println(" " + Color.parseColor("#80CBC4") + " ");
         System.out.println(" " + Color.parseColor("#B2DFDB") + " ");
 
-        System.out.println("women crwon  "+Color.parseColor("#C51162"));
+        System.out.println("women crwon  " + Color.parseColor("#C51162"));
     }
 
     private void hideSystemUI() {
@@ -117,16 +115,15 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (!firstTime)
+        if (gameSurface != null)
             gameSurface.pause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (!firstTime) {
+        if (gameSurface != null) {
             gameSurface.resume();
-            //hideSystemUI();
         }
     }
 }

@@ -7,5 +7,5 @@ public interface Controller {
 
     void update();
     SurfaceHolder getHolder();
-    void invalidate();
+    void drawScene(Canvas canvas);
 }

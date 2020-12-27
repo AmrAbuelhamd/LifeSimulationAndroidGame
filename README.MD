@@ -102,3 +102,8 @@ then copy them into  CopyOnWriteArrayList
   iterating on each animal to update his position, while updating if he ate something i was
   directly deleting that object from my animals list [ON WHICH I WAS ITERATING] and this caused the
   the freezing canvas problem, also same on adding new child.
+
+
+about using 2 threads one for update and other for drawing
+https://stackoverflow.com/questions/30343610/android-game-with-surfaceview-and-logic-unit
+also he is referring to another two important answers

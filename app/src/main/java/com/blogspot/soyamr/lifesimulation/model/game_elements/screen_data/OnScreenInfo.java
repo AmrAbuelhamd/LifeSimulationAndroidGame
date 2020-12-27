@@ -6,7 +6,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.blogspot.soyamr.lifesimulation.GameThread;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 
 public class OnScreenInfo {
     public final Paint paint = new Paint();
@@ -47,7 +46,7 @@ public class OnScreenInfo {
 //        canvas.drawText("female population: " + femaleCount, x, y + space, paint);
 //        canvas.drawText("male population: " + (int) (total - femaleCount), x, y + 1 * space, paint);
         canvas.drawText("plants population: " + plantCount, x, y + 1 * space, paint);
-        canvas.drawText(GameThread.getFrameRate(), right, y + space, paint);
+        canvas.drawText(GameThread.getWaitTime(), right, y + space, paint);
 
     }
 }

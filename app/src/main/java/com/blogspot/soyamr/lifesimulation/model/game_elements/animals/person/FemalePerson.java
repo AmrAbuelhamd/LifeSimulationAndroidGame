@@ -33,7 +33,7 @@ public class FemalePerson extends Person implements HusbandCallbacks {
             model.addChild(new FemalePerson(x, y, model, GenderEnum.FEMALE));
         else
             model.addChild(new MalePerson(x, y, model, GenderEnum.MALE));
-        Log.i(tag, "yraaaa new baby");
+//        Log.i(tag, "yraaaa new baby");
     }
 
 

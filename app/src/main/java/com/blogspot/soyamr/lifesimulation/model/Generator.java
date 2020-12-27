@@ -58,7 +58,7 @@ public class Generator {
     }
 
     public List<Animal> generateAnimals() {
-        int totalForEach = 0;
+        int totalForEach = 200;
         //CREATE FEMALE ANIMALS
         List<Animal> tempAnimals = new ArrayList<>();
         for (int i = 0; i < totalForEach; i++) {//20

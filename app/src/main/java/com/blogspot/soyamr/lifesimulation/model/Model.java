@@ -44,7 +44,7 @@ public class Model {
     int dgath = 0;
     List<GameObject> objectsToRemove = new ArrayList<>(400);
     List<Animal> animalsToAdd = new ArrayList<>(400);
-    int deleteDeadTH = 150;
+    int deleteDeadTH = 1500;
     int ddth = 0;
     private FamousAnimal famousAnimal;
     private List<HomeSweetHome> homeList;

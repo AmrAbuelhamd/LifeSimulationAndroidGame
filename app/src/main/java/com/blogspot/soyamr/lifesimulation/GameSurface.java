@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -17,17 +16,8 @@ import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Plant;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-
-import static com.blogspot.soyamr.lifesimulation.Const.Direction.DOWN;
-import static com.blogspot.soyamr.lifesimulation.Const.Direction.LEFT;
-import static com.blogspot.soyamr.lifesimulation.Const.Direction.RIGHT;
-import static com.blogspot.soyamr.lifesimulation.Const.Direction.UP;
 
 
 public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, Controller {
@@ -61,18 +51,15 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
     }
 
     @Override
-    public void draw(Canvas canvas) {
-        super.draw(canvas);
+    public void drawScene(Canvas canvas) {
 
         canvas.save();
         canvas.scale(scaleListener.mScaleFactor, scaleListener.mScaleFactor, scaleListener.focusX, scaleListener.focusY);
         canvas.translate(scaleListener.mPosX, scaleListener.mPosY);
         clipBoundsCanvas = canvas.getClipBounds();
-//        model.update(clipBoundsCanvas, scaleListener.mScaleFactor);
 
+        canvas.drawColor(Color.BLACK);
         model.draw(canvas);
-//        drawWhite(canvas);
-//        drawmyalgorithm(canvas);
 
         canvas.restore();
     }
@@ -85,8 +72,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
             uith = 0;
         }
     }
-
-
 
 
     // Implements method of SurfaceHolder.Callback
@@ -108,11 +93,23 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
     }
 
     public void pause() {
-        this.gameThread.executor.shutdown();
+        boolean retry = true;
+        while (retry) {
+            try {
+                gameThread.setRunning(false);
+                gameThread.join();
+                retry = false;
+                gameThread = null;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void resume() {
         this.gameThread = new GameThread(this);
+        this.gameThread.setRunning(true);
+        this.gameThread.start();
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -142,7 +139,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
                             lowerBoundRangeY - Const.CELL_HEIGHT, model,
                             List.of(Type.RABBIT, Type.FOX, Type.WOLF, Type.PIG
                                     , Type.MOUSE, Type.PERSON, Type.BEAR, Type.DEER,
-                                    Type.LION, Type.RACCOON,Type.APPLE,Type.CARROT,Type.OAT),
+                                    Type.LION, Type.RACCOON, Type.APPLE, Type.CARROT, Type.OAT),
                             GenderEnum.BOTH).stream().findFirst().orElse(null);
 
 //                    model.setFamousAnimal(gameObject);
