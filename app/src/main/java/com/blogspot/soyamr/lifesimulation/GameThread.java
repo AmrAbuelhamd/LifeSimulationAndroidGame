@@ -3,37 +3,37 @@ package com.blogspot.soyamr.lifesimulation;
 
 import android.graphics.Canvas;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.SurfaceHolder;
 
 public class GameThread extends Thread {
 
-    private static int waitTime;
+    private static int avgFPS = 0;
     private final Controller gameSurface;
     private final SurfaceHolder surfaceHolder;
     Canvas canvas;
     boolean running = false;
-    private long lastTime;
-    private long delta;
 
     public GameThread(Controller gameSurface) {
         this.gameSurface = gameSurface;
         this.surfaceHolder = gameSurface.getHolder();
     }
 
-    public static String getWaitTime() {
-        return "dlt " + waitTime;
+    public static String getAvgFPS() {
+        return "fps: " + avgFPS;
     }
 
     @Override
     public void run() {
-        long startTime = SystemClock.uptimeMillis();
+        long startTime;
+        long endTime;
+        long targetWaitTime = 100;
+        long actualWaitTime;
+        long totalTime = 0;
+        int frameCount = 0;
         while (running) {
-//            long updateAvg = SystemClock.uptimeMillis();
+            startTime = SystemClock.uptimeMillis();
+
             gameSurface.update();
-//            long updateAvgEnd = SystemClock.uptimeMillis();
-//            Log.i("updateTime: ", " -> " + -(updateAvg - updateAvgEnd));
-//            updateAvg = SystemClock.uptimeMillis();
             try {
                 canvas = surfaceHolder.lockCanvas();
                 synchronized (surfaceHolder) {
@@ -45,22 +45,26 @@ public class GameThread extends Thread {
                 if (canvas != null)
                     this.surfaceHolder.unlockCanvasAndPost(canvas);
             }
-//            updateAvgEnd = SystemClock.uptimeMillis();
-//            Log.i("drawTime: ", " -> " + -(updateAvg - updateAvgEnd));
 
-            long now = SystemClock.uptimeMillis();
+            endTime = SystemClock.uptimeMillis();
 
-            long waitTime = (now - startTime);
-            GameThread.waitTime = (int) (waitTime);
-            if (waitTime < 100) {
-                waitTime = 100 - waitTime;
+            actualWaitTime = (endTime - startTime);
+            if (actualWaitTime < targetWaitTime) {
+                actualWaitTime = targetWaitTime - actualWaitTime;
                 try {
-                    sleep(waitTime);
+                    sleep(actualWaitTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                endTime = SystemClock.uptimeMillis();
             }
-            startTime = SystemClock.uptimeMillis();
+            totalTime += endTime - startTime;
+            ++frameCount;
+            if (totalTime > 1000) {
+                avgFPS = frameCount;
+                totalTime -= 1000;
+                frameCount = 0;
+            }
         }
     }
 

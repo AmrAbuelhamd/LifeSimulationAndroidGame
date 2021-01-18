@@ -26,6 +26,7 @@ public class AnimalDataManger {
     int size = 50;
     int right = 50;
     int space;
+    float mScaleFactor;
 
     public AnimalDataManger(Animal animal) {
         this.animal = animal;
@@ -58,21 +59,21 @@ public class AnimalDataManger {
         canvas.drawRect(rectFoodVision, manPaintRect);
 
         if (animal.genderEnum == GenderEnum.MALE) {
-            if(animal.genderOperator.myLove!=null)
+            if (animal.genderOperator.myLove != null)
                 womenPaintRect.setColor(animal.genderOperator.myLove.getMyColor());
             canvas.drawRect(rectWomenVision, womenPaintRect);
         }
 
-        canvas.drawText("Hunger                 : " + animal.hunger, x, y - 2 * space, textAndRectPaint);
-        canvas.drawText("Hunger CTR       : " + animal.ihth, x, y - space, textAndRectPaint);
-        canvas.drawText("in relationship  : " + animal.genderOperator.inRelation, x, y, textAndRectPaint);
-        canvas.drawText("idontwant           : " + animal.genderOperator.iDoNotWant, x, y + space, textAndRectPaint);
-        canvas.drawText("idontwant CTR : " + animal.genderOperator.rsidwv, x, y + 2 * space, textAndRectPaint);
+        canvas.drawText("Hunger                 : " + animal.hunger, x, y - 0 * space, textAndRectPaint);
+        canvas.drawText("Hunger CTR       : " + animal.ihth, x, y - 1 * space, textAndRectPaint);
+        canvas.drawText("in relationship  : " + animal.genderOperator.inRelation, x, y - 2 * space, textAndRectPaint);
+        canvas.drawText("idontwant           : " + animal.genderOperator.iDoNotWant, x, y - 3 * space, textAndRectPaint);
+        canvas.drawText("idontwant CTR : " + animal.genderOperator.rsidwv, x, y - 4 * space, textAndRectPaint);
         canvas.drawText("in one direction: " + (animal.mtodth < animal.movingToOneDirectionThreshold)
-                , x, y + 3 * space, textAndRectPaint);
-        canvas.drawText("my menu size    : " + animal.myFoodMenu.size(), x, y + 4 * space, textAndRectPaint);
-        canvas.drawText("myType    : " + animal.type, x, y + 5 * space, textAndRectPaint);
-        canvas.drawText("myGender    : " + animal.genderEnum, x, y + 6 * space, textAndRectPaint);
+                , x, y - 5 * space, textAndRectPaint);
+        canvas.drawText("my menu size    : " + animal.myFoodMenu.size(), x, y - 6 * space, textAndRectPaint);
+        canvas.drawText("myGender    : " + animal.genderEnum, x, y - 7 * space, textAndRectPaint);
+        canvas.drawText("myType    : " + animal.type, x, y - 8 * space, textAndRectPaint);
         //put rectangle around current animal
         canvas.drawRect(rect, paint);
         //put rectangle around target
@@ -89,6 +90,8 @@ public class AnimalDataManger {
         x = animal.getX();
         y = animal.getY();
 
+        this.mScaleFactor = mScaleFactor;
+
         //to highlight the selected animal.
         rect.set(x - GameObject.width, y - GameObject.height, x + GameObject.width * 2, y + GameObject.height * 2);
 
@@ -103,7 +106,7 @@ public class AnimalDataManger {
                 y + ANIMAL_WOMEN_VISION_RANG * GameObject.height);
 
         x = animal.getX() - (ANIMAL_WOMEN_VISION_RANG * GameObject.width) + 80;
-        y = animal.getY() - ANIMAL_WOMEN_VISION_RANG * GameObject.height * 3;
+        y = animal.getY() - ANIMAL_FOOD_VISION_RANG * GameObject.height;
 
         textAndRectPaint.setTextSize(size / mScaleFactor);
         space = (int) (50 / mScaleFactor);

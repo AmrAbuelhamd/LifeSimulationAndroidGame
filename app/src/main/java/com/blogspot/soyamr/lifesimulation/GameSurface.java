@@ -60,8 +60,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
 
         canvas.drawColor(Color.BLACK);
         model.draw(canvas);
-
         canvas.restore();
+
     }
 
     public void updateLogInfo() {

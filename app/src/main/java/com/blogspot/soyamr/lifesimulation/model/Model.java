@@ -29,7 +29,6 @@ import java.util.ListIterator;
 public class Model {
     public final Cell[][] cells;//todo impo use key-value try
     public final List<Animal> animals;
-    //todo impo delete every 150 tiks -> just try
     public final List<Plant> plants;
     public final Generator generator;
     final int addingNewPlantThreshold = 20;
@@ -47,7 +46,7 @@ public class Model {
     int deleteDeadTH = 1500;
     int ddth = 0;
     private FamousAnimal famousAnimal;
-    private List<HomeSweetHome> homeList;
+    private final List<HomeSweetHome> homeList;
 
     public Model(Context context) {
         explosionList = new ArrayList<>();
