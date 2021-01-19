@@ -2,6 +2,7 @@ package com.blogspot.soyamr.lifesimulation.model.game_elements;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Rect;
 
 import com.blogspot.soyamr.lifesimulation.model.Model;
 
@@ -19,16 +20,21 @@ public class HomeSweetHome extends GameObject {
         this.y = y;
 
         model.putMeHerePlease(x, y, this);
+
+        paint.setColor(Color.RED);
+        paint.setStrokeWidth(5);
     }
 
     @Override
     public void makeMeFamous() {
     }
 
-    public void addFood(GameObject food) {
+    public boolean addFood(GameObject food) {
         if (!isStockFull()) {
             foodList.add(food);
+            return true;
         }
+        return false;
     }
 
     public boolean isStockFull() {
@@ -54,10 +60,6 @@ public class HomeSweetHome extends GameObject {
 
     @Override
     public void draw(Canvas canvas) {
-        float width = GameObject.width;
-        float height = GameObject.height;
-        paint.setColor(Color.RED);
-        paint.setStrokeWidth(5);
         canvas.drawLine(x, y, x + width, y + height, paint);
         canvas.drawLine(x + width, y, x, y + height, paint);
     }
@@ -68,6 +70,15 @@ public class HomeSweetHome extends GameObject {
     }
 
     public String getStockSize() {
-        return foodList.size()+"";
+        return foodList.size() + "";
+    }
+
+    public boolean isStockEmpty() {
+        return foodList.isEmpty();
+    }
+
+    public Rect getRect() {
+        rect.set(x, y, x + width, y + height);
+        return rect;
     }
 }

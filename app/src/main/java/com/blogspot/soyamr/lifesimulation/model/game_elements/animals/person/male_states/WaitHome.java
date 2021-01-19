@@ -8,6 +8,10 @@ public class WaitHome implements State {
     @Override
     public void update(Person person) {
         MalePerson p = (MalePerson) person;
+        if (p.homeSweetHome.isStockEmpty() && p.granary != null) {
+            p.currentState = p.goToGranary;
+            return;
+        }
         if (p.hunger < Person.SEARCH_PARTNER_THRESHOLD) {
             while (p.hunger != 100) {
                 if (p.homeSweetHome.getFood() != null) {
@@ -22,6 +26,7 @@ public class WaitHome implements State {
         } else if (!p.genderOperator.iDoNotWant) {//note that if i don't have anything to do, i will just wait home and keep asking for sex
             if (p.wifeCallbacks.wannaMakeLove()) {//if she agrees then she will add child directly, no need to take actions
                 p.genderOperator.setIdoNotWant();
+                p.currentState = p.searchFood;
             }
         }
     }

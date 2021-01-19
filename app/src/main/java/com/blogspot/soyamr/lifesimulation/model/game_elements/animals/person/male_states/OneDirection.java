@@ -6,6 +6,8 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.Per
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.State;
 
 public class OneDirection implements State {
+    int[] prev = Person.moveDirection[0];
+
     @Override
     public void update(Person person) {
         MalePerson p = ((MalePerson) person);
@@ -14,14 +16,18 @@ public class OneDirection implements State {
             person.moveToOneDirection();
         } else {
             person.mtodth = 0;
-            int rand = Utils.getRandom(0, Person.moveDirection.length);
-            person.direction = Person.moveDirection[rand];
+            int rand;
+            do {
+                rand = Utils.getRandom(0, Person.moveDirection.length);
+            } while (Person.moveDirection[rand] == prev);
+            prev = Person.moveDirection[rand];
+            person.direction = prev;
             person.moveRandomly();
-            if(p.isMarried){
+            if (p.isMarried) {
                 p.currentState = p.goingHome;
                 return;
             }
-            if (p.hunger<Person.SEARCH_FOOD_THRESHOLD) {
+            if (p.hunger < Person.SEARCH_FOOD_THRESHOLD) {
                 p.currentState = p.searchFood;
             } else {
                 p.currentState = p.searchPartner;

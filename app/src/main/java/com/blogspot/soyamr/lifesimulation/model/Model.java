@@ -12,6 +12,7 @@ import com.blogspot.soyamr.lifesimulation.R;
 import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Cell;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.Granary;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.HomeSweetHome;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Apple;
@@ -30,11 +31,14 @@ public class Model {
     public final Cell[][] cells;//todo impo use key-value try
     public final List<Animal> animals;
     public final List<Plant> plants;
+    public final List<Granary> granaries;
     public final Generator generator;
     final int addingNewPlantThreshold = 20;
     private final String tag = "model";
     private final OnScreenInfo onScreenInfo;
     private final List<Explosion> explosionList;
+    private final List<HomeSweetHome> homeList;
+    public final GameBitmaps gameBitmaps;
     int anpth = 0;
     int disasterThreshold = 30;
     int dth = 0;
@@ -45,18 +49,20 @@ public class Model {
     List<Animal> animalsToAdd = new ArrayList<>(400);
     int deleteDeadTH = 1500;
     int ddth = 0;
+    Rect rect = new Rect();
     private FamousAnimal famousAnimal;
-    private final List<HomeSweetHome> homeList;
 
     public Model(Context context) {
         explosionList = new ArrayList<>();
         generator = new Generator(this);
         onScreenInfo = new OnScreenInfo();
         homeList = new ArrayList<>();
+        granaries = new ArrayList<>();
         cells = generator.generateSells();
         animals = generator.generateAnimals();
         plants = generator.generatePlants();
         createPhotos(context);
+        gameBitmaps = new GameBitmaps(context);
     }
 
     private void createPhotos(Context context) {
@@ -231,6 +237,11 @@ public class Model {
             h.draw(canvas);
         }
 
+        Granary[] granaries1 = granaries.toArray(new Granary[0]);
+        for (Granary g : granaries1) {
+            g.draw(canvas);
+        }
+
         Explosion[] explosions = explosionList.toArray(new Explosion[0]);
         for (Explosion explosion : explosions) {
             explosion.draw(canvas);
@@ -270,5 +281,40 @@ public class Model {
         nearestFood.isAlive = false;//hiding it from map.
         objectsToRemove.add(nearestFood);
         iAmLeavingThisCell(nearestFood.getX(), nearestFood.getY(), nearestFood);
+    }
+
+    public Granary searchForNearGranary(Rect rect) {
+        Granary[] granaries1 = granaries.toArray(new Granary[0]);
+        for (Granary g : granaries1) {
+            if (g.intersects(rect))
+                return g;
+        }
+        return null;
+    }
+
+    public boolean checkIfNoHomesHere(int newX, int newY, int granaryWidth, int granaryHeight) {
+        rect.set(newX, newY, newX + granaryWidth, newY + granaryHeight);
+        HomeSweetHome[] homeSweetHomes = homeList.toArray(new HomeSweetHome[0]);
+        for (HomeSweetHome h : homeSweetHomes) {
+            if (Rect.intersects(h.getRect(), rect))
+                return true;
+        }
+
+        return false;
+    }
+
+    public void addGranary(Granary granary) {
+        granaries.add(granary);
+    }
+
+    public boolean noGranaryHere(int newX, int newY, int width, int height) {
+        rect.set(newX, newY, newX + width, newY + height);
+        Granary[] granaries1 = granaries.toArray(new Granary[0]);
+        for (Granary g : granaries1) {
+            if (g.intersects(rect))
+                return true;
+        }
+
+        return false;
     }
 }

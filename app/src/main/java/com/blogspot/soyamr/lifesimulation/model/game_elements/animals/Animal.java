@@ -271,7 +271,6 @@ public abstract class Animal extends GameObject {
     }
 
     public void moveToward(int targetX, int targetY) {
-
         // four cases
         if (targetX < x)
             x -= width;

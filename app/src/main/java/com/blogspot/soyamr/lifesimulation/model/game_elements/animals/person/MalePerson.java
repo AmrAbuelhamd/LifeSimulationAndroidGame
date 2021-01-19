@@ -3,6 +3,7 @@ package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 
 import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
@@ -14,6 +15,10 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.mal
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.SearchPartner;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.WaitHome;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 public class MalePerson extends Person {
@@ -36,12 +41,15 @@ public class MalePerson extends Person {
 //        womenColor.setStrokeWidth(150);
     }
 
-
+    State prev = noteSet;
     @Override
     public void update() {
         if (!checkBeforeUpdate())
             return;
-
+//        if(currentState != prev) {
+//            Log.i("Male Person", "state= " + currentState + " i am " + this.toString());
+//            prev = currentState;
+//        }
         currentState.update(this);
 
         afterUpdate();

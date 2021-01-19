@@ -61,6 +61,7 @@ public class FemalePerson extends Person implements HusbandCallbacks {
         if (isHome() && !genderOperator.iDoNotWant) {
             addChild();
             genderOperator.setIdoNotWant();
+            currentState = searchFood;
             return true;
         }
         return false;

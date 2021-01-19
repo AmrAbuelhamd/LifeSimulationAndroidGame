@@ -51,7 +51,7 @@ public class Generator {
 
     public List<Plant> generatePlants() {
         //create plants
-        for (int i = 0; i < 500; i++) {//500
+        for (int i = 0; i < 5000; i++) {//500
             addRandomPlant();
         }
         return plants;
@@ -94,7 +94,7 @@ public class Generator {
             tempAnimals.add(animal);
         }
 
-        for (int i = 0; i < 250; i++) {//20
+        for (int i = 0; i < 20; i++) {//20
             Animal animal = new Rabbit(-1, -1, model, GenderEnum.MALE);
             tempAnimals.add(animal);
             animal = new Rabbit(-1, -1, model, GenderEnum.FEMALE);
@@ -107,7 +107,7 @@ public class Generator {
             animal = new Bear(-1, -1, model, GenderEnum.FEMALE);
             tempAnimals.add(animal);
         }
-        for (int i = 0; i < 250; i++) {//20
+        for (int i = 0; i < 20; i++) {//20
             Animal animal = new Pig(-1, -1, model, GenderEnum.MALE);
             tempAnimals.add(animal);
             animal = new Pig(-1, -1, model, GenderEnum.FEMALE);
@@ -120,7 +120,7 @@ public class Generator {
             tempAnimals.add(animal);
         }
         //person
-        for (int i = 0; i < 100; i++) {//20
+        for (int i = 0; i < 1000; i++) {//20
             Animal animal = new MalePerson(-1, -1, model, GenderEnum.MALE);
             tempAnimals.add(animal);
             animal = new FemalePerson(-1, -1, model, GenderEnum.FEMALE);

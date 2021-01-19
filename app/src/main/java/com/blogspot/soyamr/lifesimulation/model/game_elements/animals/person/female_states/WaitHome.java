@@ -8,6 +8,10 @@ public class WaitHome implements State {
     @Override
     public void update(Person person) {
         FemalePerson p = (FemalePerson) person;
+        if(p.homeSweetHome.isStockEmpty() && p.granary != null){
+            p.currentState = p.goToGranary;
+            return;
+        }
         if (p.hunger < Person.SEARCH_FOOD_THRESHOLD) {
             while (p.hunger != 100) {
                 if (p.homeSweetHome.getFood() != null) {

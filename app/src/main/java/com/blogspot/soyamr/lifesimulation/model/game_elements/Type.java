@@ -39,7 +39,7 @@ public enum Type {
     RACCOON,
     //special types
     PERSON,
-    HOME;
+    HOME, GRANARY;
 
 
     public List<GameObject> getMeFromHere(Model model, int i, int j, GenderEnum genderEnum) {

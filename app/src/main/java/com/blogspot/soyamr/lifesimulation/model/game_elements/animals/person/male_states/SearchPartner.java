@@ -1,7 +1,10 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states;
 
+import android.graphics.Point;
+
 import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.Utils;
+import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.HomeSweetHome;
@@ -11,7 +14,14 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.Mal
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.Person;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.State;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.blogspot.soyamr.lifesimulation.Const.Direction.DOWN;
+import static com.blogspot.soyamr.lifesimulation.Const.Direction.LEFT;
+import static com.blogspot.soyamr.lifesimulation.Const.Direction.RIGHT;
+import static com.blogspot.soyamr.lifesimulation.Const.Direction.UP;
 
 public class SearchPartner implements State {
     @Override
@@ -44,31 +54,48 @@ public class SearchPartner implements State {
                 p.model, List.of(Type.HOME), GenderEnum.BOTH).stream().findFirst().orElse(null);
 
         if (nearestHome == null) {
-            p.buildHome(p.getX(),p.getY());
+            p.buildHome(p.getX(), p.getY());
             p.showMyHome();
             p.currentState = p.waitHome;
             return;
         }
-        int newX;
-        int newY;
-
-        int i = 2;
         HomeSweetHome home;
-        do {
-            int rand = Utils.getRandom(0, Person.moveDirection.length);
-            int[] direction = Person.moveDirection[rand];
-            newX = nearestHome.getX() + direction[0] * Person.width * i;
-            newY = nearestHome.getY() + direction[1] * Person.height * i;
-            i *= 2;
+        int newX = 0;
+        int newY = 0;//i will build new one here
+        boolean found = false;
+        for (int i = 2; i < 100 && !found; i += 4) {
+
+            int r = Utils.getRandom(0, Person.moveDirection.length);
+            int[] dir = Person.moveDirection[r];
+            newX = nearestHome.getX() + dir[0] * Person.width * i;
+            newY = nearestHome.getY() + dir[1] * Person.height * i;
+
+            if (newX < 0) {
+                newX = 0;
+            } else if (newX > Const.FIELD_WIDTH - Person.width) {
+                newX = Const.FIELD_WIDTH - Person.width;
+            }
+            if (newY < 0) {
+                newY = 0;
+            } else if (newY > Const.FIELD_HEIGHT - Person.height) {
+                newY = Const.FIELD_HEIGHT - Person.height;
+            }
             home = (HomeSweetHome) Type.HOME
                     .getMeFromHere(p.model, Utils.getRowIdx(newY), Utils.getColIdx(newX)
                             , GenderEnum.BOTH)
                     .stream().findFirst().orElse(null);
-        } while (newX > Const.FIELD_WIDTH - Person.width
-                || newY > Const.FIELD_HEIGHT - Person.height ||
-                newX < 0 || newY < 0 || home != null);
+            if (home == null) {
+                if (!p.model.noGranaryHere(newX, newY, Person.width, Person.height)) {
+                    found = true;
+                }
+            }
 
-        p.buildHome(newX, newY);
-        p.currentState = p.goingToNearHome;
+        }
+        if (found) {
+            p.buildHome(newX, newY);
+            p.currentState = p.goingToNearHome;
+        } else {
+            throw new RuntimeException("no free space found");
+        }
     }
 }

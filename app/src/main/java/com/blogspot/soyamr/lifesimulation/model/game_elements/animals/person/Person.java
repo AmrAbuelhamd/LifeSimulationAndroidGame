@@ -8,26 +8,32 @@ import android.graphics.Rect;
 import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.Granary;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.HomeSweetHome;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state.GoToGranary;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state.GoingHome;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state.GoingToBuildGranary;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state.GoingToFood;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state.SearchFood;
 
 import java.util.List;
 
 public abstract class Person extends Animal {
+    public static final int GRANARY_VISION = ANIMAL_FOOD_VISION_RANG * 2;
     public HomeSweetHome homeSweetHome;
     public State currentState;
     public GameObject nearestFood;
     public boolean isMarried = false;
-    Paint homePaint = new Paint();
-    Rect homeRect = new Rect();
+    public Granary granary;
     public State searchFood = new SearchFood();
     public State goingToFood = new GoingToFood();
     public State goingHome = new GoingHome();
-
+    public State goToGranary = new GoToGranary();
+    public State goingToBuildGranary = new GoingToBuildGranary();
+    Paint homePaint = new Paint();
+    Rect homeRect = new Rect();
 
 
     public Person(int x, int y, Model model, GenderEnum genderEnum, List<Type> foodList) {
@@ -97,6 +103,11 @@ public abstract class Person extends Animal {
     public void eatSomething() {
         homeSweetHome.getFood();
         reduceHunger();
+    }
+
+    public void buildGranary(int newX, int newY) {
+        granary = new Granary(newX, newY, model.gameBitmaps.granaryImg, model);
+        model.addGranary(granary);
     }
 
     public abstract State getOneDirectionState();
