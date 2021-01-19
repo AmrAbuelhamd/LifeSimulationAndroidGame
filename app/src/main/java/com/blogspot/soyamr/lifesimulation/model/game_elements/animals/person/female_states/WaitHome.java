@@ -25,4 +25,8 @@ public class WaitHome implements State {
             p.currentState = p.searchFood;
         }
     }
+    @Override
+    public String getStateName() {
+        return "Wait Home";
+    }
 }

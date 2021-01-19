@@ -3,7 +3,6 @@ package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 
 import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
@@ -15,10 +14,6 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.mal
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.SearchPartner;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.WaitHome;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.List;
 
 public class MalePerson extends Person {
@@ -30,11 +25,15 @@ public class MalePerson extends Person {
     public State waitHome = new WaitHome();
     public State noteSet = new NotSet();
     public State searchPartner = new SearchPartner();
+
     Paint womenColor = new Paint();
 
-    public MalePerson(int x, int y, Model model, GenderEnum genderEnum) {
-        super(x, y, model, genderEnum, List.of(Type.RABBIT, Type.PIG));
-        currentState = noteSet;
+    public MalePerson(int x, int y, Model model, GenderEnum genderEnum, boolean firstGeneration) {
+        super(x, y, model, genderEnum, List.of(Type.RABBIT, Type.PIG, Type.DEER));
+        if(firstGeneration)
+            currentState = noteSet;
+        else
+            currentState = childhoodState;
 
         womenColor.setColor(Color.YELLOW);
         womenColor.setStyle(Paint.Style.FILL);

@@ -19,9 +19,12 @@ public class Granary extends GameObject {
     int height;
     Bitmap image;
     Paint textAndRectPaint;
+    Model model;
+    int xDraw, yDraw;
 
     public Granary(int x, int y, Bitmap image, Model model) {
         super(Type.GRANARY, GenderEnum.BOTH);
+        this.model = model;
         this.x = x;
         this.y = y;
         this.image = image;
@@ -31,13 +34,13 @@ public class Granary extends GameObject {
         isAlive = false;
         textAndRectPaint = new Paint();
         textAndRectPaint.setStyle(Paint.Style.FILL);
-        textAndRectPaint.setTextSize(100);
+        textAndRectPaint.setTextSize(30);
         textAndRectPaint.setAntiAlias(true);
         textAndRectPaint.setColor(getMyColor());
         xDraw = getX() - 40;
         yDraw = getY() - 20;
         rect.set(x, y, x + image.getWidth(), y + image.getHeight());
-
+        model.putMeHerePlease(this.x, this.y, this);
     }
 
     public void showMePlease() {
@@ -46,6 +49,7 @@ public class Granary extends GameObject {
 
     @Override
     public void makeMeFamous() {
+        model.setFamousAnimal(this);
     }
 
     public boolean addFood(GameObject food) {
@@ -72,14 +76,13 @@ public class Granary extends GameObject {
 
     @Override
     public void drawAdditionalInfo(Canvas canvas) {
+        canvas.drawText("stock size: " + foodList.size(), xDraw, yDraw, textAndRectPaint);
     }
-    int xDraw, yDraw;
+
     @Override
     public void draw(Canvas canvas) {
-
         if (isAlive)
             canvas.drawBitmap(image, x, y, null);
-        canvas.drawText("stock size: " + foodList.size(), xDraw, yDraw, textAndRectPaint);
     }
 
     @Override

@@ -4,9 +4,6 @@ import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Cell;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.FemalePerson;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.MalePerson;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.Person;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.carnivore.Fox;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.carnivore.Lion;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.carnivore.Wolf;
@@ -16,13 +13,14 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.herbivore.
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.omnivore.Bear;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.omnivore.Pig;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.omnivore.Raccoon;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.FemalePerson;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.MalePerson;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Apple;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Carrot;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Oat;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Plant;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Generator {
@@ -43,8 +41,8 @@ public class Generator {
     public void addRandomPlant() {
         Plant plant = new Carrot(-1, -1, model);
         plants.add(plant);
-//        plant = new Oat(-1, -1, model);
-//        plants.add(plant);
+        plant = new Oat(-1, -1, model);
+        plants.add(plant);
         plant = new Apple(-1, -1, model);
         plants.add(plant);
     }
@@ -81,7 +79,7 @@ public class Generator {
             tempAnimals.add(animal);
         }
         //Herb
-        for (int i = 0; i < totalForEach; i++) {//20
+        for (int i = 0; i < 20; i++) {//20
             Animal animal = new Deer(-1, -1, model, GenderEnum.MALE);
             tempAnimals.add(animal);
             animal = new Deer(-1, -1, model, GenderEnum.FEMALE);
@@ -120,10 +118,10 @@ public class Generator {
             tempAnimals.add(animal);
         }
         //person
-        for (int i = 0; i < 1000; i++) {//20
-            Animal animal = new MalePerson(-1, -1, model, GenderEnum.MALE);
+        for (int i = 0; i < 100; i++) {//20
+            Animal animal = new MalePerson(-1, -1, model, GenderEnum.MALE, true);
             tempAnimals.add(animal);
-            animal = new FemalePerson(-1, -1, model, GenderEnum.FEMALE);
+            animal = new FemalePerson(-1, -1, model, GenderEnum.FEMALE, true);
             tempAnimals.add(animal);
         }
 

@@ -24,7 +24,11 @@ public class OneDirection implements State {
             person.direction = prev;
             person.moveRandomly();
             if (p.isMarried) {
-                p.currentState = p.goingHome;
+                if(p.hunger<60){
+                    p.currentState = p.goingHome;
+                }else {
+                    p.currentState = p.searchFood;
+                }
                 return;
             }
             if (p.hunger < Person.SEARCH_FOOD_THRESHOLD) {
@@ -33,5 +37,9 @@ public class OneDirection implements State {
                 p.currentState = p.searchPartner;
             }
         }
+    }
+    @Override
+    public String getStateName() {
+        return "One Direction";
     }
 }

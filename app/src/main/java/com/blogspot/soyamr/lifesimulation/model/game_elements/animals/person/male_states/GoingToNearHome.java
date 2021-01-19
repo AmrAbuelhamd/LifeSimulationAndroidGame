@@ -14,4 +14,8 @@ public class GoingToNearHome implements State {
             p.currentState = p.waitHome;
         }
     }
+    @Override
+    public String getStateName() {
+        return "GoingToNearHome";
+    }
 }

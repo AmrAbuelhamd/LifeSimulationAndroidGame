@@ -12,6 +12,7 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.Granary;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.HomeSweetHome;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state.ChildHood;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state.GoToGranary;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state.GoingHome;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state.GoingToBuildGranary;
@@ -32,6 +33,7 @@ public abstract class Person extends Animal {
     public State goingHome = new GoingHome();
     public State goToGranary = new GoToGranary();
     public State goingToBuildGranary = new GoingToBuildGranary();
+    public State childhoodState = new ChildHood();
     Paint homePaint = new Paint();
     Rect homeRect = new Rect();
 
@@ -115,4 +117,12 @@ public abstract class Person extends Animal {
     public abstract State getWaitHomeState();
 
     public abstract State getNotSetState();
+
+    protected void setHome(HomeSweetHome homeSweetHome) {
+        this.homeSweetHome = homeSweetHome;
+    }
+
+    protected void setGranary(Granary granary) {
+        this.granary = granary;
+    }
 }

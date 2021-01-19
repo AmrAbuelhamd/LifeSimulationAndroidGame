@@ -5,5 +5,5 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.Per
 public interface State {
 
     void update(Person person);
-
+    String getStateName();
 }

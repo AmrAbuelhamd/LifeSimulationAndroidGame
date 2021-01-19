@@ -7,7 +7,9 @@ import android.graphics.Rect;
 
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.Person;
 
 import static com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject.ANIMAL_FOOD_VISION_RANG;
 import static com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject.ANIMAL_WOMEN_VISION_RANG;
@@ -74,6 +76,8 @@ public class AnimalDataManger {
         canvas.drawText("my menu size    : " + animal.myFoodMenu.size(), x, y - 6 * space, textAndRectPaint);
         canvas.drawText("myGender    : " + animal.genderEnum, x, y - 7 * space, textAndRectPaint);
         canvas.drawText("myType    : " + animal.type, x, y - 8 * space, textAndRectPaint);
+        if(animal.type == Type.PERSON)
+            canvas.drawText("state    : " +((Person)animal).currentState.getStateName() , x, y - 9 * space, textAndRectPaint);
         //put rectangle around current animal
         canvas.drawRect(rect, paint);
         //put rectangle around target

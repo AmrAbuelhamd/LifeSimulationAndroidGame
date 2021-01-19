@@ -87,4 +87,9 @@ public class GoingHome implements State {
         );
         return result;
     }
+
+    @Override
+    public String getStateName() {
+        return "GoingHome";
+    }
 }

@@ -98,4 +98,9 @@ public class SearchPartner implements State {
             throw new RuntimeException("no free space found");
         }
     }
+
+    @Override
+    public String getStateName() {
+        return "Search Partner";
+    }
 }

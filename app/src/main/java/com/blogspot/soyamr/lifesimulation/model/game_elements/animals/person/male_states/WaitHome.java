@@ -30,4 +30,8 @@ public class WaitHome implements State {
             }
         }
     }
+    @Override
+    public String getStateName() {
+        return "Wait Home";
+    }
 }

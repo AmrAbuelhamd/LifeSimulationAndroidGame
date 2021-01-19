@@ -21,18 +21,27 @@ public class FemalePerson extends Person implements HusbandCallbacks {
     public State oneDirection = new OneDirection();
     public State waitHome = new WaitHome();
 
-    public FemalePerson(int x, int y, Model model, GenderEnum genderEnum) {
-        super(x, y, model, genderEnum, List.of(Type.APPLE, Type.CARROT));
-        currentState = noteSet;
+    public FemalePerson(int x, int y, Model model, GenderEnum genderEnum,boolean firstGeneration) {
+        super(x, y, model, genderEnum, List.of(Type.APPLE, Type.CARROT, Type.OAT));
+        if(firstGeneration)
+            currentState = noteSet;
+        else
+            currentState = childhoodState;
     }
 
 
     @Override
     public void addChild() {
-        if (Utils.getRandom(0, 2) == 0)
-            model.addChild(new FemalePerson(x, y, model, GenderEnum.FEMALE));
+        Person child;
+        if (Utils.getRandom(0, 2) == 0) {
+            child = new FemalePerson(x, y, model, GenderEnum.FEMALE, false);
+        }
         else
-            model.addChild(new MalePerson(x, y, model, GenderEnum.MALE));
+            child = new MalePerson(x, y, model, GenderEnum.MALE,false);
+
+        child.setHome(homeSweetHome);
+        child.setGranary(granary);
+        model.addChild(child);
 //        Log.i(tag, "yraaaa new baby");
     }
 

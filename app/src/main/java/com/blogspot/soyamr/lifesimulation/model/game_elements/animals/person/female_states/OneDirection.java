@@ -26,4 +26,9 @@ public class OneDirection implements State {
             }
         }
     }
+
+    @Override
+    public String getStateName() {
+        return "One Direction";
+    }
 }

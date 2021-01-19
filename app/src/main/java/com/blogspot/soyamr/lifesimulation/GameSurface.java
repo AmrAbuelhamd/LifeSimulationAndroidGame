@@ -139,7 +139,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback, 
                             lowerBoundRangeY - Const.CELL_HEIGHT, model,
                             List.of(Type.RABBIT, Type.FOX, Type.WOLF, Type.PIG
                                     , Type.MOUSE, Type.PERSON, Type.BEAR, Type.DEER,
-                                    Type.LION, Type.RACCOON, Type.APPLE, Type.CARROT, Type.OAT),
+                                    Type.LION, Type.RACCOON, Type.APPLE, Type.CARROT, Type.OAT, Type.GRANARY),
                             GenderEnum.BOTH).stream().findFirst().orElse(null);
 
 //                    model.setFamousAnimal(gameObject);

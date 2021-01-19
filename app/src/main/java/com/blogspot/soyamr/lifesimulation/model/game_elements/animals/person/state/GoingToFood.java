@@ -26,4 +26,8 @@ public class GoingToFood implements State {
             }
         }
     }
+    @Override
+    public String getStateName() {
+        return "GoingToFood";
+    }
 }

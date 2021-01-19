@@ -56,7 +56,6 @@ public abstract class Plant extends GameObject {
     @Override
     public void updateAdditionalInfoLocation(float mScaleFactor) {
         space = (int) (50 / mScaleFactor);
-
     }
 
     @Override

@@ -33,12 +33,12 @@ public class Model {
     public final List<Plant> plants;
     public final List<Granary> granaries;
     public final Generator generator;
-    final int addingNewPlantThreshold = 20;
+    public final GameBitmaps gameBitmaps;
+    final int addingNewPlantThreshold = 2;
     private final String tag = "model";
     private final OnScreenInfo onScreenInfo;
     private final List<Explosion> explosionList;
     private final List<HomeSweetHome> homeList;
-    public final GameBitmaps gameBitmaps;
     int anpth = 0;
     int disasterThreshold = 30;
     int dth = 0;
@@ -152,6 +152,7 @@ public class Model {
             ++dth;
         } else {
             // Create Explosion object.
+            Log.i("model:::", "granary number is " + granaries.size());
             createExplosionObject();
             disasterThreshold = Utils.getRandom(1000, 3000);
             dth = 0;

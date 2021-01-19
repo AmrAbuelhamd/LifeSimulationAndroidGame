@@ -13,4 +13,8 @@ public class GoingToBuildGranary implements State {
             p.currentState = p.goToGranary;
         }
     }
+    @Override
+    public String getStateName() {
+        return "GoingToBuildGranary";
+    }
 }

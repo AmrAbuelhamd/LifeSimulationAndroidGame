@@ -21,4 +21,8 @@ public class SearchFood implements State {
         person.nearestFood = foodList.get(0);
         person.currentState = person.goingToFood;
     }
+    @Override
+    public String getStateName() {
+        return "SearchingFood";
+    }
 }

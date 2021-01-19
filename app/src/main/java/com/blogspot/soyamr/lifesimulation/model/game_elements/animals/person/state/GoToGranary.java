@@ -31,4 +31,8 @@ public class GoToGranary implements State {
             }
         }
     }
+    @Override
+    public String getStateName() {
+        return "GoingToGranary";
+    }
 }

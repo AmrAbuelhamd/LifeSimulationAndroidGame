@@ -74,7 +74,7 @@ public abstract class Animal extends GameObject {
 
     private void setThresholds() {
         increasingHungerThreshold = Utils.getRandom(150, 250);//300 500
-        movingToOneDirectionThreshold = Utils.getRandom(20, 41);
+        movingToOneDirectionThreshold = Utils.getRandom(40, 61);
         deleteFarThreshold = Utils.getRandom(40, 61);
     }
 

@@ -18,4 +18,8 @@ public class NotSet implements State {
             p.moveRandomly();
         }
     }
+    @Override
+    public String getStateName() {
+        return "Not Set";
+    }
 }
