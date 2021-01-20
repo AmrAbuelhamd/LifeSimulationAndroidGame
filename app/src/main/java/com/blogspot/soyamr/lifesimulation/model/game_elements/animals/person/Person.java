@@ -70,7 +70,17 @@ public abstract class Person extends Animal {
         }
         return false;
     }
+    @Override
+    public void draw(Canvas canvas) {
+//        super.draw(canvas);
+        if (isAlive)
+            if (genderEnum == GenderEnum.MALE)
+                canvas.drawBitmap(model.gameBitmaps.personImg, x, y, null);
+            else
+                canvas.drawBitmap(model.gameBitmaps.personImgF, x, y, null);
 
+
+    }
     @Override
     public int getMyColor() {
         if (hunger > 60)

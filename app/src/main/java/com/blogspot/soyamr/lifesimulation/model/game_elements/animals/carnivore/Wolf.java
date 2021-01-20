@@ -1,5 +1,7 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.carnivore;
 
+import android.graphics.Canvas;
+
 import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
@@ -20,7 +22,15 @@ public class Wolf extends Carnivore {
         else
             model.addChild(new Wolf(x, y, model, GenderEnum.FEMALE));
     }
-
+    @Override
+    public void draw(Canvas canvas) {
+//        super.draw(canvas);
+        if (isAlive)
+            if (genderEnum == GenderEnum.MALE)
+                canvas.drawBitmap(model.gameBitmaps.wolfImg, x, y, null);
+            else
+                canvas.drawBitmap(model.gameBitmaps.wolfImgF, x, y, null);
+    }
     @Override
     public int getMyColor() {
         if (hunger > 60)

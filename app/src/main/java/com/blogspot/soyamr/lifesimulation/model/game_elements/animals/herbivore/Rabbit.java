@@ -1,14 +1,15 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.herbivore;
 
+import android.graphics.Canvas;
+
 import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.carnivore.Fox;
 
 import java.util.List;
 
-public class Rabbit extends Herbivore{
+public class Rabbit extends Herbivore {
 
     public Rabbit(int x, int y, Model model, GenderEnum genderEnum) {
         super(x, y, model, Type.RABBIT, genderEnum,
@@ -21,6 +22,17 @@ public class Rabbit extends Herbivore{
             model.addChild(new Rabbit(x, y, model, GenderEnum.MALE));
         else
             model.addChild(new Rabbit(x, y, model, GenderEnum.FEMALE));
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+//        super.draw(canvas);
+        if (isAlive)
+            if (genderEnum == GenderEnum.MALE)
+                canvas.drawBitmap(model.gameBitmaps.rabbitImg, x, y, null);
+            else
+                canvas.drawBitmap(model.gameBitmaps.rabbitImgF, x, y, null);
+
     }
 
     @Override

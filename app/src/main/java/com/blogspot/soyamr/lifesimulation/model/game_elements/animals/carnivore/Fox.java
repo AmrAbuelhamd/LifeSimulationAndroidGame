@@ -1,5 +1,7 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.carnivore;
 
+import android.graphics.Canvas;
+
 import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
@@ -35,9 +37,13 @@ public class Fox extends Carnivore {
             return -278483;
     }
 
-//    @Override
-//    public void draw(Canvas canvas) {
-//        canvas.drawBitmap(bitmap, x, y, new Paint());
-//        //super.draw(canvas);
-//    }
+    @Override
+    public void draw(Canvas canvas) {
+//        super.draw(canvas);
+        if (isAlive)
+            if (genderEnum == GenderEnum.MALE)
+                canvas.drawBitmap(model.gameBitmaps.foxImg, x, y, null);
+            else if (genderEnum == GenderEnum.FEMALE)
+                canvas.drawBitmap(model.gameBitmaps.foxImgF, x, y, null);
+    }
 }

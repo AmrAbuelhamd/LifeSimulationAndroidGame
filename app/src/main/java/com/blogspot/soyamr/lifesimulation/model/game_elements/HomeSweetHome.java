@@ -13,12 +13,12 @@ public class HomeSweetHome extends GameObject {
 
     final int stockSize = 10;
     List<GameObject> foodList = new ArrayList<>();
-
+    Model model;
     public HomeSweetHome(int x, int y, Model model) {
         super(Type.HOME, GenderEnum.BOTH);
         this.x = x;
         this.y = y;
-
+        this.model = model;
         model.putMeHerePlease(x, y, this);
 
         paint.setColor(Color.RED);
@@ -58,10 +58,16 @@ public class HomeSweetHome extends GameObject {
 
     }
 
+//    @Override
+//    public void draw(Canvas canvas) {
+//        canvas.drawLine(x, y, x + width, y + height, paint);
+//        canvas.drawLine(x + width, y, x, y + height, paint);
+//    }
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawLine(x, y, x + width, y + height, paint);
-        canvas.drawLine(x + width, y, x, y + height, paint);
+//        super.draw(canvas);
+        if (isAlive)
+            canvas.drawBitmap(model.gameBitmaps.homeImg, x, y, null);
     }
 
     @Override

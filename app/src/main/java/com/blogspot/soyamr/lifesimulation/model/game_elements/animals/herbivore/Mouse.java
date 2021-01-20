@@ -1,5 +1,7 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.herbivore;
 
+import android.graphics.Canvas;
+
 import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
@@ -21,7 +23,15 @@ public class Mouse extends Herbivore{
         else
             model.addChild(new Mouse(x, y, model, GenderEnum.FEMALE));
     }
-
+    @Override
+    public void draw(Canvas canvas) {
+//        super.draw(canvas);
+        if (isAlive)
+            if (genderEnum == GenderEnum.MALE)
+                canvas.drawBitmap(model.gameBitmaps.mouseImg, x, y, null);
+            else
+                canvas.drawBitmap(model.gameBitmaps.mouseImgF, x, y, null);
+    }
     @Override
     public int getMyColor() {
         if (hunger > 60)

@@ -4,8 +4,8 @@ public class Const {
     public static final int USER_CLICK_SEARCH_RANG = 20;
     public static final int N = 300;
     public static final int M = 600;
-    public static int CELL_WIDTH = 10;
-    public static int CELL_HEIGHT = 10;
+    public static int CELL_WIDTH = 400;
+    public static int CELL_HEIGHT = 400;
     public static int FIELD_HEIGHT = CELL_HEIGHT * M;
     public static int FIELD_WIDTH = CELL_WIDTH * N;
     public static int SCREEN_WIDTH;

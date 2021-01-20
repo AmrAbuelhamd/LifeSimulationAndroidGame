@@ -59,7 +59,7 @@ public class ScaleListener extends
         mPosX += (focusX - lastFocusX);
         mPosY += (focusY - lastFocusY);
         // Don't let the object get too small or too large. default a=0.2d   b=2.0f
-        mScaleFactor = Math.max(0.2f, Math.min(mScaleFactor, 2.0f));
+        mScaleFactor = Math.max(0.0002f, Math.min(mScaleFactor, 2.0f));
 
         lastFocusX = focusX;
         lastFocusY = focusY;

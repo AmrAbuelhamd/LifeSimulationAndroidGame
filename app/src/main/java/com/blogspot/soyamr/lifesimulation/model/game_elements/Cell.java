@@ -2,6 +2,9 @@ package com.blogspot.soyamr.lifesimulation.model.game_elements;
 
 
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 
 import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
@@ -14,14 +17,15 @@ import java.util.Random;
 
 
 public class Cell {
-    //    private static final Paint paint;
-//    private static final Rect rect;
+    private static final Paint paint;
+    private static final Rect rect;
+
     static {
-//        paint = new Paint();
-//        paint.setStyle(Paint.Style.STROKE);
-//        paint.setStrokeWidth(10);
-//        paint.setColor(Color.GREEN);
-//        rect = new Rect();
+        paint = new Paint();
+        paint.setStyle(Paint.Style.FILL);
+        paint.setStrokeWidth(10);
+        paint.setColor(Color.GREEN);
+        rect = new Rect();
     }
 
     private final List<GameObject> residences;
@@ -32,7 +36,7 @@ public class Cell {
         x = j * Const.CELL_WIDTH;
         y = i * Const.CELL_HEIGHT;
         residences = new ArrayList<>();
-//        rect.set(x, y, x + GameObject.width, y + GameObject.height);
+        rect.set(x, y, x + GameObject.width, y + GameObject.height);
 
     }
 
@@ -41,6 +45,7 @@ public class Cell {
         Random rnd = new Random();
 //        paint.setARGB(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
     }
+
 
     public void putMeHerePlease(GameObject gameObject) {
         this.residences.add(gameObject);
@@ -70,7 +75,7 @@ public class Cell {
     }
 
     public void draw(Canvas canvas) {
-//        canvas.drawRect(rect, paint);
+        canvas.drawRect(rect, paint);
     }
 
     public void update() {

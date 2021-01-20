@@ -105,7 +105,7 @@ public class Generator {
             animal = new Bear(-1, -1, model, GenderEnum.FEMALE);
             tempAnimals.add(animal);
         }
-        for (int i = 0; i < 20; i++) {//20
+        for (int i = 0; i < 200; i++) {//20
             Animal animal = new Pig(-1, -1, model, GenderEnum.MALE);
             tempAnimals.add(animal);
             animal = new Pig(-1, -1, model, GenderEnum.FEMALE);
