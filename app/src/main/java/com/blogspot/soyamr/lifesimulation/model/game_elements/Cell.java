@@ -17,16 +17,8 @@ import java.util.Random;
 
 
 public class Cell {
-    private static final Paint paint;
-    private static final Rect rect;
-
-    static {
-        paint = new Paint();
-        paint.setStyle(Paint.Style.FILL);
-        paint.setStrokeWidth(10);
-        paint.setColor(Color.GREEN);
-        rect = new Rect();
-    }
+    public final Paint paint;
+    private final Rect rect;
 
     private final List<GameObject> residences;
     private final String tag = "cell";
@@ -36,6 +28,10 @@ public class Cell {
         x = j * Const.CELL_WIDTH;
         y = i * Const.CELL_HEIGHT;
         residences = new ArrayList<>();
+        paint = new Paint();
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.GREEN);
+        rect = new Rect();
         rect.set(x, y, x + GameObject.width, y + GameObject.height);
 
     }

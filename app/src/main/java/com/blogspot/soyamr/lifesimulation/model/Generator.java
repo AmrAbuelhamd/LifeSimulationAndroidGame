@@ -1,6 +1,10 @@
 package com.blogspot.soyamr.lifesimulation.model;
 
+import android.graphics.Color;
+
 import com.blogspot.soyamr.lifesimulation.Const;
+import com.blogspot.soyamr.lifesimulation.OpenSimplexNoise;
+import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Cell;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
@@ -25,11 +29,12 @@ import java.util.List;
 
 public class Generator {
 
+    private static final double FEATURE_SIZE = 120;
     private final Cell[][] cells;
     private final List<Animal> animals;
     private final List<Plant> plants;
-
     private final Model model;
+    ArrayList<Integer[]> ind = new ArrayList<>();
 
     public Generator(Model model) {
         this.model = model;
@@ -48,9 +53,15 @@ public class Generator {
     }
 
     public List<Plant> generatePlants() {
-        //create plants
-        for (int i = 0; i < 5000; i++) {//500
-            addRandomPlant();
+        int r;
+        for (Integer[] i : ind) {
+            r = Utils.getRandom(0, 3);
+            if (r == 0)
+                plants.add(new Oat(i[1], i[0], model));
+            else if (r == 1)
+                plants.add(new Apple(i[1], i[0], model));
+            else
+                plants.add(new Carrot(i[1], i[0], model));
         }
         return plants;
     }
@@ -131,12 +142,43 @@ public class Generator {
     }
 
     public Cell[][] generateSells() {
-        //create cells
-        for (int i = 0; i < Const.M; ++i) {
-            for (int j = 0; j < Const.N; ++j) {
-                cells[i][j] = new Cell(i, j);
+
+        OpenSimplexNoise noise = new OpenSimplexNoise(Utils.getRandom(0, 5000));
+        for (int y = 0; y < Const.M; y++) {
+            for (int x = 0; x < Const.N; x++) {
+                cells[y][x] = new Cell(y, x);
+                double value = (int) (noise.eval(x / FEATURE_SIZE, y / FEATURE_SIZE, 2) * 3);
+
+                switch ((int) value) {
+                    case (2):
+                        //volcano
+                        cells[y][x].paint.setColor(Color.parseColor("#D5303E"));
+                        break;
+                    case (1): {
+                        //snow
+                        cells[y][x].paint.setColor(Color.parseColor("#fffafa"));
+                        break;
+                    }
+                    case (0): {
+                        //grass
+                        ind.add(new Integer[]{y * Const.CELL_HEIGHT, x * Const.CELL_WIDTH});
+                        cells[y][x].paint.setColor(Color.parseColor("#5b8c5a"));
+                        break;
+                    }
+                    case (-1): {
+                        //sand
+                        cells[y][x].paint.setColor(Color.parseColor("#edc9af"));
+                        break;
+                    }
+                    case (-2): {
+                        //blu/water
+                        cells[y][x].paint.setColor(Color.parseColor("#1ca3ec"));
+                        break;
+                    }
+                }
             }
         }
+
         return cells;
     }
 

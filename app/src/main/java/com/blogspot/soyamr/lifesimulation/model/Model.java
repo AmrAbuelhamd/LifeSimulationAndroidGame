@@ -53,6 +53,7 @@ public class Model {
     private FamousAnimal famousAnimal;
 
     public Model(Context context) {
+        gameBitmaps = new GameBitmaps(context);
         explosionList = new ArrayList<>();
         generator = new Generator(this);
         onScreenInfo = new OnScreenInfo();
@@ -62,7 +63,6 @@ public class Model {
         animals = generator.generateAnimals();
         plants = generator.generatePlants();
         createPhotos(context);
-        gameBitmaps = new GameBitmaps(context);
     }
 
     private void createPhotos(Context context) {
@@ -221,6 +221,12 @@ public class Model {
     public void draw(Canvas canvas) {
 
         animalsToAdd.clear();
+
+        for (int i = 0; i < Const.M; ++i) {
+            for (int j = 0; j < Const.N; ++j) {
+                cells[i][j].draw(canvas);
+            }
+        }
 
         Plant[] plants1 = plants.toArray(new Plant[0]);
         for (Plant plant : plants1) {
