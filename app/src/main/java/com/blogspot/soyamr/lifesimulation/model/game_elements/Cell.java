@@ -23,6 +23,7 @@ public class Cell {
     private final List<GameObject> residences;
     private final String tag = "cell";
     int x, y;
+    public GroundType groundType;
 
     public Cell(int i, int j) {
         x = j * Const.CELL_WIDTH;

@@ -41,7 +41,7 @@ public abstract class Plant extends GameObject {
 
         textAndRectPaint = new Paint();
         textAndRectPaint.setStyle(Paint.Style.FILL);
-        textAndRectPaint.setTextSize(30);
+        textAndRectPaint.setTextSize(300);
         textAndRectPaint.setAntiAlias(true);
         textAndRectPaint.setColor(getMyColor());
         xDraw = getX() - 40;

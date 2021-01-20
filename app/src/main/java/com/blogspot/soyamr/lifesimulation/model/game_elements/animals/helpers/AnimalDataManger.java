@@ -37,21 +37,21 @@ public class AnimalDataManger {
         textAndRectPaint = new Paint();
 
         manPaintRect.setStyle(Paint.Style.STROKE);
-        manPaintRect.setStrokeWidth(2);
+        manPaintRect.setStrokeWidth(200);
 
 
         womenPaintRect.setStyle(Paint.Style.STROKE);
-        womenPaintRect.setStrokeWidth(2);
+        womenPaintRect.setStrokeWidth(200);
         womenPaintRect.setColor(Color.RED);
 
         textAndRectPaint.setStyle(Paint.Style.FILL);
-        textAndRectPaint.setTextSize(30);
+        textAndRectPaint.setTextSize(300);
         textAndRectPaint.setAntiAlias(true);
         textAndRectPaint.setColor(animal.getMyColor());
 
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(2);
-        paint.setColor(Color.YELLOW);
+        paint.setStrokeWidth(200);
+        paint.setColor(Color.BLACK);
     }
 
     public void draw(Canvas canvas) {

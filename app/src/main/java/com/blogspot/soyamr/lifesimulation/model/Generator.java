@@ -7,6 +7,7 @@ import com.blogspot.soyamr.lifesimulation.OpenSimplexNoise;
 import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Cell;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.GroundType;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.carnivore.Fox;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.carnivore.Lion;
@@ -67,7 +68,7 @@ public class Generator {
     }
 
     public List<Animal> generateAnimals() {
-        int totalForEach = 2;
+        int totalForEach = 10;
         //CREATE FEMALE ANIMALS
         List<Animal> tempAnimals = new ArrayList<>();
         for (int i = 0; i < totalForEach; i++) {//20
@@ -116,7 +117,7 @@ public class Generator {
             animal = new Bear(-1, -1, model, GenderEnum.FEMALE);
             tempAnimals.add(animal);
         }
-        for (int i = 0; i < 200; i++) {//20
+        for (int i = 0; i < 20; i++) {//20
             Animal animal = new Pig(-1, -1, model, GenderEnum.MALE);
             tempAnimals.add(animal);
             animal = new Pig(-1, -1, model, GenderEnum.FEMALE);
@@ -153,26 +154,31 @@ public class Generator {
                     case (2):
                         //volcano
                         cells[y][x].paint.setColor(Color.parseColor("#D5303E"));
+                        cells[y][x].groundType = GroundType.VOLCANO;
                         break;
                     case (1): {
                         //snow
                         cells[y][x].paint.setColor(Color.parseColor("#fffafa"));
+                        cells[y][x].groundType = GroundType.SNOW;
                         break;
                     }
                     case (0): {
                         //grass
                         ind.add(new Integer[]{y * Const.CELL_HEIGHT, x * Const.CELL_WIDTH});
                         cells[y][x].paint.setColor(Color.parseColor("#5b8c5a"));
+                        cells[y][x].groundType = GroundType.GRASS;
                         break;
                     }
                     case (-1): {
                         //sand
                         cells[y][x].paint.setColor(Color.parseColor("#edc9af"));
+                        cells[y][x].groundType = GroundType.SAND;
                         break;
                     }
                     case (-2): {
                         //blu/water
                         cells[y][x].paint.setColor(Color.parseColor("#1ca3ec"));
+                        cells[y][x].groundType = GroundType.WATER;
                         break;
                     }
                 }

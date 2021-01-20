@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.HomeSweetHome;
@@ -27,20 +28,20 @@ public class MalePerson extends Person {
     public State searchPartner = new SearchPartner();
 
     Paint womenColor = new Paint();
+    State prev = noteSet;
 
     public MalePerson(int x, int y, Model model, GenderEnum genderEnum, boolean firstGeneration) {
         super(x, y, model, genderEnum, List.of(Type.RABBIT, Type.PIG, Type.DEER));
-        if(firstGeneration)
+        if (firstGeneration)
             currentState = noteSet;
         else
             currentState = childhoodState;
 
-        womenColor.setColor(Color.YELLOW);
-        womenColor.setStyle(Paint.Style.FILL);
-//        womenColor.setStrokeWidth(150);
+        womenColor.setColor(Color.BLACK);
+        womenColor.setStyle(Paint.Style.STROKE);
+        womenColor.setStrokeWidth(150);
     }
 
-    State prev = noteSet;
     @Override
     public void update() {
         if (!checkBeforeUpdate())
@@ -69,7 +70,9 @@ public class MalePerson extends Person {
     public void drawAdditionalInfo(Canvas canvas) {
         super.drawAdditionalInfo(canvas);
         if (isMarried) {
-            canvas.drawRect(wifeCallbacks.getRect(), womenColor);
+            canvas.drawRect(wifeCallbacks.getRect().left - Const.CELL_WIDTH / 2, wifeCallbacks.getRect().top - Const.CELL_HEIGHT / 2,
+                    wifeCallbacks.getRect().right + Const.CELL_WIDTH / 2, wifeCallbacks.getRect().bottom + Const.CELL_HEIGHT / 2
+                    , womenColor);
         }
     }
 

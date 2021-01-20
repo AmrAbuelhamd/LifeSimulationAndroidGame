@@ -43,6 +43,7 @@ public abstract class Animal extends GameObject {
     public Animal(int x, int y, Model model, Type myType, GenderEnum genderEnum,
                   List<Type> myFoodTypeList) {
         super(myType, genderEnum);
+
         direction = moveDirection[Utils.getRandom(0, moveDirection.length)];
 //        this.genderOperator = genderOperator;
         if (x == -1 && y == -1) {
