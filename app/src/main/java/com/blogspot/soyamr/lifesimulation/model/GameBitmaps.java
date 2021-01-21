@@ -7,7 +7,7 @@ import android.graphics.BitmapFactory;
 import com.blogspot.soyamr.lifesimulation.R;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 
-public class GameBitmaps {
+public class GameBitmaps {//singleTone
     public Bitmap granaryImg;
     public Bitmap homeImg;
     public Bitmap rabbitImg;
