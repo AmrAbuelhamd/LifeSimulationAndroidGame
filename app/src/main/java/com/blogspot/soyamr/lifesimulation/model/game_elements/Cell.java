@@ -10,6 +10,7 @@ import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Plant;
 
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -87,5 +88,9 @@ public class Cell {
 
     public void clear() {
         residences.removeIf(it -> it instanceof Animal || it instanceof Plant);
+    }
+
+    public GroundType getType() {
+        return groundType;
     }
 }

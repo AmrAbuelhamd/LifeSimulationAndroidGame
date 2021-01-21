@@ -8,6 +8,7 @@ import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.GroundType;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.AnimalDataManger;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.Female;
@@ -45,15 +46,14 @@ public abstract class Animal extends GameObject {
     public StateAnimal oneDirection = new OneDirection();
     public StateAnimal goingToFood = new GoingToFood();
     public StateAnimal notSet = new NotSet();
+    public GameObject myFood;
+    public StateAnimal currentState = notSet;
     int increasingHungerThreshold = 50;
     boolean myTurn = true;//todo enable this variable agian when animals > 1000, and make small documentation on it in readme
     int deleteFarThreshold = 50;
     int dfth = 0;
     AnimalDataManger animalDataManger;
-    public GameObject myFood;
-
-
-    public StateAnimal currentState = notSet;
+    GroundType nextCellType;
 
     //todo [important]  pattern builder
     public Animal(int x, int y, Model model, Type myType, GenderEnum genderEnum,
@@ -121,12 +121,25 @@ public abstract class Animal extends GameObject {
 
             genderOperator.updateIDoNotWant();
             reachedScreenEdge();
+            gonnaStepOnDangerousGround();
             model.putMeHerePlease(x, y, this);
             genderOperator.setRect();
         }
     }
 
-    //todo [impo] pattern NextMove
+    protected void gonnaStepOnDangerousGround() {
+        //when game's character is entering volcano or water
+        nextCellType = model.getNextCellType(x, y);
+        while (nextCellType == GroundType.VOLCANO || nextCellType == GroundType.WATER) {
+            moveRandomly();
+            reachedScreenEdge();
+            nextCellType = model.getNextCellType(x, y);
+        }
+        if(nextCellType==GroundType.SAND||nextCellType==GroundType.SNOW){
+            ++ihth;
+        }
+    }
+
 //todo [impo] pattern command
     private void nextStep() {
         switch (((NextMove) nextMove)) {

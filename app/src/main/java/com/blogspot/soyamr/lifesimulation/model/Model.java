@@ -2,17 +2,16 @@ package com.blogspot.soyamr.lifesimulation.model;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.Log;
 
 import com.blogspot.soyamr.lifesimulation.Const;
-import com.blogspot.soyamr.lifesimulation.R;
 import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Cell;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Granary;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.GroundType;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.HomeSweetHome;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Apple;
@@ -34,7 +33,7 @@ public class Model {
     public final List<Granary> granaries;
     public final Generator generator;
     public final GameBitmaps gameBitmaps;
-    final int addingNewPlantThreshold = 2;
+    final int addingNewPlantThreshold = 20;
     private final String tag = "model";
     private final OnScreenInfo onScreenInfo;
     private final List<Explosion> explosionList;
@@ -64,7 +63,6 @@ public class Model {
         plants = generator.generatePlants();
         bitmap = gameBitmaps.createPhotos();
     }
-
 
 
     public void addOnePlant() {
@@ -296,5 +294,10 @@ public class Model {
         }
 
         return false;
+    }
+
+    public GroundType getNextCellType(int x, int y) {
+        return cells[Utils.getRowIdx(y)][Utils.getColIdx(x)].getType();
+
     }
 }

@@ -1,12 +1,10 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states;
 
-import android.graphics.Point;
-
 import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.Utils;
-import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.GroundType;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.HomeSweetHome;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.FemalePerson;
@@ -14,16 +12,11 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.Mal
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.Person;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.State;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-
-import static com.blogspot.soyamr.lifesimulation.Const.Direction.DOWN;
-import static com.blogspot.soyamr.lifesimulation.Const.Direction.LEFT;
-import static com.blogspot.soyamr.lifesimulation.Const.Direction.RIGHT;
-import static com.blogspot.soyamr.lifesimulation.Const.Direction.UP;
 
 public class SearchPartner implements State {
+    GroundType nextCellType;
+
     @Override
     public void update(Person person) {
         MalePerson p = (MalePerson) person;
@@ -86,7 +79,9 @@ public class SearchPartner implements State {
                     .stream().findFirst().orElse(null);
             if (home == null) {
                 if (!p.model.noGranaryHere(newX, newY, Person.width, Person.height)) {
-                    found = true;
+                    nextCellType = p.model.getNextCellType(newX, newY);
+                    if (nextCellType != GroundType.WATER && nextCellType != GroundType.VOLCANO)
+                        found = true;
                 }
             }
 

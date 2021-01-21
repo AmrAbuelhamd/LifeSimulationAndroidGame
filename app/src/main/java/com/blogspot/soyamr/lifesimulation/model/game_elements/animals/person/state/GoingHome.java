@@ -5,11 +5,13 @@ import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.Dimensions;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Granary;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.GroundType;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.Person;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.State;
 
 public class GoingHome implements State {
     boolean addedFood;
+    GroundType nextCellType;
 
     @Override
     public void update(Person person) {
@@ -57,7 +59,9 @@ public class GoingHome implements State {
 
                     if (!person.model.checkIfNoHomesHere(newX, newY, Dimensions.granaryWidth,
                             Dimensions.granaryHeight)) {
-                        found = true;
+                        nextCellType = person.model.getNextCellType(newX, newY);
+                        if (nextCellType != GroundType.WATER && nextCellType != GroundType.VOLCANO)
+                            found = true;
                     }
                 }
 
@@ -76,7 +80,6 @@ public class GoingHome implements State {
             return person.goToGranary;
         }
     }
-
 
     @Override
     public String getStateName() {
