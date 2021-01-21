@@ -16,10 +16,8 @@ import static com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject.
 public class Female extends Gender {
     RectF rect = new RectF();
     Paint strokePaint = new Paint();
-
     public Female(Animal animal) {
         super(animal);
-
 
 //        strokePaint.setStyle(Paint.Style.STROKE);
 //        strokePaint.setColor(-3862174);
@@ -30,6 +28,7 @@ public class Female extends Gender {
     public void doCeremony() {
         marriage();
         brokeUp();
+        animal.currentState = animal.notSet;
     }
 
     @Override
@@ -37,8 +36,9 @@ public class Female extends Gender {
         if (!iDoNotWant && !inRelation && animal.hunger > SEARCH_FOOD_THRESHOLD) {
             if (animal.type == groomType) {
                 inRelation = true;
-                animal.paint.setStyle(Paint.Style.STROKE);
-                animal.paint.setStrokeWidth(10);
+                animal.currentState = animal.inMarriageProcess;
+//                animal.paint.setStyle(Paint.Style.STROKE);
+//                animal.paint.setStrokeWidth(10);
                 return true;
             }
         }
@@ -47,7 +47,7 @@ public class Female extends Gender {
 
     public void brokeUp() {
         inRelation = false;
-        animal.paint.setStyle(Paint.Style.FILL);
+//        animal.paint.setStyle(Paint.Style.FILL);
         setIdoNotWant();
     }
 
@@ -80,5 +80,10 @@ public class Female extends Gender {
     public void setRect() {
         rect.set(animal.getX(), animal.getY(), animal.getX() + GameObject.width,
                 animal.getY() + GameObject.height);
+    }
+
+    @Override
+    public Animal getNextTarget2() {
+        return null;
     }
 }

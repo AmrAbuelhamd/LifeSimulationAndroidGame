@@ -66,18 +66,20 @@ public class AnimalDataManger {
             canvas.drawRect(rectWomenVision, womenPaintRect);
         }
 
-        canvas.drawText("Hunger                 : " + animal.hunger, x, y - 0 * space, textAndRectPaint);
-        canvas.drawText("Hunger CTR       : " + animal.ihth, x, y - 1 * space, textAndRectPaint);
-        canvas.drawText("in relationship  : " + animal.genderOperator.inRelation, x, y - 2 * space, textAndRectPaint);
+        canvas.drawText("Hunger                 : " + animal.hunger, x, y - 1 * space, textAndRectPaint);
+        canvas.drawText("Hunger CTR       : " + animal.ihth, x, y - 2 * space, textAndRectPaint);
+//        canvas.drawText("in relationship  : " + animal.genderOperator.inRelation, x, y - 2 * space, textAndRectPaint);
         canvas.drawText("idontwant           : " + animal.genderOperator.iDoNotWant, x, y - 3 * space, textAndRectPaint);
         canvas.drawText("idontwant CTR : " + animal.genderOperator.rsidwv, x, y - 4 * space, textAndRectPaint);
-        canvas.drawText("in one direction: " + (animal.mtodth < animal.movingToOneDirectionThreshold)
-                , x, y - 5 * space, textAndRectPaint);
+//        canvas.drawText("in one direction: " + (animal.mtodth < animal.movingToOneDirectionThreshold)
+//                , x, y - 5 * space, textAndRectPaint);
         canvas.drawText("my menu size    : " + animal.myFoodMenu.size(), x, y - 6 * space, textAndRectPaint);
         canvas.drawText("myGender    : " + animal.genderEnum, x, y - 7 * space, textAndRectPaint);
         canvas.drawText("myType    : " + animal.type, x, y - 8 * space, textAndRectPaint);
-        if(animal.type == Type.PERSON)
-            canvas.drawText("state    : " +((Person)animal).currentState.getStateName() , x, y - 9 * space, textAndRectPaint);
+        if (animal.type == Type.PERSON)
+            canvas.drawText("state    : " + ((Person) animal).currentState.getStateName(), x, y - 9 * space, textAndRectPaint);
+        else
+            canvas.drawText("state    : " + (animal).currentState.getStateName(), x, y - 9 * space, textAndRectPaint);
         //put rectangle around current animal
         canvas.drawRect(rect, paint);
         //put rectangle around target

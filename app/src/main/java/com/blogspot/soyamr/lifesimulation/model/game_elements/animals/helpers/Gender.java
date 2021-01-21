@@ -3,8 +3,11 @@ package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers;
 import android.graphics.Canvas;
 
 import com.blogspot.soyamr.lifesimulation.Utils;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
+
+import java.util.List;
 
 public abstract class Gender {
     public int rsidwv = 0;
@@ -13,6 +16,7 @@ public abstract class Gender {
     public Animal myLove;
     int reSetIDoNotWantVariable = 300;
     Animal animal;
+    public List<GameObject> myCrushes;
 
     public Gender(Animal animal) {
         this.animal = animal;
@@ -47,4 +51,5 @@ public abstract class Gender {
     public abstract void draw(Canvas canvas);
 
     public abstract void setRect();
+    public abstract Animal getNextTarget2();
 }

@@ -13,7 +13,13 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.An
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.Female;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.Gender;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.Male;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.State;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.state.GoingToFood;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.state.InMarriageProcess;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.state.NotSet;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.state.OneDirection;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.state.SearchFood;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.state.SearchPartner;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.state.StateAnimal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,17 +39,22 @@ public abstract class Animal extends GameObject {
     public int movingToOneDirectionThreshold = 30;
     public NextMove nextMove;
     public int[] direction = new int[2];
-    public State searchFood;
-    public State searchPartner;
+    public StateAnimal searchFood = new SearchFood();
+    public StateAnimal searchPartner = new SearchPartner();
+    public StateAnimal inMarriageProcess = new InMarriageProcess();
+    public StateAnimal oneDirection = new OneDirection();
+    public StateAnimal goingToFood = new GoingToFood();
+    public StateAnimal notSet = new NotSet();
     int increasingHungerThreshold = 50;
     boolean myTurn = true;//todo enable this variable agian when animals > 1000, and make small documentation on it in readme
     int deleteFarThreshold = 50;
     int dfth = 0;
     AnimalDataManger animalDataManger;
-    private GameObject myFood;
+    public GameObject myFood;
 
 
-    State currentState;
+    public StateAnimal currentState = notSet;
+
     //todo [important]  pattern builder
     public Animal(int x, int y, Model model, Type myType, GenderEnum genderEnum,
                   List<Type> myFoodTypeList) {
@@ -101,10 +112,12 @@ public abstract class Animal extends GameObject {
             }
             model.iAmLeavingThisCell(x, y, this);
 
-            nextMove = searchForLove();
-            if (nextMove == NextMove.NOT_SET)
-                nextMove = searchForFood();
-            nextStep();
+//            nextMove = searchForLove();
+//            if (nextMove == NextMove.NOT_SET)
+//                nextMove = searchForFood();
+//            nextStep();
+
+            currentState.update(this);
 
             genderOperator.updateIDoNotWant();
             reachedScreenEdge();
@@ -224,7 +237,7 @@ public abstract class Animal extends GameObject {
         return NextMove.TO_FOOD;
     }
 
-    private GameObject getNextTarget() {
+    public GameObject getNextTarget() {
         if (dfth < deleteFarThreshold) {
             ++dfth;
         } else {

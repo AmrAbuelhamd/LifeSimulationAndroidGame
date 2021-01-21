@@ -17,7 +17,6 @@ import java.util.ListIterator;
 import static com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject.ANIMAL_WOMEN_VISION_RANG;
 
 public class Male extends Gender {
-    private List<GameObject> myCrushes;
 
     public Male(Animal animal) {
         super(animal);
@@ -75,7 +74,8 @@ public class Male extends Gender {
                 animal.getY() + GameObject.height);
     }
 
-    Animal getNextTarget2() {
+    @Override
+    public Animal getNextTarget2() {
         ListIterator<GameObject> iter = myCrushes.listIterator();
         while (iter.hasNext()) {
             Animal current = (Animal) iter.next();
@@ -95,7 +95,7 @@ public class Male extends Gender {
         myLove.doCermony();
         myLove = null;
         inRelation = false;
-        animal.paint.setStyle(Paint.Style.FILL);
+//        animal.paint.setStyle(Paint.Style.FILL);
         setIdoNotWant();
     }
 

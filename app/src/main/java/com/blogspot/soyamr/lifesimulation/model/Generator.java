@@ -56,7 +56,7 @@ public class Generator {
     public List<Plant> generatePlants() {
         int r;
         for (Integer[] i : ind) {
-            r = Utils.getRandom(0, 3);
+            r = Utils.getRandom(0, 15);
             if (r == 0)
                 plants.add(new Oat(i[1], i[0], model));
             else if (r == 1)
@@ -68,7 +68,7 @@ public class Generator {
     }
 
     public List<Animal> generateAnimals() {
-        int totalForEach = 10;
+        int totalForEach = 100;
         //CREATE FEMALE ANIMALS
         List<Animal> tempAnimals = new ArrayList<>();
         for (int i = 0; i < totalForEach; i++) {//20
