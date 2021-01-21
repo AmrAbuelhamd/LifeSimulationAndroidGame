@@ -67,9 +67,9 @@ public class FemalePerson extends Person implements HusbandCallbacks {
 
     @Override
     public boolean wannaMakeLove() {
-        if (isHome() && !genderOperator.iDoNotWant) {
+        if (isHome() && !iDoNotWant) {
             addChild();
-            genderOperator.setIdoNotWant();
+            setIdoNotWant();
             currentState = searchFood;
             return true;
         }

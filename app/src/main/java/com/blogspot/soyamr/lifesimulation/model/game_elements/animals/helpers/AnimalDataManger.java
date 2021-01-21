@@ -61,16 +61,16 @@ public class AnimalDataManger {
         canvas.drawRect(rectFoodVision, manPaintRect);
 
         if (animal.genderEnum == GenderEnum.MALE) {
-            if (animal.genderOperator.myLove != null)
-                womenPaintRect.setColor(animal.genderOperator.myLove.getMyColor());
+            if (animal.myLove != null)
+                womenPaintRect.setColor(animal.myLove.getMyColor());
             canvas.drawRect(rectWomenVision, womenPaintRect);
         }
 
         canvas.drawText("Hunger                 : " + animal.hunger, x, y - 1 * space, textAndRectPaint);
-        canvas.drawText("Hunger CTR       : " + animal.ihth, x, y - 2 * space, textAndRectPaint);
+        canvas.drawText("Hunger CTR       : " + animal.increaseHungerCTR, x, y - 2 * space, textAndRectPaint);
 //        canvas.drawText("in relationship  : " + animal.genderOperator.inRelation, x, y - 2 * space, textAndRectPaint);
-        canvas.drawText("idontwant           : " + animal.genderOperator.iDoNotWant, x, y - 3 * space, textAndRectPaint);
-        canvas.drawText("idontwant CTR : " + animal.genderOperator.rsidwv, x, y - 4 * space, textAndRectPaint);
+        canvas.drawText("idontwant           : " + animal.iDoNotWant, x, y - 3 * space, textAndRectPaint);
+        canvas.drawText("idontwant CTR : " + animal.resetIdontWantCTR, x, y - 4 * space, textAndRectPaint);
 //        canvas.drawText("in one direction: " + (animal.mtodth < animal.movingToOneDirectionThreshold)
 //                , x, y - 5 * space, textAndRectPaint);
         canvas.drawText("my menu size    : " + animal.myFoodMenu.size(), x, y - 6 * space, textAndRectPaint);

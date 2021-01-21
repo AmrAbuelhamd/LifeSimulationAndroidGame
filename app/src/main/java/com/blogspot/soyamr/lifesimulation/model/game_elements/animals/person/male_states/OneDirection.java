@@ -11,11 +11,11 @@ public class OneDirection implements State {
     @Override
     public void update(Person person) {
         MalePerson p = ((MalePerson) person);
-        if (person.mtodth < person.movingToOneDirectionThreshold) {
-            ++person.mtodth;
+        if (person.moveToOneDirectionCTR < person.movingToOneDirectionThreshold) {
+            ++person.moveToOneDirectionCTR;
             person.moveToOneDirection();
         } else {
-            person.mtodth = 0;
+            person.moveToOneDirectionCTR = 0;
             int rand;
             do {
                 rand = Utils.getRandom(0, Person.moveDirection.length);

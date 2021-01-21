@@ -1,6 +1,7 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements;
 
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -39,6 +40,7 @@ public abstract class GameObject /*implements famouseanimaslinterface*/ {
     public boolean isAlive = true;
     protected int x;
     protected int y;
+    Bitmap image;
 
     public GameObject(Type myType, GenderEnum genderEnum) {
         this.type = myType;

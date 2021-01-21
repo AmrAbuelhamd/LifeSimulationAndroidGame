@@ -12,7 +12,7 @@ public class NotSet implements State {
         p.wifeCallbacks = null;
         if (person.hunger < Person.SEARCH_FOOD_THRESHOLD) {
             p.currentState = p.searchFood;
-        } else if (person.hunger > Person.SEARCH_PARTNER_THRESHOLD && !person.genderOperator.iDoNotWant) {
+        } else if (person.hunger > Person.SEARCH_PARTNER_THRESHOLD && !person.iDoNotWant) {
             p.currentState = p.searchPartner;
         } else {
             p.moveRandomly();

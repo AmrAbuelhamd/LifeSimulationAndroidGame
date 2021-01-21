@@ -52,11 +52,11 @@ public abstract class Person extends Animal {
     }
 
     void afterUpdate() {
-        genderOperator.updateIDoNotWant();
+        updateIDoNotWant();
         reachedScreenEdge();
         gonnaStepOnDangerousGround();
         model.putMeHerePlease(x, y, this);
-        genderOperator.setRect();
+        setRect();
     }
 
     boolean checkBeforeUpdate() {

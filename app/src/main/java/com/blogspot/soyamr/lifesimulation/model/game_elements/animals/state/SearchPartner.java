@@ -11,19 +11,18 @@ import static com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject.
 public class SearchPartner implements StateAnimal {
     @Override
     public void update(Animal animal) {//this state happens only for men
-        Animal.NextMove result;
 
-        if (animal.genderOperator.myCrushes.isEmpty())
-            animal.genderOperator.myCrushes = Utils.searchAroundAnimal(ANIMAL_WOMEN_VISION_RANG, animal.getX(), animal.getY(),
+        if (animal.myCrushes.isEmpty())
+            animal.myCrushes = Utils.searchAroundAnimal(ANIMAL_WOMEN_VISION_RANG, animal.getX(), animal.getY(),
                     animal.model, List.of(animal.type),
                     GenderEnum.FEMALE);
-        if (animal.genderOperator.myCrushes.isEmpty()) {
+        if (animal.myCrushes.isEmpty()) {
             animal.currentState = animal.oneDirection;
             return;
         }
         //make sure that crushes that i kept in my list still available
         //if not delete it
-        Animal target = animal.genderOperator.getNextTarget2();
+        Animal target = animal.getNextTarget2();
 
         if (target == null) {
 //            return Animal.NextMove.MOVE_RANDOMLY;
@@ -32,11 +31,11 @@ public class SearchPartner implements StateAnimal {
         }
 
         //here this means that she accepted
-        animal.genderOperator.inRelation = true;
+        animal.inRelation = true;
 //        animal.paint.setStyle(Paint.Style.STROKE);
 //        animal.paint.setStrokeWidth(10);
-        animal.genderOperator.myLove = target;
-        animal.genderOperator.myCrushes.remove(animal.genderOperator.myLove);
+        animal.myLove = target;
+        animal.myCrushes.remove(animal.myLove);
 
         animal.currentState = animal.inMarriageProcess;
     }

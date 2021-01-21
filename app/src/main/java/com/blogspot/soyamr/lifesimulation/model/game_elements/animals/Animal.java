@@ -11,9 +11,6 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GroundType;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.AnimalDataManger;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.Female;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.Gender;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.Male;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.state.GoingToFood;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.state.InMarriageProcess;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.state.NotSet;
@@ -31,14 +28,12 @@ public abstract class Animal extends GameObject {
 
     private final String tag = "Animal";
     public List<Type> myFoodTypeList;
-    public int mtodth = 0;
+    public int moveToOneDirectionCTR = 0;
     public int hunger = 100;
     public List<GameObject> myFoodMenu;
     public Model model;
-    public Gender genderOperator;
-    public int ihth = 0;
+    public int increaseHungerCTR = 0;
     public int movingToOneDirectionThreshold = 30;
-    public NextMove nextMove;
     public int[] direction = new int[2];
     public StateAnimal searchFood = new SearchFood();
     public StateAnimal searchPartner = new SearchPartner();
@@ -48,18 +43,24 @@ public abstract class Animal extends GameObject {
     public StateAnimal notSet = new NotSet();
     public GameObject myFood;
     public StateAnimal currentState = notSet;
+    public int resetIdontWantCTR = 0;
+    public boolean iDoNotWant;
+    public boolean inRelation = false;
+    public Animal myLove;
+    public List<GameObject> myCrushes;
     int increasingHungerThreshold = 50;
     boolean myTurn = true;//todo enable this variable agian when animals > 1000, and make small documentation on it in readme
     int deleteFarThreshold = 50;
-    int dfth = 0;
+    int deleteFarPreysCTR = 0;
     AnimalDataManger animalDataManger;
     GroundType nextCellType;
+    int resetIDoNotWantThreshold = 300;
 
     //todo [important]  pattern builder
     public Animal(int x, int y, Model model, Type myType, GenderEnum genderEnum,
                   List<Type> myFoodTypeList) {
         super(myType, genderEnum);
-
+        myCrushes = new ArrayList<>();
         direction = moveDirection[Utils.getRandom(0, moveDirection.length)];
         if (x == -1 && y == -1) {
             setInitialData(Utils.getRandom(0, Const.N) * width,
@@ -76,12 +77,9 @@ public abstract class Animal extends GameObject {
         myFoodMenu = new ArrayList<>();
         this.model = model;
         model.putMeHerePlease(x, y, this);
-        if (genderEnum == GenderEnum.FEMALE)
-            genderOperator = new Female(this);
-        else
-            genderOperator = new Male(this);
-        genderOperator.setIdoNotWant();
-        genderOperator.setRect();
+
+        setIdoNotWant();
+        setRect();
 
         changeColor();
 
@@ -94,15 +92,6 @@ public abstract class Animal extends GameObject {
         deleteFarThreshold = Utils.getRandom(40, 61);
     }
 
-    NextMove searchForLove() {
-        if (genderOperator.inRelation) {
-            return genderOperator.takeRequiredActions();
-        } else if (!genderOperator.iDoNotWant && hunger > SEARCH_PARTNER_THRESHOLD) {
-            nextMove = genderOperator.searchForPartner();
-        }
-        return NextMove.NOT_SET;
-    }
-
     public void update() {
         if (isAlive) {
             boolean isDead = updateHunger();
@@ -112,19 +101,30 @@ public abstract class Animal extends GameObject {
             }
             model.iAmLeavingThisCell(x, y, this);
 
-//            nextMove = searchForLove();
-//            if (nextMove == NextMove.NOT_SET)
-//                nextMove = searchForFood();
-//            nextStep();
-
             currentState.update(this);
 
-            genderOperator.updateIDoNotWant();
+            updateIDoNotWant();
             reachedScreenEdge();
             gonnaStepOnDangerousGround();
             model.putMeHerePlease(x, y, this);
-            genderOperator.setRect();
+            setRect();
         }
+    }
+
+    public void updateIDoNotWant() {
+        if (iDoNotWant) {
+            if (resetIdontWantCTR < resetIDoNotWantThreshold) {
+                ++resetIdontWantCTR;
+            } else {
+                iDoNotWant = false;
+                resetIdontWantCTR = 0;
+            }
+        }
+    }
+
+    protected void setRect() {
+        rect.set(x, y, x + GameObject.width,
+                y + GameObject.height);
     }
 
     protected void gonnaStepOnDangerousGround() {
@@ -135,48 +135,30 @@ public abstract class Animal extends GameObject {
             reachedScreenEdge();
             nextCellType = model.getNextCellType(x, y);
         }
-        if(nextCellType==GroundType.SAND||nextCellType==GroundType.SNOW){
-            ++ihth;
+        if (nextCellType == GroundType.SAND || nextCellType == GroundType.SNOW) {
+            ++increaseHungerCTR;
         }
     }
 
-//todo [impo] pattern command
-    private void nextStep() {
-        switch (((NextMove) nextMove)) {
-            case MOVE_RANDOMLY:
-                moveRandomly();
-                break;
-            case NOTHING://todo at the end
-                break;
-            case TO_FOOD:
-                if (myFood == null)
-                    throw new RuntimeException("myfood is null");
-                moveToFood(myFood.getX(), myFood.getY());
-                break;
-            case ONE_DIRECTION:
-                moveToOneDirection();
-                break;
-            case TO_LOVE:
-                moveToLove(genderOperator.myLove.getX(), genderOperator.myLove.getY());
-                break;
-            default:
-                throw new RuntimeException("SOMETHING BIG baaaad HAPPENED");
+    public Animal getNextTarget2() {
+        ListIterator<GameObject> iter = myCrushes.listIterator();
+        while (iter.hasNext()) {
+            Animal current = (Animal) iter.next();
+            if (current != null && current.isAlive && current.wannaBeInRelationship(type)) {
+                return current;
+            } else {
+                iter.remove();
+            }
         }
-    }
-
-    private void moveToLove(int x, int y) {
-        moveToward(x, y);
-        if (x == this.x && y == this.y) {
-            doCermony();
-        }
+        return null;
     }
 
     public boolean updateHunger() {
-        if (ihth < increasingHungerThreshold) {
-            ++ihth;
+        if (increaseHungerCTR < increasingHungerThreshold) {
+            ++increaseHungerCTR;
         } else {
             boolean isDead = increaseHunger();
-            ihth = 0;
+            increaseHungerCTR = 0;
             return isDead;
         }
         return false;
@@ -210,63 +192,17 @@ public abstract class Animal extends GameObject {
         this.y = y + height * moveDirection[randomIndex][1];
     }
 
-    public NextMove worthSearching() {
-        if (mtodth < movingToOneDirectionThreshold) {
-            ++mtodth;
-            return NextMove.ONE_DIRECTION;
-        }
-        return NextMove.NOT_SET;
-    }
-
-    NextMove searchForFood() {
-        NextMove result;
-        if (hunger > SEARCH_FOOD_THRESHOLD)
-            return NextMove.MOVE_RANDOMLY;
-        if (myFood != null) {
-            if (myFood.isAlive) {
-                return NextMove.TO_FOOD;
-            } else {
-                myFoodMenu.remove(myFood);
-                myFood = null;
-            }
-        }
-        if ((result = worthSearching()) != NextMove.NOT_SET) {
-            return result;
-        }
-        if (myFoodMenu.isEmpty())
-            myFoodMenu = Utils.searchAroundAnimal(ANIMAL_FOOD_VISION_RANG, x, y, model, myFoodTypeList, GenderEnum.BOTH);
-        if (myFoodMenu.isEmpty()) {
-            return moveToOneDirectionSetUp();
-        }
-        //make sure that food that i kept in my list still available before going towards it
-        //if not delete it
-        GameObject target = getNextTarget();
-
-        if (target == null)
-            return NextMove.MOVE_RANDOMLY;
-
-        //move the ANIMAL towards the food
-        myFood = target;
-        return NextMove.TO_FOOD;
-    }
 
     public GameObject getNextTarget() {
-        if (dfth < deleteFarThreshold) {
-            ++dfth;
+        if (deleteFarPreysCTR < deleteFarThreshold) {
+            ++deleteFarPreysCTR;
         } else {
-            dfth = 0;
+            deleteFarPreysCTR = 0;
             deleteVeryFarPreys();
         }
         if (!myFoodMenu.isEmpty())
             return myFoodMenu.get(0);
         return null;
-    }
-
-    public NextMove moveToOneDirectionSetUp() {
-        mtodth = 0;
-        int rand = Utils.getRandom(0, moveDirection.length);
-        direction = moveDirection[rand];
-        return NextMove.ONE_DIRECTION;
     }
 
     public void moveToOneDirection() {
@@ -324,8 +260,18 @@ public abstract class Animal extends GameObject {
         return false;
     }
 
-    public boolean wannaBeInRelationship(Type type) {
-        return genderOperator.wannaBeInRelationShip(type);
+    public boolean wannaBeInRelationship(Type groomType) {
+        if (genderEnum == GenderEnum.MALE) {
+            throw new RuntimeException("i am man bro");
+        }
+        if (!iDoNotWant && !inRelation && hunger > SEARCH_FOOD_THRESHOLD) {
+            if (type == groomType) {
+                inRelation = true;
+                currentState = inMarriageProcess;
+                return true;
+            }
+        }
+        return false;
     }
 
     protected void changeColor() {
@@ -340,14 +286,32 @@ public abstract class Animal extends GameObject {
 
     @Override
     public void draw(Canvas canvas) {
-        if (isAlive) {
-            genderOperator.draw(canvas);
-            nextMove = NextMove.NOT_SET;
+        if (isAlive) {//todo draw image instead
+//            draw(canvas);
         }
     }
 
-    public void doCermony() {
-        genderOperator.doCeremony();
+    public void doCeremony() {
+        if(genderEnum==GenderEnum.MALE){
+            throw new RuntimeException("i am a man, can't add child");
+        }
+        marriage();
+        brokeUp();
+        currentState = notSet;
+    }
+
+    public void brokeUp() {
+        inRelation = false;
+        setIdoNotWant();
+    }
+
+    public void setIdoNotWant() {
+        iDoNotWant = true;
+        resetIdontWantCTR = 0;
+    }
+
+    public void marriage() {
+        addChild();
     }
 
     public abstract void addChild();
@@ -366,9 +330,5 @@ public abstract class Animal extends GameObject {
     @Override
     public void drawAdditionalInfo(Canvas canvas) {
         animalDataManger.draw(canvas);
-    }
-
-    public enum NextMove {
-        MOVE_RANDOMLY, TO_LOVE, TO_FOOD, NOTHING, NOT_SET, ONE_DIRECTION;
     }
 }

@@ -23,9 +23,9 @@ public class WaitHome implements State {
             }
         } else if (!p.homeSweetHome.isStockFull()) {
             p.currentState = p.searchFood;
-        } else if (!p.genderOperator.iDoNotWant) {//note that if i don't have anything to do, i will just wait home and keep asking for sex
+        } else if (!p.iDoNotWant) {//note that if i don't have anything to do, i will just wait home and keep asking for sex
             if (p.wifeCallbacks.wannaMakeLove()) {//if she agrees then she will add child directly, no need to take actions
-                p.genderOperator.setIdoNotWant();
+                p.setIdoNotWant();
                 p.currentState = p.searchFood;
             }
         }

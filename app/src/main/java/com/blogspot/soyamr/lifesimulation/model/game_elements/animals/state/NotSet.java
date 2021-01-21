@@ -10,7 +10,7 @@ public class NotSet implements StateAnimal {
             //animal.genderOperator.takeRequiredActions();
             animal.currentState = animal.inMarriageProcess;
         } else*/
-        if (!animal.genderOperator.iDoNotWant && animal.hunger > Animal.SEARCH_PARTNER_THRESHOLD) {
+        if (!animal.iDoNotWant && animal.hunger > Animal.SEARCH_PARTNER_THRESHOLD) {
             if (animal.genderEnum == GenderEnum.FEMALE) {
                 animal.moveRandomly();
                 return;
