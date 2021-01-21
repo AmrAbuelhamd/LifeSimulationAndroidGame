@@ -34,7 +34,7 @@ public class Granary extends GameObject {
         isAlive = false;
         textAndRectPaint = new Paint();
         textAndRectPaint.setStyle(Paint.Style.FILL);
-        textAndRectPaint.setTextSize(300);
+        textAndRectPaint.setTextSize(500);
         textAndRectPaint.setAntiAlias(true);
         textAndRectPaint.setColor(getMyColor());
         xDraw = getX() - 40;

@@ -1,5 +1,7 @@
 package com.blogspot.soyamr.lifesimulation;
 
+import android.graphics.Rect;
+
 import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
@@ -77,6 +79,17 @@ public abstract class Utils {
 
     public static int getColIdx(int index) {
         return Math.max(0, index / Const.CELL_WIDTH);
+    }
+
+
+    static Rect result = new Rect();
+    public static Rect surroundThisPointWithRect(int x, int y, int width, int height) {
+        result.set(Math.max(x - width, 0),
+                Math.max(0, y - height),
+                Math.min(Const.FIELD_WIDTH, x + width),
+                Math.min(Const.FIELD_HEIGHT, y + height)
+        );
+        return result;
     }
 
 }

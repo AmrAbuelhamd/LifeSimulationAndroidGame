@@ -3,6 +3,7 @@ package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.st
 import android.graphics.Rect;
 
 import com.blogspot.soyamr.lifesimulation.Const;
+import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Granary;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.Person;
@@ -24,6 +25,7 @@ public class ChildHood implements State {
             return "Go Home";
         }
     };
+
     State goToGranary = new State() {
         @Override
         public void update(Person p) {
@@ -60,13 +62,17 @@ public class ChildHood implements State {
                         p.reduceHunger();
                     } else {
                         Granary granary;
-                        if(p.granary==null) {
-                            granary = p.model.searchForNearGranary(createBigRectOfPersonsVision(p.getX(), p.getY()));
+                        if (p.granary == null) {
+                            granary = p.model.searchForNearGranary(
+                                    Utils.surroundThisPointWithRect(p.getX(), p.getY(),
+                                            Person.GRANARY_VISION * GameObject.width,
+                                            Person.GRANARY_VISION * GameObject.height)
+                            );
                             if (granary != null) {
                                 p.granary = granary;
                                 currentMiniState = goToGranary;
                             }
-                        }else{
+                        } else {
                             currentMiniState = goToGranary;
                         }
                         break;
@@ -75,20 +81,12 @@ public class ChildHood implements State {
             }
         }
 
-        private Rect createBigRectOfPersonsVision(int x, int y) {
-            result.set(Math.max(x - Person.GRANARY_VISION * GameObject.width, 0),
-                    Math.max(0, y - Person.GRANARY_VISION * GameObject.height),
-                    Math.min(Const.FIELD_WIDTH, x + Person.GRANARY_VISION * GameObject.width),
-                    Math.min(Const.FIELD_HEIGHT, y + Person.GRANARY_VISION * GameObject.height)
-            );
-            return result;
-        }
-
         @Override
         public String getStateName() {
             return "Wait Home";
         }
     };
+    State currentMiniState = waitHome;
 
     @Override
     public void update(Person person) {
@@ -98,7 +96,6 @@ public class ChildHood implements State {
             person.currentState = person.getNotSetState();
         }
     }
-    State currentMiniState = waitHome;
 
     @Override
     public String getStateName() {

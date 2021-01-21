@@ -1,8 +1,9 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person;
 
+import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.util.Log;
 
+import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
@@ -21,9 +22,9 @@ public class FemalePerson extends Person implements HusbandCallbacks {
     public State oneDirection = new OneDirection();
     public State waitHome = new WaitHome();
 
-    public FemalePerson(int x, int y, Model model, GenderEnum genderEnum,boolean firstGeneration) {
+    public FemalePerson(int x, int y, Model model, GenderEnum genderEnum, boolean firstGeneration) {
         super(x, y, model, genderEnum, List.of(Type.APPLE, Type.CARROT, Type.OAT));
-        if(firstGeneration)
+        if (firstGeneration)
             currentState = noteSet;
         else
             currentState = childhoodState;
@@ -35,9 +36,8 @@ public class FemalePerson extends Person implements HusbandCallbacks {
         Person child;
         if (Utils.getRandom(0, 2) == 0) {
             child = new FemalePerson(x, y, model, GenderEnum.FEMALE, false);
-        }
-        else
-            child = new MalePerson(x, y, model, GenderEnum.MALE,false);
+        } else
+            child = new MalePerson(x, y, model, GenderEnum.MALE, false);
 
         child.setHome(homeSweetHome);
         child.setGranary(granary);
@@ -78,13 +78,22 @@ public class FemalePerson extends Person implements HusbandCallbacks {
 
     @Override
     public Rect getRect() {
-        return new Rect(x, y, x + width, y + height);
+        rect.set(x, y, x + width, y + height);
+        return rect;
     }
 
     @Override
     public void setWifeHome(HomeSweetHome home) {
         homeSweetHome = home;
         setHomeRect();
+    }
+
+    @Override
+    public void drawAdditionalInfo(Canvas canvas) {
+        super.drawAdditionalInfo(canvas);
+        if (isMarried) {
+            homeSweetHome.drawAdditionalInfo(canvas);
+        }
     }
 
     @Override

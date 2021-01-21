@@ -13,6 +13,7 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.An
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.Female;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.Gender;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.helpers.Male;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.State;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,21 +32,24 @@ public abstract class Animal extends GameObject {
     public int ihth = 0;
     public int movingToOneDirectionThreshold = 30;
     public NextMove nextMove;
+    public int[] direction = new int[2];
+    public State searchFood;
+    public State searchPartner;
     int increasingHungerThreshold = 50;
     boolean myTurn = true;//todo enable this variable agian when animals > 1000, and make small documentation on it in readme
-    public int[] direction = new int[2];
     int deleteFarThreshold = 50;
     int dfth = 0;
     AnimalDataManger animalDataManger;
     private GameObject myFood;
 
+
+    State currentState;
     //todo [important]  pattern builder
     public Animal(int x, int y, Model model, Type myType, GenderEnum genderEnum,
                   List<Type> myFoodTypeList) {
         super(myType, genderEnum);
 
         direction = moveDirection[Utils.getRandom(0, moveDirection.length)];
-//        this.genderOperator = genderOperator;
         if (x == -1 && y == -1) {
             setInitialData(Utils.getRandom(0, Const.N) * width,
                     Utils.getRandom(0, Const.M) * height, model, myFoodTypeList);
@@ -338,7 +342,7 @@ public abstract class Animal extends GameObject {
         animalDataManger.draw(canvas);
     }
 
-    public enum NextMove{
+    public enum NextMove {
         MOVE_RANDOMLY, TO_LOVE, TO_FOOD, NOTHING, NOT_SET, ONE_DIRECTION;
     }
 }

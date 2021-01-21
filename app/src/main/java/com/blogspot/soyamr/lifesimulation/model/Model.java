@@ -62,37 +62,10 @@ public class Model {
         cells = generator.generateSells();
         animals = generator.generateAnimals();
         plants = generator.generatePlants();
-        createPhotos(context);
+        bitmap = gameBitmaps.createPhotos();
     }
 
-    private void createPhotos(Context context) {
-        bitmap = new Bitmap[26];
-        bitmap[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_001);
-        bitmap[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_002);
-        bitmap[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_003);
-        bitmap[4] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_004);
-        bitmap[5] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_005);
-        bitmap[6] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_006);
-        bitmap[7] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_007);
-        bitmap[8] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_008);
-        bitmap[9] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_009);
-        bitmap[10] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_010);
-        bitmap[11] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_011);
-        bitmap[12] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_012);
-        bitmap[13] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_013);
-        bitmap[14] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_014);
-        bitmap[15] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_015);
-        bitmap[16] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_016);
-        bitmap[17] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_017);
-        bitmap[18] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_018);
-        bitmap[19] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_019);
-        bitmap[20] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_020);
-        bitmap[21] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_021);
-        bitmap[22] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_022);
-        bitmap[23] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_023);
-        bitmap[24] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_024);
-        bitmap[25] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_025);
-    }
+
 
     public void addOnePlant() {
         Plant randomPlant = plants.get(Utils.getRandom(0, plants.size()));

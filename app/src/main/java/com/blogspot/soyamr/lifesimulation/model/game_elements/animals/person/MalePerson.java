@@ -70,9 +70,12 @@ public class MalePerson extends Person {
     public void drawAdditionalInfo(Canvas canvas) {
         super.drawAdditionalInfo(canvas);
         if (isMarried) {
-            canvas.drawRect(wifeCallbacks.getRect().left - Const.CELL_WIDTH / 2, wifeCallbacks.getRect().top - Const.CELL_HEIGHT / 2,
-                    wifeCallbacks.getRect().right + Const.CELL_WIDTH / 2, wifeCallbacks.getRect().bottom + Const.CELL_HEIGHT / 2
+            canvas.drawRect(wifeCallbacks.getRect().left - Const.CELL_WIDTH / 2.0F,
+                    wifeCallbacks.getRect().top - Const.CELL_HEIGHT / 2F,
+                    wifeCallbacks.getRect().right + Const.CELL_WIDTH / 2F,
+                    wifeCallbacks.getRect().bottom + Const.CELL_HEIGHT / 2F
                     , womenColor);
+            homeSweetHome.drawAdditionalInfo(canvas);
         }
     }
 

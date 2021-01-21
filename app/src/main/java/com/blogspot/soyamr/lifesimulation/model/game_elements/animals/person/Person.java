@@ -103,13 +103,13 @@ public abstract class Person extends Animal {
     @Override
     public void drawAdditionalInfo(Canvas canvas) {
         super.drawAdditionalInfo(canvas);
-        if (homeSweetHome != null) {
-            homePaint.setStyle(Paint.Style.STROKE);
-            canvas.drawRect(homeRect, homePaint);
-            homePaint.setStyle(Paint.Style.FILL);
-            canvas.drawText("stock " + homeSweetHome.getStockSize(), (float) homeSweetHome.getX(),
-                    (float) homeSweetHome.getY() - height * 2, homePaint);
-        }
+//        if (homeSweetHome != null) {
+//            homePaint.setStyle(Paint.Style.STROKE);
+//            canvas.drawRect(homeRect, homePaint);
+//            homePaint.setStyle(Paint.Style.FILL);
+//            canvas.drawText("stock " + homeSweetHome.getStockSize(), (float) homeSweetHome.getX(),
+//                    (float) homeSweetHome.getY() - height * 2, homePaint);
+//        }
     }
 
     public void eatSomething() {
