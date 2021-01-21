@@ -12,16 +12,25 @@ import java.util.List;
 
 public class Raccoon extends Omnivore {
 
-    public Raccoon(int x, int y, Model model, GenderEnum genderEnum) {
-        super(x, y, model, Type.RACCOON, genderEnum,
-                List.of(Type.MOUSE, Type.OAT));
+//    public Raccoon(int x, int y, Model model, GenderEnum genderEnum) {
+//        super(x, y, model, Type.RACCOON, genderEnum,
+//                List.of(Type.MOUSE, Type.OAT));
+//    }
+
+    public static final class Builder extends Omnivore.Builder<Raccoon, Raccoon.Builder> {
+        protected Raccoon createObject() {
+            return new Raccoon();
+        }
+        protected Raccoon.Builder thisObject() {
+            return this;
+        }
     }
     @Override
     public void addChild() {
-        if (Utils.getRandom(0, 2) == 0)
-            model.addChild(new Raccoon(x, y, model, GenderEnum.MALE));
-        else
-            model.addChild(new Raccoon(x, y, model, GenderEnum.FEMALE));
+//        if (Utils.getRandom(0, 2) == 0)
+//            model.addChild(new Raccoon(x, y, model, GenderEnum.MALE));
+//        else
+//            model.addChild(new Raccoon(x, y, model, GenderEnum.FEMALE));
     }
     @Override
     public void draw(Canvas canvas) {

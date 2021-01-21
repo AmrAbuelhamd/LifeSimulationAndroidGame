@@ -10,17 +10,17 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 import java.util.List;
 
 public class Wolf extends Carnivore {
-    public Wolf(int x, int y, Model model, GenderEnum genderEnum) {
-        super(x, y, model, Type.WOLF, genderEnum,
-                List.of(Type.MOUSE));
-    }
+//    public Wolf(int x, int y, Model model, GenderEnum genderEnum) {
+//        super(x, y, model, Type.WOLF, genderEnum,
+//                List.of(Type.MOUSE));
+//    }
 
     @Override
     public void addChild() {
-        if (Utils.getRandom(0, 2) == 0)
-            model.addChild(new Wolf(x, y, model, GenderEnum.MALE));
-        else
-            model.addChild(new Wolf(x, y, model, GenderEnum.FEMALE));
+//        if (Utils.getRandom(0, 2) == 0)
+//            model.addChild(new Wolf(x, y, model, GenderEnum.MALE));
+//        else
+//            model.addChild(new Wolf(x, y, model, GenderEnum.FEMALE));
     }
     @Override
     public void draw(Canvas canvas) {
@@ -39,5 +39,13 @@ public class Wolf extends Carnivore {
             return -8875876;
         else
             return -7297874;
+    }
+    public static final class Builder extends Carnivore.Builder<Wolf, Wolf.Builder> {
+        protected Wolf createObject() {
+            return new Wolf();
+        }
+        protected Wolf.Builder thisObject() {
+            return this;
+        }
     }
 }

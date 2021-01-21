@@ -3,28 +3,20 @@ package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.carnivore
 import android.graphics.Canvas;
 
 import com.blogspot.soyamr.lifesimulation.Utils;
-import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 
-import java.util.List;
-
-public class Fox extends Carnivore {
+public final class Fox extends Carnivore {
 //    Bitmap bitmap;
 
-    public Fox(int x, int y, Model model, GenderEnum genderEnum) {
-        super(x, y, model, Type.FOX, genderEnum,
-                List.of(Type.RABBIT));
-//        bitmap = BitmapFactory.decodeResource(FantasticColors.context.getResources(), R.drawable.fox3);
-//        bitmap = Bitmap.createScaledBitmap(bitmap, width * 2, height * 2, false);
+    public Fox() {
     }
 
     @Override
     public void addChild() {
-        if (Utils.getRandom(0, 2) == 0)
-            model.addChild(new Fox(x, y, model, GenderEnum.MALE));
-        else
-            model.addChild(new Fox(x, y, model, GenderEnum.FEMALE));
+//        if (Utils.getRandom(0, 2) == 0)
+//            model.addChild(new Fox(x, y, model, GenderEnum.MALE));
+//        else
+//            model.addChild(new Fox(x, y, model, GenderEnum.FEMALE));
     }
 
     @Override
@@ -45,5 +37,14 @@ public class Fox extends Carnivore {
                 canvas.drawBitmap(model.gameBitmaps.foxImg, x, y, null);
             else if (genderEnum == GenderEnum.FEMALE)
                 canvas.drawBitmap(model.gameBitmaps.foxImgF, x, y, null);
+    }
+
+    public static final class Builder extends Carnivore.Builder<Fox, Builder> {
+        protected Fox createObject() {
+            return new Fox();
+        }
+        protected Builder thisObject() {
+            return this;
+        }
     }
 }

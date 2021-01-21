@@ -10,17 +10,15 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 import java.util.List;
 
 public class Lion extends Carnivore {
-    public Lion(int x, int y, Model model, GenderEnum genderEnum) {
-        super(x, y, model, Type.LION, genderEnum,
-                List.of(Type.DEER));
+    public Lion() {
     }
 
     @Override
     public void addChild() {
-        if (Utils.getRandom(0, 2) == 0)
-            model.addChild(new Lion(x, y, model, GenderEnum.MALE));
-        else
-            model.addChild(new Lion(x, y, model, GenderEnum.FEMALE));
+//        if (Utils.getRandom(0, 2) == 0)
+//            model.addChild(new Lion(x, y, model, GenderEnum.MALE));
+//        else
+//            model.addChild(new Lion(x, y, model, GenderEnum.FEMALE));
     }
 
     @Override
@@ -42,5 +40,13 @@ public class Lion extends Carnivore {
             return -6382300;
         else
             return -5262293;
+    }
+    public static final class Builder extends Carnivore.Builder<Lion, Lion.Builder> {
+        protected Lion createObject() {
+            return new Lion();
+        }
+        protected Lion.Builder thisObject() {
+            return this;
+        }
     }
 }

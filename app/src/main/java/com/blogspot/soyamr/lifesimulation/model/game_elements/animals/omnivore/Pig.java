@@ -13,16 +13,26 @@ import java.util.List;
 
 public class Pig extends Omnivore {
 
-    public Pig(int x, int y, Model model, GenderEnum genderEnum) {
-        super(x, y, model, Type.PIG, genderEnum,
-                List.of(Type.RABBIT, Type.CARROT));
+//    public Pig(int x, int y, Model model, GenderEnum genderEnum) {
+//        super(x, y, model, Type.PIG, genderEnum,
+//                List.of(Type.RABBIT, Type.CARROT));
+//    }
+
+    public static final class Builder extends Omnivore.Builder<Pig, Pig.Builder> {
+        protected Pig createObject() {
+            return new Pig();
+        }
+        protected Pig.Builder thisObject() {
+            return this;
+        }
     }
+
     @Override
     public void addChild() {
-        if (Utils.getRandom(0, 2) == 0)
-            model.addChild(new Pig(x, y, model, GenderEnum.MALE));
-        else
-            model.addChild(new Pig(x, y, model, GenderEnum.FEMALE));
+//        if (Utils.getRandom(0, 2) == 0)
+//            model.addChild(new Pig(x, y, model, GenderEnum.MALE));
+//        else
+//            model.addChild(new Pig(x, y, model, GenderEnum.FEMALE));
     }
     @Override
     public void draw(Canvas canvas) {

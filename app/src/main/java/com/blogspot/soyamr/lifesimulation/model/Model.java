@@ -10,13 +10,13 @@ import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Cell;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Granary;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GroundType;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.HomeSweetHome;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Apple;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Carrot;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Oat;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Plant;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.screen_data.FamousAnimal;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.screen_data.OnScreenInfo;
@@ -68,14 +68,21 @@ public class Model {
     public void addOnePlant() {
         Plant randomPlant = plants.get(Utils.getRandom(0, plants.size()));
         Plant plant;
-        if (Utils.getRandom(0, 3) == 0)
-            plant = new Carrot(randomPlant.getX(), randomPlant.getY(), this);
-        else if (Utils.getRandom(0, 3) == 1)
-            plant = new Apple(randomPlant.getX(), randomPlant.getY(), this);
-        else
-            plant = new Oat(randomPlant.getX(), randomPlant.getY(), this);
+        if (Utils.getRandom(0, 3) == 0) {
+            plant = new Carrot.Builder()
+                    .setCoordinates(randomPlant.getX(), randomPlant.getY())
+                    .setGender(GenderEnum.BOTH)
+                    .setImage(gameBitmaps.carrotImg)
+                    .setType(Type.CARROT)
+                    .setModel(this)
+                    .build();
+//        else if (Utils.getRandom(0, 3) == 1)
+//            plant = new Apple(randomPlant.getX(), randomPlant.getY(), this);
+//        else
+//            plant = new Oat(randomPlant.getX(), randomPlant.getY(), this);
 
-        plants.add(plant);
+            plants.add(plant);
+        }
     }
 
     public void setFamousAnimal(GameObject animal) {

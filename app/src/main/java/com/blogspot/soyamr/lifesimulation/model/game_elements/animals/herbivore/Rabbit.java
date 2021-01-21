@@ -11,17 +11,24 @@ import java.util.List;
 
 public class Rabbit extends Herbivore {
 
-    public Rabbit(int x, int y, Model model, GenderEnum genderEnum) {
-        super(x, y, model, Type.RABBIT, genderEnum,
-                List.of(Type.CARROT));
+//    public Rabbit(int x, int y, Model model, GenderEnum genderEnum) {
+//        super(x, y, model, Type.RABBIT, genderEnum,
+//                List.of(Type.CARROT));
+//    }
+    public static final class Builder extends Herbivore.Builder<Rabbit, Rabbit.Builder> {
+        protected Rabbit createObject() {
+            return new Rabbit();
+        }
+        protected Rabbit.Builder thisObject() {
+            return this;
+        }
     }
-
     @Override
     public void addChild() {
-        if (Utils.getRandom(0, 2) == 0)
-            model.addChild(new Rabbit(x, y, model, GenderEnum.MALE));
-        else
-            model.addChild(new Rabbit(x, y, model, GenderEnum.FEMALE));
+//        if (Utils.getRandom(0, 2) == 0)
+//            model.addChild(new Rabbit(x, y, model, GenderEnum.MALE));
+//        else
+//            model.addChild(new Rabbit(x, y, model, GenderEnum.FEMALE));
     }
 
     @Override

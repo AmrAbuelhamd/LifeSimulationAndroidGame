@@ -12,6 +12,7 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.Granary;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.HomeSweetHome;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.omnivore.Omnivore;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state.ChildHood;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state.GoToGranary;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state.GoingHome;
@@ -38,8 +39,10 @@ public abstract class Person extends Animal {
     Rect homeRect = new Rect();
 
 
-    public Person(int x, int y, Model model, GenderEnum genderEnum, List<Type> foodList) {
-        super(x, y, model, Type.PERSON, genderEnum, foodList);
+    protected static abstract class Builder
+            <T extends Person, B extends Builder<T, B>> extends Animal.Builder<T, B> {
+    }
+    public Person() {
         homePaint.setColor(Color.YELLOW);
         homePaint.setStrokeWidth(3F);
         homePaint.setTextSize(20F);

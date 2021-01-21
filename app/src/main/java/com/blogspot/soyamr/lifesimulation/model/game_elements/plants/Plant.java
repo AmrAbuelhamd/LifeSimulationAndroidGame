@@ -7,8 +7,6 @@ import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 
 public abstract class Plant extends GameObject {
     public Model model;
@@ -16,24 +14,11 @@ public abstract class Plant extends GameObject {
     int xDraw, yDraw;
     Paint textAndRectPaint;
 
+    public Plant() {
 
-    public Plant(int x, int y, Model model, Type type) {
-        super(type, GenderEnum.BOTH);
-        this.model = model;
-        if (x == -1 || y == -1) {
-            x = Utils.getRandom(0, Const.N) * width;
-            y = Utils.getRandom(0, Const.M) * height;
-        } else {
-            int index = Utils.getRandom(0, moveDirection.length);
-            x += moveDirection[index][0] * width;
-            y += moveDirection[index][1] * height;
-        }
         paint.setColor(getMyColor());
         paint.setStyle(Paint.Style.FILL);
 
-        this.x = x;
-        this.y = y;
-        reachedScreenEdge();
         reachedScreenEdge();
 
         rect.set(this.x, this.y, this.x + width, this.y + height);
@@ -61,5 +46,27 @@ public abstract class Plant extends GameObject {
     @Override
     public void drawAdditionalInfo(Canvas canvas) {
         canvas.drawText("Type: " + type, xDraw, yDraw, textAndRectPaint);
+    }
+
+    protected static abstract class Builder
+            <T extends Plant, B extends Builder<T, B>> extends GameObject.Builder<T, B> {
+        public B setCoordinates(int x, int y) {
+            if (x == -1 || y == -1) {
+                x = Utils.getRandom(0, Const.N) * width;
+                y = Utils.getRandom(0, Const.M) * height;
+            } else {
+                int index = Utils.getRandom(0, moveDirection.length);
+                x += moveDirection[index][0] * width;
+                y += moveDirection[index][1] * height;
+            }
+            object.x = x;
+            object.y = y;
+            return thisObject;
+        }
+
+        public B setModel(Model model) {
+            object.model = model;
+            return thisObject;
+        }
     }
 }

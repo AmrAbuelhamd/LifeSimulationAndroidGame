@@ -11,7 +11,7 @@ import com.blogspot.soyamr.lifesimulation.model.Model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Granary extends GameObject {
+public final class Granary extends GameObject {
 
     final int stockSize = 100;
     List<GameObject> foodList = new ArrayList<>();
@@ -23,7 +23,6 @@ public class Granary extends GameObject {
     int xDraw, yDraw;
 
     public Granary(int x, int y, Bitmap image, Model model) {
-        super(Type.GRANARY, GenderEnum.BOTH);
         this.model = model;
         this.x = x;
         this.y = y;
@@ -100,5 +99,27 @@ public class Granary extends GameObject {
 
     public boolean intersects(Rect rectA) {
         return Rect.intersects(rect, rectA);
+    }
+
+    public static final class Builder extends GameObject.Builder<Granary, Granary.Builder> {
+        protected Granary createObject() {
+            return new Granary();
+        }
+
+        protected Granary.Builder thisObject() {
+            return this;
+        }
+
+        public Builder setCoordinates(int x, int y) {
+            object.x = x;
+            object.y = y;
+
+            return thisObject;
+        }
+
+        public Builder setModel(Model model) {
+            object.model = model;
+            return thisObject;
+        }
     }
 }

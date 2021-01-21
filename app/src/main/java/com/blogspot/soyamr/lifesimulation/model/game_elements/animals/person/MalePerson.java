@@ -30,17 +30,33 @@ public class MalePerson extends Person {
     Paint womenColor = new Paint();
     State prev = noteSet;
 
-    public MalePerson(int x, int y, Model model, GenderEnum genderEnum, boolean firstGeneration) {
-        super(x, y, model, genderEnum, List.of(Type.RABBIT, Type.PIG, Type.DEER));
-        if (firstGeneration)
-            currentState = noteSet;
-        else
-            currentState = childhoodState;
-
-        womenColor.setColor(Color.BLACK);
-        womenColor.setStyle(Paint.Style.STROKE);
-        womenColor.setStrokeWidth(150);
+    public static final class Builder extends Person.Builder<MalePerson, MalePerson.Builder> {
+        protected MalePerson createObject() {
+            return new MalePerson();
+        }
+        protected MalePerson.Builder thisObject() {
+            return this;
+        }
+        public MalePerson.Builder isFirstGeneration(Boolean firstGeneration) {
+            if (firstGeneration)
+                object.currentState = object.noteSet;
+            else
+                object.currentState = object.childhoodState;
+            return thisObject;
+        }
     }
+
+//    public MalePerson(int x, int y, Model model, GenderEnum genderEnum, boolean firstGeneration) {
+//        super(x, y, model, genderEnum, List.of(Type.RABBIT, Type.PIG, Type.DEER));
+//        if (firstGeneration)
+//            currentState = noteSet;
+//        else
+//            currentState = childhoodState;
+//
+//        womenColor.setColor(Color.BLACK);
+//        womenColor.setStyle(Paint.Style.STROKE);
+//        womenColor.setStrokeWidth(150);
+//    }
 
     @Override
     public void update() {

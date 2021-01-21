@@ -42,9 +42,7 @@ public abstract class GameObject /*implements famouseanimaslinterface*/ {
     protected int y;
     Bitmap image;
 
-    public GameObject(Type myType, GenderEnum genderEnum) {
-        this.type = myType;
-        this.genderEnum = genderEnum;
+    protected GameObject() {
     }
 
     public void reachedScreenEdge() {
@@ -86,4 +84,38 @@ public abstract class GameObject /*implements famouseanimaslinterface*/ {
     public abstract void drawAdditionalInfo(Canvas canvas);
 
     public abstract int getMyColor();
+
+    protected static abstract class Builder
+            <T extends GameObject, B extends Builder<T, B>> {
+        protected T object;
+        protected B thisObject;
+
+        public Builder() {
+            object = createObject();
+            thisObject = thisObject();
+        }
+
+        protected abstract T createObject();
+
+        protected abstract B thisObject();
+
+        public B setType(Type type) {
+            object.type = type;
+            return thisObject;
+        }
+
+        public B setGender(GenderEnum genderEnum) {
+            object.genderEnum = genderEnum;
+            return thisObject;
+        }
+
+        public B setImage(Bitmap image) {
+            object.image = image;
+            return thisObject;
+        }
+
+        public T build() {
+            return object;
+        }
+    }
 }
