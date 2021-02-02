@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.blogspot.soyamr.lifesimulation.Const;
+import com.blogspot.soyamr.lifesimulation.Utils;
 
 import static com.blogspot.soyamr.lifesimulation.Const.SEARCH_FOOD_THRESHOLD_NORMAL;
 import static com.blogspot.soyamr.lifesimulation.Const.SEARCH_PARTNER_THRESHOLD_NORMAL;
@@ -36,15 +37,13 @@ public abstract class GameObject /*implements famouseanimaslinterface*/ {
     public final Paint paint = new Paint();
     public int distance;
     public Type type;
-    public GenderEnum genderEnum;
+    public GenderEnum genderEnum = GenderEnum.BOTH;
     public boolean isAlive = true;
-    protected int x;
-    protected int y;
-    Bitmap image;
+    protected int x = -1;
+    protected int y = -1;
+    protected Bitmap image;
 
-    public GameObject(Type myType, GenderEnum genderEnum) {
-        this.type = myType;
-        this.genderEnum = genderEnum;
+    protected GameObject() {
     }
 
     public void reachedScreenEdge() {
@@ -67,7 +66,7 @@ public abstract class GameObject /*implements famouseanimaslinterface*/ {
 
     public void draw(Canvas canvas) {
         if (isAlive)
-            canvas.drawRect(rect, paint);
+            canvas.drawBitmap(image, x, y, null);
     }
 
     public int getX() {
@@ -86,4 +85,37 @@ public abstract class GameObject /*implements famouseanimaslinterface*/ {
     public abstract void drawAdditionalInfo(Canvas canvas);
 
     public abstract int getMyColor();
+
+    protected static abstract class Builder
+            <T extends GameObject, B extends Builder<T, B>> {
+        protected T object;
+        protected B thisObject;
+
+        public Builder() {
+            object = createObject();
+            thisObject = thisObject();
+        }
+
+        protected abstract T createObject();
+
+        protected abstract B thisObject();
+
+        public B setType(Type type) {
+            object.type = type;
+            return thisObject;
+        }
+
+        public B setImage(Bitmap image) {
+            object.image = image;
+            return thisObject;
+        }
+
+        public T build() {
+            if (object.x == -1 && object.y == -1) {
+                object.x = Utils.getRandom(0, Const.N) * width;
+                object.y = Utils.getRandom(0, Const.M) * height;
+            }
+            return object;
+        }
+    }
 }

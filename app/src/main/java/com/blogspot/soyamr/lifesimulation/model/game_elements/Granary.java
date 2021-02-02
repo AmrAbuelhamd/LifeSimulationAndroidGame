@@ -6,30 +6,23 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import com.blogspot.soyamr.lifesimulation.model.GameBitmaps;
 import com.blogspot.soyamr.lifesimulation.model.Model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Granary extends GameObject {
+public final class Granary extends GameObject {
 
     final int stockSize = 100;
     List<GameObject> foodList = new ArrayList<>();
     int width;
     int height;
-    Bitmap image;
     Paint textAndRectPaint;
     Model model;
     int xDraw, yDraw;
 
-    public Granary(int x, int y, Bitmap image, Model model) {
-        super(Type.GRANARY, GenderEnum.BOTH);
-        this.model = model;
-        this.x = x;
-        this.y = y;
-        this.image = image;
-        width = image.getWidth();
-        height = image.getHeight();
+    public Granary() {
         //this thing will be queried from inside the model itself, since it will take more than cell
         isAlive = false;
         textAndRectPaint = new Paint();
@@ -37,10 +30,6 @@ public class Granary extends GameObject {
         textAndRectPaint.setTextSize(500);
         textAndRectPaint.setAntiAlias(true);
         textAndRectPaint.setColor(getMyColor());
-        xDraw = getX() - 40;
-        yDraw = getY() - 20;
-        rect.set(x, y, x + image.getWidth(), y + image.getHeight());
-        model.putMeHerePlease(this.x, this.y, this);
     }
 
     public void showMePlease() {
@@ -79,11 +68,6 @@ public class Granary extends GameObject {
         canvas.drawText("stock size: " + foodList.size(), xDraw, yDraw, textAndRectPaint);
     }
 
-    @Override
-    public void draw(Canvas canvas) {
-        if (isAlive)
-            canvas.drawBitmap(image, x, y, null);
-    }
 
     @Override
     public int getMyColor() {
@@ -100,5 +84,36 @@ public class Granary extends GameObject {
 
     public boolean intersects(Rect rectA) {
         return Rect.intersects(rect, rectA);
+    }
+
+    public static final class Builder extends GameObject.Builder<Granary, Granary.Builder> {
+        protected Granary createObject() {
+            return new Granary();
+        }
+
+        protected Granary.Builder thisObject() {
+            setImage(GameBitmaps.granaryImg);
+            object.width = object.image.getWidth();
+            object.height = object.image.getHeight();
+            return this;
+        }
+
+        public Builder setCoordinates(int x, int y) {
+            object.x = x;
+            object.y = y;
+
+            object.xDraw = x - 40;
+            object.yDraw = y - 20;
+            return thisObject;
+        }
+
+        public Builder setModel(Model model) {
+            object.model = model;
+            model.putMeHerePlease(object.getX(), object.getY(), object);
+            object.rect.set(object.getX(), object.getY(),
+                    object.getX() + object.image.getWidth(),
+                    object.getY() + object.image.getHeight());
+            return thisObject;
+        }
     }
 }

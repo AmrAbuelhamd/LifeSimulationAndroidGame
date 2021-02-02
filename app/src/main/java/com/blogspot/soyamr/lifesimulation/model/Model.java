@@ -10,9 +10,11 @@ import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Cell;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Granary;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GroundType;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.HomeSweetHome;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Apple;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Carrot;
@@ -67,15 +69,57 @@ public class Model {
 
     public void addOnePlant() {
         Plant randomPlant = plants.get(Utils.getRandom(0, plants.size()));
-        Plant plant;
-        if (Utils.getRandom(0, 3) == 0)
-            plant = new Carrot(randomPlant.getX(), randomPlant.getY(), this);
-        else if (Utils.getRandom(0, 3) == 1)
-            plant = new Apple(randomPlant.getX(), randomPlant.getY(), this);
-        else
-            plant = new Oat(randomPlant.getX(), randomPlant.getY(), this);
+        int newX = 0;
+        int newY = 0;
+        boolean found = false;
+        for (int[] dir : Animal.moveDirection) {
+            newX = randomPlant.getX() + GameObject.height * dir[0];
+            newY = randomPlant.getY() + GameObject.width * dir[1];
+            if (
+                    Type.CARROT.
+                            getMeFromHere(this, Utils.getRowIdx(newY), Utils.getColIdx(newX),
+                                    GenderEnum.BOTH).isEmpty()
+                            && Type.APPLE.
+                            getMeFromHere(this, Utils.getRowIdx(newY), Utils.getColIdx(newX),
+                                    GenderEnum.BOTH).isEmpty()
+                            && Type.OAT.
+                            getMeFromHere(this, Utils.getRowIdx(newY), Utils.getColIdx(newX),
+                                    GenderEnum.BOTH).isEmpty()
+                            && Type.HOME.
+                            getMeFromHere(this, Utils.getRowIdx(newY), Utils.getColIdx(newX),
+                                    GenderEnum.BOTH).isEmpty()
+                            && Type.GRANARY.
+                            getMeFromHere(this, Utils.getRowIdx(newY), Utils.getColIdx(newX),
+                                    GenderEnum.BOTH).isEmpty()
+            ) {
+                found = true;
+                break;
+            }
+        }
+        if (found) {
+            Plant plant;
+            switch (randomPlant.type) {
+                case CARROT:
+                    plant = new Carrot.Builder()
+                            .setCoordinates(newX, newY)
+                            .setModel(this)
+                            .build();
+                    break;
+                case OAT:
+                    plant = new Oat.Builder()
+                            .setCoordinates(newX, newY)
+                            .setModel(this)
+                            .build();
+                    break;
+                default:
+                    plant = new Apple.Builder()
+                            .setCoordinates(newX, newY)
+                            .setModel(this)
+                            .build();
 
-        plants.add(plant);
+            }
+            plants.add(plant);
+        }
     }
 
     public void setFamousAnimal(GameObject animal) {
@@ -125,7 +169,7 @@ public class Model {
             // Create Explosion object.
             Log.i("model:::", "granary number is " + granaries.size());
             createExplosionObject();
-            disasterThreshold = Utils.getRandom(1000, 3000);
+            disasterThreshold = Utils.getRandom(10, 30);
             dth = 0;
         }
         //add new plant

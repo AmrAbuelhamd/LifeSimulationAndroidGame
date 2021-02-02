@@ -7,32 +7,32 @@ import android.graphics.BitmapFactory;
 import com.blogspot.soyamr.lifesimulation.R;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 
-public class GameBitmaps {//singleTone
-    public Bitmap granaryImg;
-    public Bitmap homeImg;
-    public Bitmap rabbitImg;
-    public Bitmap foxImg;
-    public Bitmap lionImg;
-    public Bitmap wolfImg;
-    public Bitmap deerImg;
-    public Bitmap mouseImg;
-    public Bitmap bearImg;
-    public Bitmap pigImg;
-    public Bitmap raccoonImg;
-    public Bitmap personImg;
-    public Bitmap appleImg;
-    public Bitmap oatImg;
-    public Bitmap carrotImg;
-    public Bitmap rabbitImgF;
-    public Bitmap foxImgF;
-    public Bitmap lionImgF;
-    public Bitmap wolfImgF;
-    public Bitmap deerImgF;
-    public Bitmap mouseImgF;
-    public Bitmap bearImgF;
-    public Bitmap pigImgF;
-    public Bitmap raccoonImgF;
-    public Bitmap personImgF;
+public class GameBitmaps {
+    public static Bitmap granaryImg;
+    public static Bitmap homeImg;
+    public static Bitmap rabbitImg;
+    public static Bitmap foxImg;
+    public static Bitmap lionImg;
+    public static Bitmap wolfImg;
+    public static Bitmap deerImg;
+    public static Bitmap mouseImg;
+    public static Bitmap bearImg;
+    public static Bitmap pigImg;
+    public static Bitmap raccoonImg;
+    public static Bitmap personImg;
+    public static Bitmap appleImg;
+    public static Bitmap oatImg;
+    public static Bitmap carrotImg;
+    public static Bitmap rabbitImgF;
+    public static Bitmap foxImgF;
+    public static Bitmap lionImgF;
+    public static Bitmap wolfImgF;
+    public static Bitmap deerImgF;
+    public static Bitmap mouseImgF;
+    public static Bitmap bearImgF;
+    public static Bitmap pigImgF;
+    public static Bitmap raccoonImgF;
+    public static Bitmap personImgF;
     Context context;
 
     public GameBitmaps(Context context) {
@@ -112,7 +112,6 @@ public class GameBitmaps {//singleTone
         personImgF = BitmapFactory.decodeResource(context.getResources(), R.drawable.person_f);
         personImgF = Bitmap.createScaledBitmap(personImgF, GameObject.width, GameObject.height, false);
 
-        createPhotos();
     }
 
     Bitmap[] createPhotos() {
@@ -143,6 +142,32 @@ public class GameBitmaps {//singleTone
         bitmap[23] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_023);
         bitmap[24] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_024);
         bitmap[25] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_025);
+
+        bitmap[1] = Bitmap.createScaledBitmap(bitmap[1], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
+        bitmap[2] = Bitmap.createScaledBitmap(bitmap[2], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
+        bitmap[3] = Bitmap.createScaledBitmap(bitmap[3], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
+        bitmap[4] = Bitmap.createScaledBitmap(bitmap[4], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
+        bitmap[5] = Bitmap.createScaledBitmap(bitmap[5], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
+        bitmap[6] = Bitmap.createScaledBitmap(bitmap[6], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
+        bitmap[7] = Bitmap.createScaledBitmap(bitmap[7], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
+        bitmap[8] = Bitmap.createScaledBitmap(bitmap[8], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
+        bitmap[9] = Bitmap.createScaledBitmap(bitmap[9], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
+        bitmap[10] = Bitmap.createScaledBitmap(bitmap[10], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
+        bitmap[11] = Bitmap.createScaledBitmap(bitmap[11], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
+        bitmap[12] = Bitmap.createScaledBitmap(bitmap[12], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
+        bitmap[13] = Bitmap.createScaledBitmap(bitmap[13], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
+        bitmap[14] = Bitmap.createScaledBitmap(bitmap[14], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
+        bitmap[15] = Bitmap.createScaledBitmap(bitmap[15], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
+        bitmap[16] = Bitmap.createScaledBitmap(bitmap[16], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
+        bitmap[17] = Bitmap.createScaledBitmap(bitmap[17], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
+        bitmap[18] = Bitmap.createScaledBitmap(bitmap[18], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
+        bitmap[19] = Bitmap.createScaledBitmap(bitmap[19], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
+        bitmap[20] = Bitmap.createScaledBitmap(bitmap[20], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
+        bitmap[21] = Bitmap.createScaledBitmap(bitmap[21], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
+        bitmap[22] = Bitmap.createScaledBitmap(bitmap[22], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
+        bitmap[23] = Bitmap.createScaledBitmap(bitmap[23], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
+        bitmap[24] = Bitmap.createScaledBitmap(bitmap[24], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
+        bitmap[25] = Bitmap.createScaledBitmap(bitmap[25], Dimensions.explosionWidth, Dimensions.explosionHeight, false);
         return bitmap;
     }
 }

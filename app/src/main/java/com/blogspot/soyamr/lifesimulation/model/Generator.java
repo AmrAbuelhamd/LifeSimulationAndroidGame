@@ -37,6 +37,9 @@ public class Generator {
     private final Model model;
     ArrayList<Integer[]> ind = new ArrayList<>();
 
+    int totalForEach = 10;
+
+
     public Generator(Model model) {
         this.model = model;
         cells = new Cell[Const.M][Const.N];
@@ -45,96 +48,181 @@ public class Generator {
     }
 
     public void addRandomPlant() {
-        Plant plant = new Carrot(-1, -1, model);
+        Plant plant;
+        plant = new Carrot.Builder()
+                .setModel(model)
+                .build();
         plants.add(plant);
-        plant = new Oat(-1, -1, model);
+        plant = new Oat.Builder()
+                .setModel(model)
+                .build();
         plants.add(plant);
-        plant = new Apple(-1, -1, model);
+        plant = new Apple.Builder()
+                .setModel(model)
+                .build();
         plants.add(plant);
     }
 
     public List<Plant> generatePlants() {
         int r;
         for (Integer[] i : ind) {
-            r = Utils.getRandom(0, 15);
-            if (r == 0)
-                plants.add(new Oat(i[1], i[0], model));
-            else if (r == 1)
-                plants.add(new Apple(i[1], i[0], model));
-            else
-                plants.add(new Carrot(i[1], i[0], model));
+            if (Utils.getRandom(0, 100) == 50) {
+                r = Utils.getRandom(0, 3);
+                if (r == 0)
+                    plants.add(
+                            new Carrot.Builder()
+                                    .setCoordinates(i[1], i[0])
+                                    .setModel(model)
+                                    .build()
+                    );
+                else if (r == 1)
+                    plants.add(
+
+                            new Apple.Builder()
+                                    .setCoordinates(i[1], i[0])
+                                    .setModel(model)
+                                    .build()
+                    );
+                else
+                    plants.add(
+                            new Oat.Builder()
+                                    .setCoordinates(i[1], i[0])
+                                    .setModel(model)
+                                    .build()
+                    );
+            }
         }
         return plants;
+
+//        for (int i = 0; i < 1; i++) {
+//            addRandomPlant();
+//        }
+//        return plants;
     }
 
     public List<Animal> generateAnimals() {
-        int totalForEach = 100;
-        //CREATE FEMALE ANIMALS
         List<Animal> tempAnimals = new ArrayList<>();
-        for (int i = 0; i < totalForEach; i++) {//20
-            Animal animal = new Fox(-1, -1, model, GenderEnum.MALE);
-            tempAnimals.add(animal);
-            animal = new Fox(-1, -1, model, GenderEnum.FEMALE);
-            tempAnimals.add(animal);
+
+        for (int i = 0; i < totalForEach; i++) {
+            tempAnimals.addAll(List.of(
+                    new Fox.Builder()
+                            .setGender(GenderEnum.MALE)
+                            .setModel(model)
+                            .build()
+                    ,
+                    new Fox.Builder()
+                            .setGender(GenderEnum.FEMALE)
+                            .setModel(model)
+                            .build()
+            ));
         }
 
         for (int i = 0; i < totalForEach; i++) {//20
-            Animal animal = new Lion(-1, -1, model, GenderEnum.MALE);
-            tempAnimals.add(animal);
-            animal = new Lion(-1, -1, model, GenderEnum.FEMALE);
-            tempAnimals.add(animal);
+            tempAnimals.addAll(List.of(
+                    new Lion.Builder()
+                            .setGender(GenderEnum.MALE)
+                            .setModel(model)
+                            .build(),
+                    new Lion.Builder()
+                            .setGender(GenderEnum.FEMALE)
+                            .setModel(model)
+                            .build()));
         }
         for (int i = 0; i < totalForEach; i++) {//20
-            Animal animal = new Wolf(-1, -1, model, GenderEnum.MALE);
-            tempAnimals.add(animal);
-            animal = new Wolf(-1, -1, model, GenderEnum.FEMALE);
-            tempAnimals.add(animal);
+            tempAnimals.addAll(List.of(
+                    new Wolf.Builder()
+                            .setGender(GenderEnum.MALE)
+                            .setModel(model)
+                            .build(),
+                    new Wolf.Builder()
+                            .setGender(GenderEnum.FEMALE)
+                            .setModel(model)
+                            .build()
+            ));
         }
         //Herb
-        for (int i = 0; i < 20; i++) {//20
-            Animal animal = new Deer(-1, -1, model, GenderEnum.MALE);
-            tempAnimals.add(animal);
-            animal = new Deer(-1, -1, model, GenderEnum.FEMALE);
-            tempAnimals.add(animal);
+        for (int i = 0; i < totalForEach * 3; i++) {//20
+            tempAnimals.addAll(List.of(
+                    new Deer.Builder()
+                            .setGender(GenderEnum.MALE)
+                            .setModel(model)
+                            .build(),
+                    new Deer.Builder()
+                            .setGender(GenderEnum.FEMALE)
+                            .setModel(model)
+                            .build()));
         }
-        for (int i = 0; i < totalForEach; i++) {//20
-            Animal animal = new Mouse(-1, -1, model, GenderEnum.MALE);
-            tempAnimals.add(animal);
-            animal = new Mouse(-1, -1, model, GenderEnum.FEMALE);
-            tempAnimals.add(animal);
+        for (int i = 0; i < totalForEach * 3; i++) {//20
+            tempAnimals.addAll(List.of(
+                    new Mouse.Builder()
+                            .setModel(model)
+                            .setGender(GenderEnum.MALE)
+                            .build(),
+                    new Mouse.Builder()
+                            .setModel(model)
+                            .setGender(GenderEnum.FEMALE)
+                            .build()));
         }
 
-        for (int i = 0; i < 20; i++) {//20
-            Animal animal = new Rabbit(-1, -1, model, GenderEnum.MALE);
-            tempAnimals.add(animal);
-            animal = new Rabbit(-1, -1, model, GenderEnum.FEMALE);
-            tempAnimals.add(animal);
+        for (int i = 0; i < totalForEach * 4; i++) {//20
+            tempAnimals.addAll(List.of(
+                    new Rabbit.Builder()
+                            .setModel(model)
+                            .setGender(GenderEnum.MALE)
+                            .build(),
+                    new Rabbit.Builder()
+                            .setModel(model)
+                            .setGender(GenderEnum.FEMALE)
+                            .build()));
         }
         //omni
         for (int i = 0; i < totalForEach; i++) {//20
-            Animal animal = new Bear(-1, -1, model, GenderEnum.MALE);
-            tempAnimals.add(animal);
-            animal = new Bear(-1, -1, model, GenderEnum.FEMALE);
-            tempAnimals.add(animal);
+            tempAnimals.addAll(List.of(
+                    new Bear.Builder()
+                            .setModel(model)
+                            .setGender(GenderEnum.MALE)
+                            .build(),
+                    new Bear.Builder()
+                            .setModel(model)
+                            .setGender(GenderEnum.FEMALE)
+                            .build()));
+
         }
-        for (int i = 0; i < 20; i++) {//20
-            Animal animal = new Pig(-1, -1, model, GenderEnum.MALE);
-            tempAnimals.add(animal);
-            animal = new Pig(-1, -1, model, GenderEnum.FEMALE);
-            tempAnimals.add(animal);
+        for (int i = 0; i < totalForEach * 3; i++) {//20
+            tempAnimals.addAll(List.of(
+                    new Pig.Builder()
+                            .setModel(model)
+                            .setGender(GenderEnum.MALE)
+                            .build(),
+
+                    new Pig.Builder()
+                            .setModel(model)
+                            .setGender(GenderEnum.FEMALE)
+                            .build()));
+
         }
-        for (int i = 0; i < totalForEach; i++) {//20
-            Animal animal = new Raccoon(-1, -1, model, GenderEnum.MALE);
-            tempAnimals.add(animal);
-            animal = new Raccoon(-1, -1, model, GenderEnum.FEMALE);
-            tempAnimals.add(animal);
+        for (int i = 0; i < totalForEach * 2; i++) {//20
+            tempAnimals.addAll(List.of(
+                    new Raccoon.Builder()
+                            .setModel(model)
+                            .setGender(GenderEnum.FEMALE)
+                            .build(),
+                    new Raccoon.Builder()
+                            .setModel(model)
+                            .setGender(GenderEnum.FEMALE)
+                            .build()));
         }
         //person
-        for (int i = 0; i < 100; i++) {//20
-            Animal animal = new MalePerson(-1, -1, model, GenderEnum.MALE, true);
-            tempAnimals.add(animal);
-            animal = new FemalePerson(-1, -1, model, GenderEnum.FEMALE, true);
-            tempAnimals.add(animal);
+        for (int i = 0; i < totalForEach * 10; i++) {//20
+            tempAnimals.addAll(List.of(
+                    new MalePerson.Builder()
+                            .setModel(model)
+                            .isFirstGeneration(true)
+                            .build(),
+                    new FemalePerson.Builder()
+                            .setModel(model)
+                            .isFirstGeneration(true)
+                            .build()));
         }
 
 

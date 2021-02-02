@@ -1,30 +1,31 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.carnivore;
 
-import android.graphics.Canvas;
-
 import com.blogspot.soyamr.lifesimulation.Utils;
-import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 
-import java.util.List;
-
-public class Fox extends Carnivore {
+public final class Fox extends Carnivore {
 //    Bitmap bitmap;
 
-    public Fox(int x, int y, Model model, GenderEnum genderEnum) {
-        super(x, y, model, Type.FOX, genderEnum,
-                List.of(Type.RABBIT));
-//        bitmap = BitmapFactory.decodeResource(FantasticColors.context.getResources(), R.drawable.fox3);
-//        bitmap = Bitmap.createScaledBitmap(bitmap, width * 2, height * 2, false);
+    private Fox() {
     }
 
     @Override
     public void addChild() {
         if (Utils.getRandom(0, 2) == 0)
-            model.addChild(new Fox(x, y, model, GenderEnum.MALE));
+            model.addChild(new Fox.Builder()
+                    .setGender(GenderEnum.MALE)
+                    .setCoordinates(x, y)
+                    .setModel(model)
+                    .build()
+            );
         else
-            model.addChild(new Fox(x, y, model, GenderEnum.FEMALE));
+            model.addChild(
+                    new Fox.Builder()
+                            .setGender(GenderEnum.FEMALE)
+                            .setCoordinates(x, y)
+                            .setModel(model)
+                            .build());
     }
 
     @Override
@@ -37,13 +38,22 @@ public class Fox extends Carnivore {
             return -278483;
     }
 
-    @Override
-    public void draw(Canvas canvas) {
-//        super.draw(canvas);
-        if (isAlive)
-            if (genderEnum == GenderEnum.MALE)
-                canvas.drawBitmap(model.gameBitmaps.foxImg, x, y, null);
-            else if (genderEnum == GenderEnum.FEMALE)
-                canvas.drawBitmap(model.gameBitmaps.foxImgF, x, y, null);
+
+    public static final class Builder extends Carnivore.Builder<Fox, Builder> {
+        protected Fox createObject() {
+            return new Fox();
+        }
+
+        public Builder setGender(GenderEnum genderEnum) {
+            object.genderEnum = genderEnum;
+            setImage(object.type.getImage(genderEnum));
+            return this;
+        }
+
+        protected Builder thisObject() {
+            setType(Type.FOX);
+            setFoodTypeList(object.type.getFoodList());
+            return this;
+        }
     }
 }

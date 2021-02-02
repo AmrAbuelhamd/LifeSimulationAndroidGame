@@ -30,7 +30,7 @@ public abstract class Animal extends GameObject {
     public List<Type> myFoodTypeList;
     public int moveToOneDirectionCTR = 0;
     public int hunger = 100;
-    public List<GameObject> myFoodMenu;
+    public List<GameObject> myFoodMenu = new ArrayList<>();
     public Model model;
     public int increaseHungerCTR = 0;
     public int movingToOneDirectionThreshold = 30;
@@ -57,17 +57,9 @@ public abstract class Animal extends GameObject {
     int resetIDoNotWantThreshold = 300;
 
     //todo [important]  pattern builder
-    public Animal(int x, int y, Model model, Type myType, GenderEnum genderEnum,
-                  List<Type> myFoodTypeList) {
-        super(myType, genderEnum);
+    public Animal() {
         myCrushes = new ArrayList<>();
         direction = moveDirection[Utils.getRandom(0, moveDirection.length)];
-        if (x == -1 && y == -1) {
-            setInitialData(Utils.getRandom(0, Const.N) * width,
-                    Utils.getRandom(0, Const.M) * height, model, myFoodTypeList);
-        } else {
-            setInitialData(x, y, model, myFoodTypeList);
-        }
     }
 
     void setInitialData(int x, int y, Model model, List<Type> myFoodType) {
@@ -284,15 +276,9 @@ public abstract class Animal extends GameObject {
         changeColor();
     }
 
-    @Override
-    public void draw(Canvas canvas) {
-        if (isAlive) {//todo draw image instead
-//            draw(canvas);
-        }
-    }
 
     public void doCeremony() {
-        if(genderEnum==GenderEnum.MALE){
+        if (genderEnum == GenderEnum.MALE) {
             throw new RuntimeException("i am a man, can't add child");
         }
         marriage();
@@ -330,5 +316,31 @@ public abstract class Animal extends GameObject {
     @Override
     public void drawAdditionalInfo(Canvas canvas) {
         animalDataManger.draw(canvas);
+    }
+
+    protected static abstract class Builder
+            <T extends Animal, B extends Builder<T, B>> extends GameObject.Builder<T, B> {
+        public B setCoordinates(int x, int y) {
+            object.x = x;
+            object.y = y;
+            return thisObject;
+        }
+
+        public B setModel(Model model) {
+            object.model = model;
+            return thisObject;
+        }
+
+        public B setFoodTypeList(List<Type> myFoodTypeList) {
+            object.myFoodTypeList = myFoodTypeList;
+            return thisObject;
+        }
+
+        @Override
+        public T build() {
+            super.build();
+            object.model.putMeHerePlease(object.getX(), object.getY(), object);
+            return object;
+        }
     }
 }
