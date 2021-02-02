@@ -1,13 +1,8 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.carnivore;
 
-import android.graphics.Canvas;
-
 import com.blogspot.soyamr.lifesimulation.Utils;
-import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
-
-import java.util.List;
 
 public class Lion extends Carnivore {
     public Lion() {
@@ -15,22 +10,23 @@ public class Lion extends Carnivore {
 
     @Override
     public void addChild() {
-//        if (Utils.getRandom(0, 2) == 0)
-//            model.addChild(new Lion(x, y, model, GenderEnum.MALE));
-//        else
-//            model.addChild(new Lion(x, y, model, GenderEnum.FEMALE));
+        if (Utils.getRandom(0, 2) == 0)
+            model.addChild(
+                    new Lion.Builder()
+                            .setGender(GenderEnum.MALE)
+                            .setCoordinates(x, y)
+                            .setModel(model)
+                            .build()
+            );
+        else
+            model.addChild(
+                    new Lion.Builder()
+                            .setGender(GenderEnum.FEMALE)
+                            .setCoordinates(x, y)
+                            .setModel(model)
+                            .build());
     }
 
-    @Override
-    public void draw(Canvas canvas) {
-//        super.draw(canvas);
-        if (isAlive) {
-            if (genderEnum == GenderEnum.MALE)
-                canvas.drawBitmap(model.gameBitmaps.lionImg, x, y, null);
-            if (genderEnum == GenderEnum.FEMALE)
-                canvas.drawBitmap(model.gameBitmaps.lionImgF, x, y, null);
-        }
-    }
 
     @Override
     public int getMyColor() {
@@ -41,11 +37,21 @@ public class Lion extends Carnivore {
         else
             return -5262293;
     }
+
     public static final class Builder extends Carnivore.Builder<Lion, Lion.Builder> {
         protected Lion createObject() {
             return new Lion();
         }
-        protected Lion.Builder thisObject() {
+
+        public Builder setGender(GenderEnum genderEnum) {
+            object.genderEnum = genderEnum;
+            setImage(object.type.getImage(genderEnum));
+            return this;
+        }
+
+        protected Builder thisObject() {
+            setType(Type.LION);
+            setFoodTypeList(object.type.getFoodList());
             return this;
         }
     }

@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.blogspot.soyamr.lifesimulation.Const;
+import com.blogspot.soyamr.lifesimulation.Utils;
 
 import static com.blogspot.soyamr.lifesimulation.Const.SEARCH_FOOD_THRESHOLD_NORMAL;
 import static com.blogspot.soyamr.lifesimulation.Const.SEARCH_PARTNER_THRESHOLD_NORMAL;
@@ -36,11 +37,11 @@ public abstract class GameObject /*implements famouseanimaslinterface*/ {
     public final Paint paint = new Paint();
     public int distance;
     public Type type;
-    public GenderEnum genderEnum;
+    public GenderEnum genderEnum = GenderEnum.BOTH;
     public boolean isAlive = true;
-    protected int x;
-    protected int y;
-    Bitmap image;
+    protected int x = -1;
+    protected int y = -1;
+    protected Bitmap image;
 
     protected GameObject() {
     }
@@ -65,7 +66,7 @@ public abstract class GameObject /*implements famouseanimaslinterface*/ {
 
     public void draw(Canvas canvas) {
         if (isAlive)
-            canvas.drawRect(rect, paint);
+            canvas.drawBitmap(image, x, y, null);
     }
 
     public int getX() {
@@ -104,17 +105,16 @@ public abstract class GameObject /*implements famouseanimaslinterface*/ {
             return thisObject;
         }
 
-        public B setGender(GenderEnum genderEnum) {
-            object.genderEnum = genderEnum;
-            return thisObject;
-        }
-
         public B setImage(Bitmap image) {
             object.image = image;
             return thisObject;
         }
 
         public T build() {
+            if (object.x == -1 && object.y == -1) {
+                object.x = Utils.getRandom(0, Const.N) * width;
+                object.y = Utils.getRandom(0, Const.M) * height;
+            }
             return object;
         }
     }

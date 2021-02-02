@@ -5,22 +5,18 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Granary;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.HomeSweetHome;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.omnivore.Omnivore;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state.ChildHood;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state.GoToGranary;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state.GoingHome;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state.GoingToBuildGranary;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state.GoingToFood;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state.SearchFood;
-
-import java.util.List;
 
 public abstract class Person extends Animal {
     public static final int GRANARY_VISION = ANIMAL_FOOD_VISION_RANG * 2;
@@ -39,9 +35,6 @@ public abstract class Person extends Animal {
     Rect homeRect = new Rect();
 
 
-    protected static abstract class Builder
-            <T extends Person, B extends Builder<T, B>> extends Animal.Builder<T, B> {
-    }
     public Person() {
         homePaint.setColor(Color.YELLOW);
         homePaint.setStrokeWidth(3F);
@@ -74,17 +67,7 @@ public abstract class Person extends Animal {
         }
         return false;
     }
-    @Override
-    public void draw(Canvas canvas) {
-//        super.draw(canvas);
-        if (isAlive)
-            if (genderEnum == GenderEnum.MALE)
-                canvas.drawBitmap(model.gameBitmaps.personImg, x, y, null);
-            else
-                canvas.drawBitmap(model.gameBitmaps.personImgF, x, y, null);
 
-
-    }
     @Override
     public int getMyColor() {
         if (hunger > 60)
@@ -122,7 +105,11 @@ public abstract class Person extends Animal {
     }
 
     public void buildGranary(int newX, int newY) {
-        granary = new Granary(newX, newY, model.gameBitmaps.granaryImg, model);
+
+        granary = new Granary.Builder()
+                .setCoordinates(newX, newY)
+                .setModel(model)
+                .build();
         model.addGranary(granary);
     }
 
@@ -132,11 +119,15 @@ public abstract class Person extends Animal {
 
     public abstract State getNotSetState();
 
-    protected void setHome(HomeSweetHome homeSweetHome) {
-        this.homeSweetHome = homeSweetHome;
-    }
-
-    protected void setGranary(Granary granary) {
-        this.granary = granary;
+    protected static abstract class Builder
+            <T extends Person, B extends Builder<T, B>> extends Animal.Builder<T, B> {
+        protected B setGranary(Granary granary) {
+            object.granary = granary;
+            return thisObject;
+        }
+        protected B setHome(HomeSweetHome homeSweetHome) {
+            object.homeSweetHome = homeSweetHome;
+            return thisObject;
+        }
     }
 }

@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import com.blogspot.soyamr.lifesimulation.model.GameBitmaps;
 import com.blogspot.soyamr.lifesimulation.model.Model;
 
 import java.util.ArrayList;
@@ -19,19 +20,12 @@ public class HomeSweetHome extends GameObject {
     Rect rect = new Rect();
     Paint textAndRectPaint;
 
-    public HomeSweetHome(int x, int y, Model model) {
-        super(Type.HOME, GenderEnum.BOTH);
-        this.x = x;
-        this.y = y;
-        this.model = model;
-        model.putMeHerePlease(x, y, this);
-
+    public HomeSweetHome() {
         paint.setColor(Color.RED);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(150);
         paint.setTextSize(100);
-        xDraw = getX() - 400;
-        yDraw = getY() - 200;
+
         rect = getRect();
 
         textAndRectPaint = new Paint();
@@ -81,12 +75,6 @@ public class HomeSweetHome extends GameObject {
 //        canvas.drawLine(x, y, x + width, y + height, paint);
 //        canvas.drawLine(x + width, y, x, y + height, paint);
 //    }
-    @Override
-    public void draw(Canvas canvas) {
-//        super.draw(canvas);
-        if (isAlive)
-            canvas.drawBitmap(model.gameBitmaps.homeImg, x, y, null);
-    }
 
     @Override
     public int getMyColor() {
@@ -104,5 +92,38 @@ public class HomeSweetHome extends GameObject {
     public Rect getRect() {
         rect.set(x, y, x + width * 2, y + height * 2);
         return rect;
+    }
+
+    public static final class Builder extends GameObject.Builder<HomeSweetHome, HomeSweetHome.Builder> {
+        protected HomeSweetHome createObject() {
+            return new HomeSweetHome();
+        }
+
+        protected Builder thisObject() {
+            setImage(GameBitmaps.homeImg);
+            return this;
+        }
+
+        public Builder setCoordinates(int x, int y) {
+            object.x = x;
+            object.y = y;
+
+            object.xDraw = x - 400;
+            object.yDraw = y - 200;
+            return thisObject;
+        }
+
+        public Builder setModel(Model model) {
+            object.model = model;
+            model.putMeHerePlease(object.getX(), object.getY(), object);
+            return thisObject;
+        }
+
+//        public Builder setBitmap(Bitmap bitmap) {
+//            object.image = bitmap;
+//            object.width = bitmap.getWidth();
+//            object.height = bitmap.getHeight();
+//            return thisObject;
+//        }
     }
 }

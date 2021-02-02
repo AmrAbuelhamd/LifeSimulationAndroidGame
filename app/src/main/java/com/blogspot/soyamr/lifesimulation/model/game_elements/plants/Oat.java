@@ -11,11 +11,18 @@ public class Oat extends Plant {
 //    }
 
 
+    public Oat() {
+//        model.putMeHerePlease(this.x, this.y, this);
+
+    }
+
     public static final class Builder extends Plant.Builder<Oat, Oat.Builder> {
         protected Oat createObject() {
             return new Oat();
         }
         protected Oat.Builder thisObject() {
+            setType(Type.OAT);
+            setImage(object.type.getImage(object.genderEnum));
             return this;
         }
     }
@@ -24,10 +31,5 @@ public class Oat extends Plant {
     public int getMyColor() {
        return -6190977;
     }
-    @Override
-    public void draw(Canvas canvas) {
-//        super.draw(canvas);
-        if (isAlive)
-            canvas.drawBitmap(model.gameBitmaps.oatImg, x, y, null);
-    }
+
 }

@@ -6,26 +6,25 @@ import android.graphics.Canvas;
 import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 
-public class Explosion extends GameObject {
+public class Explosion {
     final Model model;
     Bitmap[] image;
     private int num = 0;
     private boolean finish = false;
-
+    int x,y;
 
     public Explosion(Model model, Bitmap[] image, int x, int y) {
-        super(null, null);
         this.x = x;
         this.y = y;
         this.image = image;
         this.model = model;
-        model.removeObjectsInThisArea(x, y, x + width, y + height);
+        model.removeObjectsInThisArea(x, y, x + image[1].getWidth(), y + image[1].getHeight());
     }
 
     public void update() {
         ++this.num;
         if (num % 5 == 0)
-            model.removeObjectsInThisArea(x, y, x + width, y + height);
+            model.removeObjectsInThisArea(x, y, x + image[1].getWidth(), y + image[1].getHeight());
 
         if (this.num >= 26) {
             this.finish = true;
@@ -38,26 +37,6 @@ public class Explosion extends GameObject {
                 ++num;
             canvas.drawBitmap(image[num], this.x, this.y, null);
         }
-    }
-
-    @Override
-    public void makeMeFamous() {
-
-    }
-
-    @Override
-    public void updateAdditionalInfoLocation(float mScaleFactor) {
-
-    }
-
-    @Override
-    public void drawAdditionalInfo(Canvas canvas) {
-
-    }
-
-    @Override
-    public int getMyColor() {
-        return 0;
     }
 
     public boolean isFinish() {

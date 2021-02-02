@@ -30,7 +30,7 @@ public abstract class Animal extends GameObject {
     public List<Type> myFoodTypeList;
     public int moveToOneDirectionCTR = 0;
     public int hunger = 100;
-    public List<GameObject> myFoodMenu;
+    public List<GameObject> myFoodMenu = new ArrayList<>();
     public Model model;
     public int increaseHungerCTR = 0;
     public int movingToOneDirectionThreshold = 30;
@@ -276,12 +276,6 @@ public abstract class Animal extends GameObject {
         changeColor();
     }
 
-    @Override
-    public void draw(Canvas canvas) {
-        if (isAlive) {//todo draw image instead
-//            draw(canvas);
-        }
-    }
 
     public void doCeremony() {
         if (genderEnum == GenderEnum.MALE) {
@@ -327,13 +321,8 @@ public abstract class Animal extends GameObject {
     protected static abstract class Builder
             <T extends Animal, B extends Builder<T, B>> extends GameObject.Builder<T, B> {
         public B setCoordinates(int x, int y) {
-            if (x == -1 && y == -1) {
-                object.x = Utils.getRandom(0, Const.N) * width;
-                object.y = Utils.getRandom(0, Const.M) * height;
-            } else {
-                object.x = x;
-                object.y = y;
-            }
+            object.x = x;
+            object.y = y;
             return thisObject;
         }
 
@@ -345,6 +334,13 @@ public abstract class Animal extends GameObject {
         public B setFoodTypeList(List<Type> myFoodTypeList) {
             object.myFoodTypeList = myFoodTypeList;
             return thisObject;
+        }
+
+        @Override
+        public T build() {
+            super.build();
+            object.model.putMeHerePlease(object.getX(), object.getY(), object);
+            return object;
         }
     }
 }

@@ -1,12 +1,11 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.blogspot.soyamr.lifesimulation.Const;
-import com.blogspot.soyamr.lifesimulation.model.Model;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
+import com.blogspot.soyamr.lifesimulation.model.game_elements.Granary;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.HomeSweetHome;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.GoingToNearHome;
@@ -14,8 +13,6 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.mal
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.OneDirection;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.SearchPartner;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.WaitHome;
-
-import java.util.List;
 
 public class MalePerson extends Person {
 
@@ -30,20 +27,17 @@ public class MalePerson extends Person {
     Paint womenColor = new Paint();
     State prev = noteSet;
 
-    public static final class Builder extends Person.Builder<MalePerson, MalePerson.Builder> {
-        protected MalePerson createObject() {
-            return new MalePerson();
-        }
-        protected MalePerson.Builder thisObject() {
-            return this;
-        }
-        public MalePerson.Builder isFirstGeneration(Boolean firstGeneration) {
-            if (firstGeneration)
-                object.currentState = object.noteSet;
-            else
-                object.currentState = object.childhoodState;
-            return thisObject;
-        }
+    @Override
+    public void update() {
+        if (!checkBeforeUpdate())
+            return;
+//        if(currentState != prev) {
+//            Log.i("Male Person", "state= " + currentState + " i am " + this.toString());
+//            prev = currentState;
+//        }
+        currentState.update(this);
+
+        afterUpdate();
     }
 
 //    public MalePerson(int x, int y, Model model, GenderEnum genderEnum, boolean firstGeneration) {
@@ -59,25 +53,15 @@ public class MalePerson extends Person {
 //    }
 
     @Override
-    public void update() {
-        if (!checkBeforeUpdate())
-            return;
-//        if(currentState != prev) {
-//            Log.i("Male Person", "state= " + currentState + " i am " + this.toString());
-//            prev = currentState;
-//        }
-        currentState.update(this);
-
-        afterUpdate();
-    }
-
-    @Override
     public void addChild() {
         throw new RuntimeException("man should give birth");
     }
 
     public void buildHome(int x, int y) {
-        homeSweetHome = new HomeSweetHome(x, y, model);
+        homeSweetHome = new HomeSweetHome.Builder()
+                .setCoordinates(x, y)
+                .setModel(model)
+                .build();
         wifeCallbacks.setWifeHome(homeSweetHome);
         setHomeRect();
     }
@@ -112,5 +96,28 @@ public class MalePerson extends Person {
 
     public void showMyHome() {
         model.addHome(homeSweetHome);
+    }
+
+    public static final class Builder extends Person.Builder<MalePerson, MalePerson.Builder> {
+        protected MalePerson createObject() {
+            return new MalePerson();
+        }
+
+
+        protected Builder thisObject() {
+            setType(Type.PERSON);
+            object.genderEnum = GenderEnum.MALE;
+            setImage(object.type.getImage(object.genderEnum));
+            setFoodTypeList(object.type.getFoodList());
+            return this;
+        }
+
+        public MalePerson.Builder isFirstGeneration(Boolean firstGeneration) {
+            if (firstGeneration)
+                object.currentState = object.noteSet;
+            else
+                object.currentState = object.childhoodState;
+            return thisObject;
+        }
     }
 }
