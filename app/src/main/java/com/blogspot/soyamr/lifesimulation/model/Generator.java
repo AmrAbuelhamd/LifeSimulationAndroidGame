@@ -188,7 +188,7 @@ public class Generator {
                             .build()));
 
         }
-        for (int i = 0; i < totalForEach * 3; i++) {//20
+        for (int i = 0; i < totalForEach * 3*15; i++) {//20
             tempAnimals.addAll(List.of(
                     new Pig.Builder()
                             .setModel(model)

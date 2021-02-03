@@ -343,9 +343,9 @@ public abstract class Animal extends GameObject {
         public T build() {
             super.build();
             object.model.putMeHerePlease(object.getX(), object.getY(), object);
-//            object.setIdoNotWant();
+            object.setIdoNotWant();
             object.setRect();
-//            object.setThresholds();
+            object.setThresholds();
             return object;
         }
     }
