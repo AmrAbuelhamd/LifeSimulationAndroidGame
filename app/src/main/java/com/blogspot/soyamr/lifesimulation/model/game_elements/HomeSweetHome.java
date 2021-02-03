@@ -27,7 +27,8 @@ public class HomeSweetHome extends GameObject {
         paint.setStrokeWidth(150);
         paint.setTextSize(100);
 
-        rect = getRect();
+        rect = new Rect();
+        getRect();
 
         textAndRectPaint = new Paint();
         textAndRectPaint.setStyle(Paint.Style.FILL);
@@ -65,7 +66,8 @@ public class HomeSweetHome extends GameObject {
 
     @Override
     public void drawAdditionalInfo(Canvas canvas) {
-        canvas.drawBitmap(GameBitmaps.arrow, rect.left-GameBitmaps.arrow.getWidth(), rect.top - GameBitmaps.arrow.getHeight(), null);
+        getRect();
+        canvas.drawBitmap(GameBitmaps.arrow, rect.left - GameBitmaps.arrow.getWidth(), rect.top - GameBitmaps.arrow.getHeight(), null);
         canvas.drawText("stock size: " + foodList.size(), xDraw, yDraw, textAndRectPaint);
     }
 
