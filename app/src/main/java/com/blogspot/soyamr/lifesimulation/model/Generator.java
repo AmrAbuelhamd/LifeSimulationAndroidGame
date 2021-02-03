@@ -213,7 +213,7 @@ public class Generator {
                             .build()));
         }
         //person
-        for (int i = 0; i < totalForEach * 10; i++) {//20
+        for (int i = 0; i < totalForEach * 20; i++) {//20
             tempAnimals.addAll(List.of(
                     new MalePerson.Builder()
                             .setModel(model)

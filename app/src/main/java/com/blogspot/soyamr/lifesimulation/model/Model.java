@@ -151,7 +151,7 @@ public class Model {
 
     public void update(Rect clipBoundsCanvas, float mScaleFactor) {
         updateGameParameters();
-        onScreenInfo.update(animals.size(), plants.size(), clipBoundsCanvas, mScaleFactor);
+        onScreenInfo.update(animals.size(), plants.size(), homeList.size(), granaries.size(), clipBoundsCanvas, mScaleFactor);
         animals.forEach(Animal::update);
         if (famousAnimal != null)
             famousAnimal.update(mScaleFactor);
@@ -285,7 +285,7 @@ public class Model {
     }
 
     public void addChild(Animal animal) {//should be added to concrete place on the map
-        if (animals.size() < 7000)
+        if (animals.size() < 3000)
             animalsToAdd.add(animal);
     }
 
