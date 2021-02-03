@@ -11,6 +11,8 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.fem
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.female_states.OneDirection;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.female_states.WaitHome;
 
+import java.util.List;
+
 public class FemalePerson extends Person implements HusbandCallbacks {
 
     private final String tag = "FFFemalePerson";
@@ -24,6 +26,7 @@ public class FemalePerson extends Person implements HusbandCallbacks {
         if (Utils.getRandom(0, 2) == 0) {
             child = new FemalePerson.Builder()
                     .setModel(model)
+                    .setCoordinates(x, y)
                     .isFirstGeneration(false)
                     .setHome(homeSweetHome)
                     .setGranary(granary)
@@ -32,24 +35,16 @@ public class FemalePerson extends Person implements HusbandCallbacks {
             child = new MalePerson.Builder()
                     .setModel(model)
                     .isFirstGeneration(false)
+                    .setCoordinates(x, y)
                     .setHome(homeSweetHome)
                     .setGranary(granary)
                     .build();
 
         model.addChild(child);
-//        Log.i(tag, "yraaaa new baby");
     }
 
-//    public FemalePerson(int x, int y, Model model, GenderEnum genderEnum, boolean firstGeneration) {
-//        super(x, y, model, genderEnum, List.of(Type.APPLE, Type.CARROT, Type.OAT));
-//        if (firstGeneration)
-//            currentState = noteSet;
-//        else
-//            currentState = childhoodState;
-//    }
-
     public HusbandCallbacks wannaBeInRelationShip() {
-        if (hunger > SEARCH_FOOD_THRESHOLD) {
+        if (!isMarried && hunger > SEARCH_FOOD_THRESHOLD) {
             isMarried = true;
             currentState = goingHome;
             return this;
@@ -58,18 +53,8 @@ public class FemalePerson extends Person implements HusbandCallbacks {
     }
 
     @Override
-    public void update() {
-        if (!checkBeforeUpdate())
-            return;
-
-        currentState.update(this);
-
-        afterUpdate();
-    }
-
-    @Override
     public boolean wannaMakeLove() {
-        if (isHome() && !iDoNotWant) {
+        if (isHome() && !iDoNotWant && currentState != goingToBuildGranary) {
             addChild();
             setIdoNotWant();
             currentState = searchFood;
@@ -118,19 +103,11 @@ public class FemalePerson extends Person implements HusbandCallbacks {
             return new FemalePerson();
         }
 
-        public Builder isFirstGeneration(Boolean firstGeneration) {
-            if (firstGeneration)
-                object.currentState = object.noteSet;
-            else
-                object.currentState = object.childhoodState;
-            return thisObject;
-        }
-
         protected Builder thisObject() {
             setType(Type.PERSON);
             object.genderEnum = GenderEnum.FEMALE;
             setImage(object.type.getImage(object.genderEnum));
-            setFoodTypeList(object.type.getFoodList());
+            setFoodTypeList(List.of(Type.CARROT, Type.OAT, Type.APPLE));
             return this;
         }
     }

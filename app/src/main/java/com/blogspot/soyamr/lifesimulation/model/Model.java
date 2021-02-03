@@ -144,7 +144,7 @@ public class Model {
 
     public void update(Rect clipBoundsCanvas, float mScaleFactor) {
         updateGameParameters();
-        onScreenInfo.update(animals.size(), 0, plants.size(), clipBoundsCanvas, mScaleFactor);
+        onScreenInfo.update(animals.size(),  plants.size(), clipBoundsCanvas, mScaleFactor);
         animals.forEach(Animal::update);
         if (famousAnimal != null)
             famousAnimal.update(mScaleFactor);
@@ -167,7 +167,7 @@ public class Model {
             ++dth;
         } else {
             // Create Explosion object.
-            Log.i("model:::", "granary number is " + granaries.size());
+//            Log.i("model:::", "granary number is " + granaries.size());
             createExplosionObject();
             disasterThreshold = Utils.getRandom(10, 30);
             dth = 0;

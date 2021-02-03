@@ -9,7 +9,7 @@ public class GoingToBuildGranary implements State {
         p.moveToward(p.granary.getX(), p.granary.getY());
         p.rect.set(p.getX(), p.getY(), p.getX() + Person.width, p.getY() + Person.height);
         if (p.granary.intersects(p.rect)) {
-            p.granary.isAlive = true;
+            p.granary.showMePlease();
             p.currentState = p.goToGranary;
         }
     }

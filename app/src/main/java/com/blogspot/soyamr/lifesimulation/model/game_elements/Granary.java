@@ -1,6 +1,5 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -21,6 +20,7 @@ public final class Granary extends GameObject {
     Paint textAndRectPaint;
     Model model;
     int xDraw, yDraw;
+    int textSize = 50;
 
     public Granary() {
         //this thing will be queried from inside the model itself, since it will take more than cell
@@ -29,7 +29,7 @@ public final class Granary extends GameObject {
         textAndRectPaint.setStyle(Paint.Style.FILL);
         textAndRectPaint.setTextSize(500);
         textAndRectPaint.setAntiAlias(true);
-        textAndRectPaint.setColor(getMyColor());
+        textAndRectPaint.setColor(Color.BLACK);
     }
 
     public void showMePlease() {
@@ -61,6 +61,7 @@ public final class Granary extends GameObject {
 
     @Override
     public void updateAdditionalInfoLocation(float mScaleFactor) {
+        textAndRectPaint.setTextSize(textSize / mScaleFactor);
     }
 
     @Override
@@ -92,6 +93,7 @@ public final class Granary extends GameObject {
         }
 
         protected Granary.Builder thisObject() {
+            setType(Type.GRANARY);
             setImage(GameBitmaps.granaryImg);
             object.width = object.image.getWidth();
             object.height = object.image.getHeight();

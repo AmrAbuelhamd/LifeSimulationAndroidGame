@@ -115,6 +115,7 @@ public abstract class GameObject /*implements famouseanimaslinterface*/ {
                 object.x = Utils.getRandom(0, Const.N) * width;
                 object.y = Utils.getRandom(0, Const.M) * height;
             }
+            object.reachedScreenEdge();
             return object;
         }
     }

@@ -66,7 +66,7 @@ public class Generator {
     public List<Plant> generatePlants() {
         int r;
         for (Integer[] i : ind) {
-            if (Utils.getRandom(0, 100) == 50) {
+            if (Utils.getRandom(0, 100) < 15) {
                 r = Utils.getRandom(0, 3);
                 if (r == 0)
                     plants.add(

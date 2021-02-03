@@ -5,11 +5,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import com.blogspot.soyamr.lifesimulation.model.GameBitmaps;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Granary;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.HomeSweetHome;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state.ChildHood;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state.GoToGranary;
@@ -20,6 +19,15 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.sta
 
 public abstract class Person extends Animal {
     public static final int GRANARY_VISION = ANIMAL_FOOD_VISION_RANG * 2;
+    static Paint foodPaintRect = new Paint();
+
+    static {
+
+        foodPaintRect.setStyle(Paint.Style.STROKE);
+        foodPaintRect.setStrokeWidth(60);
+        foodPaintRect.setColor(Color.BLACK);
+    }
+
     public HomeSweetHome homeSweetHome;
     public State currentState;
     public GameObject nearestFood;
@@ -34,7 +42,6 @@ public abstract class Person extends Animal {
     Paint homePaint = new Paint();
     Rect homeRect = new Rect();
 
-
     public Person() {
         homePaint.setColor(Color.YELLOW);
         homePaint.setStrokeWidth(3F);
@@ -45,6 +52,15 @@ public abstract class Person extends Animal {
         homeRect.set(homeSweetHome.getX() - width / 2, homeSweetHome.getY() - height / 2,
                 homeSweetHome.getX() + width + width / 2, homeSweetHome.getY() + height + height / 2);
 
+    }
+
+    @Override
+    public void update() {
+        if (!checkBeforeUpdate())
+            return;
+        currentState.update(this);
+
+        afterUpdate();
     }
 
     void afterUpdate() {
@@ -88,15 +104,27 @@ public abstract class Person extends Animal {
     }
 
     @Override
+    public void updateAdditionalInfoLocation(float mScaleFactor) {
+        super.updateAdditionalInfoLocation(mScaleFactor);
+        if (homeSweetHome != null)
+            homeSweetHome.updateAdditionalInfoLocation(mScaleFactor);
+    }
+
+    @Override
     public void drawAdditionalInfo(Canvas canvas) {
         super.drawAdditionalInfo(canvas);
-//        if (homeSweetHome != null) {
-//            homePaint.setStyle(Paint.Style.STROKE);
-//            canvas.drawRect(homeRect, homePaint);
-//            homePaint.setStyle(Paint.Style.FILL);
-//            canvas.drawText("stock " + homeSweetHome.getStockSize(), (float) homeSweetHome.getX(),
-//                    (float) homeSweetHome.getY() - height * 2, homePaint);
-//        }
+        if (nearestFood != null) {
+            rect.set(nearestFood.getX() - GameObject.width,
+                    nearestFood.getY() - GameObject.height,
+                    nearestFood.getX() + GameObject.width * 2,
+                    nearestFood.getY() + GameObject.height * 2);
+            canvas.drawRect(rect, foodPaintRect);
+
+            canvas.drawBitmap(GameBitmaps.danger,
+                    nearestFood.getX() - 40,
+                    nearestFood.getY() - GameBitmaps.danger.getHeight(),
+                    null);
+        }
     }
 
     public void eatSomething() {
@@ -125,8 +153,17 @@ public abstract class Person extends Animal {
             object.granary = granary;
             return thisObject;
         }
+
         protected B setHome(HomeSweetHome homeSweetHome) {
             object.homeSweetHome = homeSweetHome;
+            return thisObject;
+        }
+
+        public B isFirstGeneration(Boolean firstGeneration) {
+            if (firstGeneration)
+                object.currentState = object.getNotSetState();
+            else
+                object.currentState = object.childhoodState;
             return thisObject;
         }
     }

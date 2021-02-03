@@ -1,11 +1,12 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.blogspot.soyamr.lifesimulation.Const;
+import com.blogspot.soyamr.lifesimulation.model.GameBitmaps;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.Granary;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.HomeSweetHome;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.GoingToNearHome;
@@ -14,7 +15,17 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.mal
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.SearchPartner;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.male_states.WaitHome;
 
+import java.util.List;
+
 public class MalePerson extends Person {
+
+    static Paint womenColor = new Paint();
+
+    static {
+        womenColor.setColor(Color.YELLOW);
+        womenColor.setStyle(Paint.Style.STROKE);
+        womenColor.setStrokeWidth(10);
+    }
 
     public final int HOUSE_VISION = ANIMAL_FOOD_VISION_RANG * 2;
     public HusbandCallbacks wifeCallbacks;
@@ -23,34 +34,6 @@ public class MalePerson extends Person {
     public State waitHome = new WaitHome();
     public State noteSet = new NotSet();
     public State searchPartner = new SearchPartner();
-
-    Paint womenColor = new Paint();
-    State prev = noteSet;
-
-    @Override
-    public void update() {
-        if (!checkBeforeUpdate())
-            return;
-//        if(currentState != prev) {
-//            Log.i("Male Person", "state= " + currentState + " i am " + this.toString());
-//            prev = currentState;
-//        }
-        currentState.update(this);
-
-        afterUpdate();
-    }
-
-//    public MalePerson(int x, int y, Model model, GenderEnum genderEnum, boolean firstGeneration) {
-//        super(x, y, model, genderEnum, List.of(Type.RABBIT, Type.PIG, Type.DEER));
-//        if (firstGeneration)
-//            currentState = noteSet;
-//        else
-//            currentState = childhoodState;
-//
-//        womenColor.setColor(Color.BLACK);
-//        womenColor.setStyle(Paint.Style.STROKE);
-//        womenColor.setStrokeWidth(150);
-//    }
 
     @Override
     public void addChild() {
@@ -70,8 +53,13 @@ public class MalePerson extends Person {
     public void drawAdditionalInfo(Canvas canvas) {
         super.drawAdditionalInfo(canvas);
         if (isMarried) {
+            canvas.drawBitmap(
+                    GameBitmaps.crown, wifeCallbacks.getRect().left -
+                            (float) Math.abs(wifeCallbacks.getRect().width() - GameBitmaps.crown.getWidth()) / 2,
+                    wifeCallbacks.getRect().top - GameBitmaps.crown.getHeight(),
+                    null);
             canvas.drawRect(wifeCallbacks.getRect().left - Const.CELL_WIDTH / 2.0F,
-                    wifeCallbacks.getRect().top - Const.CELL_HEIGHT / 2F,
+                    wifeCallbacks.getRect().top - Const.CELL_HEIGHT / 2F-30,
                     wifeCallbacks.getRect().right + Const.CELL_WIDTH / 2F,
                     wifeCallbacks.getRect().bottom + Const.CELL_HEIGHT / 2F
                     , womenColor);
@@ -108,16 +96,8 @@ public class MalePerson extends Person {
             setType(Type.PERSON);
             object.genderEnum = GenderEnum.MALE;
             setImage(object.type.getImage(object.genderEnum));
-            setFoodTypeList(object.type.getFoodList());
+            setFoodTypeList(List.of(Type.PIG, Type.RABBIT));
             return this;
-        }
-
-        public MalePerson.Builder isFirstGeneration(Boolean firstGeneration) {
-            if (firstGeneration)
-                object.currentState = object.noteSet;
-            else
-                object.currentState = object.childhoodState;
-            return thisObject;
         }
     }
 }

@@ -78,7 +78,7 @@ public class SearchPartner implements State {
                             , GenderEnum.BOTH)
                     .stream().findFirst().orElse(null);
             if (home == null) {
-                if (!p.model.noGranaryHere(newX, newY, Person.width, Person.height)) {
+                if (!p.model.noGranaryHere(newX, newY, Person.width * 2, Person.height * 2)) {
                     nextCellType = p.model.getNextCellType(newX, newY);
                     if (nextCellType != GroundType.WATER && nextCellType != GroundType.VOLCANO)
                         found = true;

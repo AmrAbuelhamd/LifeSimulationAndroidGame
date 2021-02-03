@@ -19,6 +19,7 @@ public class HomeSweetHome extends GameObject {
     int xDraw, yDraw;
     Rect rect = new Rect();
     Paint textAndRectPaint;
+    int textSize = 50;
 
     public HomeSweetHome() {
         paint.setColor(Color.RED);
@@ -32,7 +33,7 @@ public class HomeSweetHome extends GameObject {
         textAndRectPaint.setStyle(Paint.Style.FILL);
         textAndRectPaint.setTextSize(500);
         textAndRectPaint.setAntiAlias(true);
-        textAndRectPaint.setColor(getMyColor());
+        textAndRectPaint.setColor(Color.BLACK);
     }
 
     @Override
@@ -59,14 +60,15 @@ public class HomeSweetHome extends GameObject {
 
     @Override
     public void updateAdditionalInfoLocation(float mScaleFactor) {
-
+        textAndRectPaint.setTextSize(textSize / mScaleFactor);
     }
 
     @Override
     public void drawAdditionalInfo(Canvas canvas) {
-        canvas.drawRect(rect.left, rect.top,
-                rect.right, rect.bottom
-                , paint);
+        canvas.drawBitmap(GameBitmaps.arrow, rect.left-GameBitmaps.arrow.getWidth(), rect.top - GameBitmaps.arrow.getHeight(), null);
+//        canvas.drawRect(rect.left, rect.top,
+//                rect.right, rect.bottom
+//                , paint);
         canvas.drawText("stock size: " + foodList.size(), xDraw, yDraw, textAndRectPaint);
     }
 
@@ -100,6 +102,7 @@ public class HomeSweetHome extends GameObject {
         }
 
         protected Builder thisObject() {
+            setType(Type.HOME);
             setImage(GameBitmaps.homeImg);
             return this;
         }
@@ -108,8 +111,8 @@ public class HomeSweetHome extends GameObject {
             object.x = x;
             object.y = y;
 
-            object.xDraw = x - 400;
-            object.yDraw = y - 200;
+            object.xDraw = x - 150;
+            object.yDraw = y - 400;
             return thisObject;
         }
 
@@ -118,12 +121,5 @@ public class HomeSweetHome extends GameObject {
             model.putMeHerePlease(object.getX(), object.getY(), object);
             return thisObject;
         }
-
-//        public Builder setBitmap(Bitmap bitmap) {
-//            object.image = bitmap;
-//            object.width = bitmap.getWidth();
-//            object.height = bitmap.getHeight();
-//            return thisObject;
-//        }
     }
 }

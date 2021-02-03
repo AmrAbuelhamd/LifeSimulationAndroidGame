@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import com.blogspot.soyamr.lifesimulation.model.GameBitmaps;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
@@ -17,6 +18,7 @@ import static com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject.
 public class AnimalDataManger {
     final Rect rectWomenVision = new Rect();
     final Rect rectFoodVision = new Rect();
+    final Paint foodRect = new Paint();
     Animal animal;
     Rect rect = new Rect();
     int x, y;
@@ -24,11 +26,12 @@ public class AnimalDataManger {
     Paint manPaintRect;
     Paint textAndRectPaint;
     Paint paint = new Paint();
-    ;
+
     int size = 50;
     int right = 50;
     int space;
     float mScaleFactor;
+    Rect clipBoundsCanvas;
 
     public AnimalDataManger(Animal animal) {
         this.animal = animal;
@@ -41,26 +44,39 @@ public class AnimalDataManger {
 
 
         womenPaintRect.setStyle(Paint.Style.STROKE);
-        womenPaintRect.setStrokeWidth(200);
+        womenPaintRect.setStrokeWidth(150);
         womenPaintRect.setColor(Color.RED);
+
+        foodRect.setStyle(Paint.Style.STROKE);
+        foodRect.setStrokeWidth(30);
+        foodRect.setColor(Color.RED);
 
         textAndRectPaint.setStyle(Paint.Style.FILL);
         textAndRectPaint.setTextSize(300);
         textAndRectPaint.setAntiAlias(true);
-        textAndRectPaint.setColor(animal.getMyColor());
+        textAndRectPaint.setColor(Color.BLACK);
 
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(200);
-        paint.setColor(Color.BLACK);
+        paint.setStrokeWidth(150);
+        paint.setColor(animal.getMyColor());
     }
 
     public void draw(Canvas canvas) {
+        clipBoundsCanvas = canvas.getClipBounds();
+        paint.setTextSize(size / mScaleFactor);
+        if (clipBoundsCanvas != null) {
+            x = clipBoundsCanvas.left + (int) (100 / mScaleFactor);
+            y = clipBoundsCanvas.bottom - (int) (100 / mScaleFactor);
+            space = (int) (60 / mScaleFactor);
+        }
+
         if (!animal.myFoodMenu.isEmpty())
             manPaintRect.setColor(animal.myFoodMenu.get(0).getMyColor());
         else manPaintRect.setColor(Color.CYAN);
+        ///food
         canvas.drawRect(rectFoodVision, manPaintRect);
-
-        if (animal.genderEnum == GenderEnum.MALE) {
+        //animal my love
+        if (animal.genderEnum == GenderEnum.MALE && animal.type != Type.PERSON) {
             if (animal.myLove != null)
                 womenPaintRect.setColor(animal.myLove.getMyColor());
             canvas.drawRect(rectWomenVision, womenPaintRect);
@@ -73,13 +89,13 @@ public class AnimalDataManger {
         canvas.drawText("idontwant CTR : " + animal.resetIdontWantCTR, x, y - 4 * space, textAndRectPaint);
 //        canvas.drawText("in one direction: " + (animal.mtodth < animal.movingToOneDirectionThreshold)
 //                , x, y - 5 * space, textAndRectPaint);
-        canvas.drawText("my menu size    : " + animal.myFoodMenu.size(), x, y - 6 * space, textAndRectPaint);
-        canvas.drawText("myGender    : " + animal.genderEnum, x, y - 7 * space, textAndRectPaint);
-        canvas.drawText("myType    : " + animal.type, x, y - 8 * space, textAndRectPaint);
+        canvas.drawText("my menu size    : " + animal.myFoodMenu.size(), x, y - 5 * space, textAndRectPaint);
+        canvas.drawText("myGender    : " + animal.genderEnum, x, y - 6 * space, textAndRectPaint);
+        canvas.drawText("myType    : " + animal.type, x, y - 7 * space, textAndRectPaint);
         if (animal.type == Type.PERSON)
-            canvas.drawText("state    : " + ((Person) animal).currentState.getStateName(), x, y - 9 * space, textAndRectPaint);
+            canvas.drawText("state    : " + ((Person) animal).currentState.getStateName(), x, y - 8 * space, textAndRectPaint);
         else
-            canvas.drawText("state    : " + (animal).currentState.getStateName(), x, y - 9 * space, textAndRectPaint);
+            canvas.drawText("state    : " + (animal).currentState.getStateName(), x, y - 8 * space, textAndRectPaint);
         //put rectangle around current animal
         canvas.drawRect(rect, paint);
         //put rectangle around target
@@ -88,7 +104,11 @@ public class AnimalDataManger {
                     animal.myFoodMenu.get(0).getY() - GameObject.height,
                     animal.myFoodMenu.get(0).getX() + GameObject.width * 2,
                     animal.myFoodMenu.get(0).getY() + GameObject.height * 2);
-            canvas.drawRect(rect, womenPaintRect);
+            canvas.drawRect(rect, foodRect);
+            canvas.drawBitmap(GameBitmaps.danger,
+                    animal.myFoodMenu.get(0).getX() - 40,
+                    animal.myFoodMenu.get(0).getY() - GameBitmaps.danger.getHeight(),
+                    null);
         }
     }
 

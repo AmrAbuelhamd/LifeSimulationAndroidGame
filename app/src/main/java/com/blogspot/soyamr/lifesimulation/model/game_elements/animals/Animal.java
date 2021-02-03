@@ -78,8 +78,9 @@ public abstract class Animal extends GameObject {
         setThresholds();
     }
 
-    private void setThresholds() {
-        increasingHungerThreshold = Utils.getRandom(150, 250);//300 500
+    void setThresholds() {
+        increasingHungerThreshold = Utils.getRandom(300, 500);//300 500
+        resetIDoNotWantThreshold = Utils.getRandom(300, 500);//300 500
         movingToOneDirectionThreshold = Utils.getRandom(40, 61);
         deleteFarThreshold = Utils.getRandom(40, 61);
     }
@@ -310,12 +311,14 @@ public abstract class Animal extends GameObject {
 
     @Override
     public void updateAdditionalInfoLocation(float mScaleFactor) {
-        animalDataManger.update(mScaleFactor);
+        if (animalDataManger != null)
+            animalDataManger.update(mScaleFactor);
     }
 
     @Override
     public void drawAdditionalInfo(Canvas canvas) {
-        animalDataManger.draw(canvas);
+        if (animalDataManger != null)
+            animalDataManger.draw(canvas);
     }
 
     protected static abstract class Builder
@@ -340,6 +343,9 @@ public abstract class Animal extends GameObject {
         public T build() {
             super.build();
             object.model.putMeHerePlease(object.getX(), object.getY(), object);
+//            object.setIdoNotWant();
+            object.setRect();
+//            object.setThresholds();
             return object;
         }
     }

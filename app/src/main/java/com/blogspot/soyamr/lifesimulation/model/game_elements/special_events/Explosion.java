@@ -4,14 +4,13 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 import com.blogspot.soyamr.lifesimulation.model.Model;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 
 public class Explosion {
     final Model model;
     Bitmap[] image;
+    int x, y;
     private int num = 0;
     private boolean finish = false;
-    int x,y;
 
     public Explosion(Model model, Bitmap[] image, int x, int y) {
         this.x = x;
@@ -26,7 +25,7 @@ public class Explosion {
         if (num % 5 == 0)
             model.removeObjectsInThisArea(x, y, x + image[1].getWidth(), y + image[1].getHeight());
 
-        if (this.num >= 26) {
+        if (this.num >= image.length) {
             this.finish = true;
         }
     }

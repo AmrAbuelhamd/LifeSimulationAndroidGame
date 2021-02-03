@@ -12,7 +12,7 @@ public class OnScreenInfo {
     protected int x;
     protected int y;
     public OnScreenInfo() {
-        paint.setTextSize(60);
+        paint.setTextSize(50);
         paint.setAntiAlias(true);
         paint.setColor(Color.YELLOW);
         paint.setStyle(Paint.Style.FILL);
@@ -26,10 +26,9 @@ public class OnScreenInfo {
     int right = 50;
     int space;
 
-    public void update(int animalsCount, int femaleCount, int plantsCount, Rect clipBoundsCanvas, float mScaleFactor) {
+    public void update(int animalsCount, int plantsCount, Rect clipBoundsCanvas, float mScaleFactor) {
         this.total = animalsCount;
         this.plantCount = plantsCount;
-        this.femaleCount = femaleCount;
 
         paint.setTextSize(size / mScaleFactor);
         if (clipBoundsCanvas != null) {
@@ -43,8 +42,6 @@ public class OnScreenInfo {
     public void draw(Canvas canvas) {
 
         canvas.drawText("total population: " + total, x, y, paint);
-//        canvas.drawText("female population: " + femaleCount, x, y + space, paint);
-//        canvas.drawText("male population: " + (int) (total - femaleCount), x, y + 1 * space, paint);
         canvas.drawText("plants population: " + plantCount, x, y + 1 * space, paint);
         canvas.drawText(GameThread.getAvgFPS(), right, y + space, paint);
 
