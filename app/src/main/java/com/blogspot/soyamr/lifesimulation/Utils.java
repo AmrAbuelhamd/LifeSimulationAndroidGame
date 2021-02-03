@@ -11,13 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-
-/*
-
-1- Type.Java -> Utils.Java
-
-
- */
 public abstract class Utils {
     public static final Random rand = new Random();
     static String tag = "search algorithm";
@@ -49,10 +42,8 @@ public abstract class Utils {
                 for (Type preyType : searchFor) {
                     List<GameObject> preys = preyType.getMeFromHere(model, i, j, genderEnum);
                     if (!preys.isEmpty()) {
-                        preys.forEach(ob -> {
-                            ob.distance = getManhattanDistance(currentX, currentY,
-                                    ob.getX(), ob.getY());
-                        });
+                        preys.forEach(ob -> ob.distance = getManhattanDistance(currentX, currentY,
+                                ob.getX(), ob.getY()));
                         gameObjects.addAll(preys);
                     }
                 }

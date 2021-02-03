@@ -10,7 +10,6 @@ import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.Animal;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.plants.Plant;
 
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -41,27 +40,11 @@ public class Cell {
 
     void setRandomColor() {
         Random rnd = new Random();
-//        paint.setARGB(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
     }
 
 
     public void putMeHerePlease(GameObject gameObject) {
         this.residences.add(gameObject);
-//        List<GameObject> toRemove = new LinkedList<>();
-//        if (residences.size() > 1) {
-//            residences.forEach(eater -> {
-//                if (eater instanceof Animal && eater.isAlive) {
-//                    residences.forEach(food -> {
-//                        if (food.isAlive) {
-//                            if (((Animal) eater).wannaEat(food)) {
-//                                toRemove.add(food);
-//                            }
-//                        }
-//                    });
-//                }
-//            });
-//        }
-//        toRemove.forEach(residences::remove);
     }
 
     public void removeMeFromHere(GameObject gameObject) {

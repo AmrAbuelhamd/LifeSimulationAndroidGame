@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.blogspot.soyamr.lifesimulation.R;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 
 
 public class GameBitmaps {
@@ -43,86 +42,35 @@ public class GameBitmaps {
 
     public GameBitmaps(Context context) {
         this.context = context;
-
         options.inScaled = false;
         granaryImg = BitmapFactory.decodeResource(context.getResources(), R.drawable.granary, options);
-//        granaryImg = Bitmap.createScaledBitmap(granaryImg, Dimensions.granaryWidth, Dimensions.granaryHeight, false);
-
         homeImg = BitmapFactory.decodeResource(context.getResources(), R.drawable.house, options);
-//        homeImg = Bitmap.createScaledBitmap(homeImg, GameObject.width * 2, GameObject.height * 2, false);
-
         appleImg = BitmapFactory.decodeResource(context.getResources(), R.drawable.apple, options);
-//        appleImg = Bitmap.createScaledBitmap(appleImg, GameObject.width, GameObject.height, false);
-
         oatImg = BitmapFactory.decodeResource(context.getResources(), R.drawable.oat, options);
-//        oatImg = Bitmap.createScaledBitmap(oatImg, GameObject.width, GameObject.height, false);
-
         carrotImg = BitmapFactory.decodeResource(context.getResources(), R.drawable.carrot, options);
-//        carrotImg = Bitmap.createScaledBitmap(carrotImg, GameObject.width, GameObject.height, false);
-
         rabbitImg = BitmapFactory.decodeResource(context.getResources(), R.drawable.rabbit2, options);
-//        rabbitImg = Bitmap.createScaledBitmap(rabbitImg, GameObject.width, GameObject.height, false);
-
         foxImg = BitmapFactory.decodeResource(context.getResources(), R.drawable.fox, options);
-//        foxImg = Bitmap.createScaledBitmap(foxImg, GameObject.width, GameObject.height, false);
-
         lionImg = BitmapFactory.decodeResource(context.getResources(), R.drawable.lion, options);
-//        lionImg = Bitmap.createScaledBitmap(lionImg, GameObject.width, GameObject.height, false);
-
         wolfImg = BitmapFactory.decodeResource(context.getResources(), R.drawable.wolf, options);
-//        wolfImg = Bitmap.createScaledBitmap(wolfImg, GameObject.width, GameObject.height, false);
-
         deerImg = BitmapFactory.decodeResource(context.getResources(), R.drawable.deer, options);
-//        deerImg = Bitmap.createScaledBitmap(deerImg, GameObject.width, GameObject.height, false);
-
         mouseImg = BitmapFactory.decodeResource(context.getResources(), R.drawable.mouse, options);
-//        mouseImg = Bitmap.createScaledBitmap(mouseImg, GameObject.width, GameObject.height, false);
-
         bearImg = BitmapFactory.decodeResource(context.getResources(), R.drawable.bear, options);
-//        bearImg = Bitmap.createScaledBitmap(bearImg, GameObject.width, GameObject.height, false);
-
         pigImg = BitmapFactory.decodeResource(context.getResources(), R.drawable.pig, options);
-//        pigImg = Bitmap.createScaledBitmap(pigImg, GameObject.width, GameObject.height, false);
-
         raccoonImg = BitmapFactory.decodeResource(context.getResources(), R.drawable.raccoon, options);
-//        raccoonImg = Bitmap.createScaledBitmap(raccoonImg, GameObject.width, GameObject.height, false);
-
         personImg = BitmapFactory.decodeResource(context.getResources(), R.drawable.person, options);
-//        personImg = Bitmap.createScaledBitmap(personImg, GameObject.width, GameObject.height, false);
-
         rabbitImgF = BitmapFactory.decodeResource(context.getResources(), R.drawable.rabbit2_f, options);
-//        rabbitImgF = Bitmap.createScaledBitmap(rabbitImgF, GameObject.width, GameObject.height, false);
-
         foxImgF = BitmapFactory.decodeResource(context.getResources(), R.drawable.fox_f, options);
-//        foxImgF = Bitmap.createScaledBitmap(foxImgF, GameObject.width, GameObject.height, false);
-
         lionImgF = BitmapFactory.decodeResource(context.getResources(), R.drawable.lion_f, options);
-//        lionImgF = Bitmap.createScaledBitmap(lionImgF, GameObject.width, GameObject.height, false);
-
         wolfImgF = BitmapFactory.decodeResource(context.getResources(), R.drawable.wolf_f, options);
-//        wolfImgF = Bitmap.createScaledBitmap(wolfImgF, GameObject.width, GameObject.height, false);
-
         deerImgF = BitmapFactory.decodeResource(context.getResources(), R.drawable.deer_f, options);
-//        deerImgF = Bitmap.createScaledBitmap(deerImgF, GameObject.width, GameObject.height, false);
-
         mouseImgF = BitmapFactory.decodeResource(context.getResources(), R.drawable.mouse_f, options);
-//        mouseImgF = Bitmap.createScaledBitmap(mouseImgF, GameObject.width, GameObject.height, false);
-
         bearImgF = BitmapFactory.decodeResource(context.getResources(), R.drawable.bear_f, options);
-//        bearImgF = Bitmap.createScaledBitmap(bearImgF, GameObject.width, GameObject.height, false);
-
         pigImgF = BitmapFactory.decodeResource(context.getResources(), R.drawable.pig_f, options);
-//        pigImgF = Bitmap.createScaledBitmap(pigImgF, GameObject.width, GameObject.height, false);
-
         raccoonImgF = BitmapFactory.decodeResource(context.getResources(), R.drawable.raccoon_f, options);
-//        raccoonImgF = Bitmap.createScaledBitmap(raccoonImgF, GameObject.width, GameObject.height, false);
-
         personImgF = BitmapFactory.decodeResource(context.getResources(), R.drawable.person_f, options);
         arrow = BitmapFactory.decodeResource(context.getResources(), R.drawable.arrow, options);
         crown = BitmapFactory.decodeResource(context.getResources(), R.drawable.crown, options);
         danger = BitmapFactory.decodeResource(context.getResources(), R.drawable.danger, options);
-//        personImgF = Bitmap.createScaledBitmap(personImgF, GameObject.width, GameObject.height, false);
-
     }
 
     Bitmap[] createPhotos() {
@@ -153,12 +101,6 @@ public class GameBitmaps {
         bitmap[23] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_23, options);
         bitmap[24] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_24, options);
         bitmap[25] = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_part_25, options);
-
-
-//        for (int i = 1; i < 26; i++) {
-//            bitmap[i] = Bitmap.createScaledBitmap(bitmap[i],
-//                    8000, 8000, false);
-//        }
         return bitmap;
     }
 }

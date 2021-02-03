@@ -5,7 +5,6 @@ import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 
 public final class Fox extends Carnivore {
-//    Bitmap bitmap;
 
     private Fox() {
     }

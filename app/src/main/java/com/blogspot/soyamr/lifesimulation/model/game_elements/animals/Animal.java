@@ -34,7 +34,7 @@ public abstract class Animal extends GameObject {
     public Model model;
     public int increaseHungerCTR = 0;
     public int movingToOneDirectionThreshold = 30;
-    public int[] direction = new int[2];
+    public int[] direction;
     public StateAnimal searchFood = new SearchFood();
     public StateAnimal searchPartner = new SearchPartner();
     public StateAnimal inMarriageProcess = new InMarriageProcess();
@@ -56,7 +56,6 @@ public abstract class Animal extends GameObject {
     GroundType nextCellType;
     int resetIDoNotWantThreshold = 300;
 
-    //todo [important]  pattern builder
     public Animal() {
         myCrushes = new ArrayList<>();
         direction = moveDirection[Utils.getRandom(0, moveDirection.length)];

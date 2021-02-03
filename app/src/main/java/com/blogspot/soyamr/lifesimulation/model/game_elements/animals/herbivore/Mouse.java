@@ -1,14 +1,8 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.herbivore;
 
-import android.graphics.Canvas;
-
 import com.blogspot.soyamr.lifesimulation.Utils;
-import com.blogspot.soyamr.lifesimulation.model.GameBitmaps;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.carnivore.Lion;
-
-import java.util.List;
 
 public class Mouse extends Herbivore {
 

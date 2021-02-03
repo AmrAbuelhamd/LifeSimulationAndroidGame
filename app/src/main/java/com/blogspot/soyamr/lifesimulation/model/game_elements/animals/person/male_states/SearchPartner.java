@@ -38,8 +38,6 @@ public class SearchPartner implements State {
         searchHome(p);//just return state
     }
 
-    //toask should all methods launched from update return value to update, or they can take
-    // decisions directly
     private void searchHome(MalePerson p) {
         //build home
         //1- search near homes. 2- take decision and build

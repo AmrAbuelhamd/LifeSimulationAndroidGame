@@ -32,8 +32,6 @@ public class SearchPartner implements StateAnimal {
 
         //here this means that she accepted
         animal.inRelation = true;
-//        animal.paint.setStyle(Paint.Style.STROKE);
-//        animal.paint.setStrokeWidth(10);
         animal.myLove = target;
         animal.myCrushes.remove(animal.myLove);
 

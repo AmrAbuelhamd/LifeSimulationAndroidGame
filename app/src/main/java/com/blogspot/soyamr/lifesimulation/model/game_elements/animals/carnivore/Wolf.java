@@ -1,20 +1,10 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.carnivore;
 
-import android.graphics.Canvas;
-
 import com.blogspot.soyamr.lifesimulation.Utils;
-import com.blogspot.soyamr.lifesimulation.model.GameBitmaps;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
 
-import java.util.List;
-
 public class Wolf extends Carnivore {
-//    public Wolf(int x, int y, Model model, GenderEnum genderEnum) {
-//        super(x, y, model, Type.WOLF, genderEnum,
-//                List.of(Type.MOUSE));
-//    }
-
     @Override
     public void addChild() {
         if (Utils.getRandom(0, 2) == 0)

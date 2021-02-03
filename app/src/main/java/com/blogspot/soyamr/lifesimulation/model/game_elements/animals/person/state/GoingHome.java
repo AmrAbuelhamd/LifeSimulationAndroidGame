@@ -70,7 +70,6 @@ public class GoingHome implements State {
                     return person.goingToBuildGranary;
                 } else {
                     throw new RuntimeException("no place for granary");
-//                    return person.getWaitHomeState();//if not found this is a problem, BIG PROBLEM
                 }
             } else {
                 person.granary = granary;

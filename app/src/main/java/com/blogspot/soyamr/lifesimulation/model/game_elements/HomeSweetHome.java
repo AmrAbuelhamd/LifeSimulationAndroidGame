@@ -17,7 +17,7 @@ public class HomeSweetHome extends GameObject {
     List<GameObject> foodList = new ArrayList<>();
     Model model;
     int xDraw, yDraw;
-    Rect rect = new Rect();
+    Rect rect;
     Paint textAndRectPaint;
     int textSize = 50;
 
@@ -66,17 +66,9 @@ public class HomeSweetHome extends GameObject {
     @Override
     public void drawAdditionalInfo(Canvas canvas) {
         canvas.drawBitmap(GameBitmaps.arrow, rect.left-GameBitmaps.arrow.getWidth(), rect.top - GameBitmaps.arrow.getHeight(), null);
-//        canvas.drawRect(rect.left, rect.top,
-//                rect.right, rect.bottom
-//                , paint);
         canvas.drawText("stock size: " + foodList.size(), xDraw, yDraw, textAndRectPaint);
     }
 
-    //    @Override
-//    public void draw(Canvas canvas) {
-//        canvas.drawLine(x, y, x + width, y + height, paint);
-//        canvas.drawLine(x + width, y, x, y + height, paint);
-//    }
 
     @Override
     public int getMyColor() {

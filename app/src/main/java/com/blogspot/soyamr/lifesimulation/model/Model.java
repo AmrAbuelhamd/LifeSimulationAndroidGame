@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class Model {
-    public final Cell[][] cells;//todo impo use key-value try
+    public final Cell[][] cells;
     public final List<Animal> animals;
     public final List<Plant> plants;
     public final List<Granary> granaries;

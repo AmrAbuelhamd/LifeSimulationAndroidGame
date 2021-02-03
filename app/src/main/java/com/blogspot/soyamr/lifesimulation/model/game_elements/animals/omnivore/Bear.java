@@ -1,12 +1,8 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.omnivore;
 
 import com.blogspot.soyamr.lifesimulation.Utils;
-import com.blogspot.soyamr.lifesimulation.model.GameBitmaps;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GenderEnum;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Type;
-import com.blogspot.soyamr.lifesimulation.model.game_elements.animals.carnivore.Lion;
-
-import java.util.List;
 
 
 public class Bear extends Omnivore {
@@ -28,6 +24,7 @@ public class Bear extends Omnivore {
                             .setModel(model)
                             .build());
     }
+
     @Override
     public int getMyColor() {
         if (hunger > 60)
