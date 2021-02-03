@@ -93,7 +93,7 @@ public enum Type {
     FOX {
         @Override
         public List<Type> getFoodList() {
-            return List.of(Type.MOUSE, Type.RABBIT);
+            return List.of(Type.MOUSE, Type.RABBIT, Type.PIG);
         }
 
         @Override
@@ -104,11 +104,11 @@ public enum Type {
                 return GameBitmaps.foxImgF;
             }
         }
-    },        //mouse, rabbit     *0
+    },        //mouse, rabbit, pig     *0
     WOLF {
         @Override
         public List<Type> getFoodList() {
-            return List.of(Type.DEER, Type.RACCOON);
+            return List.of(Type.DEER, Type.RACCOON, Type.PIG);
         }
 
         @Override
@@ -119,11 +119,11 @@ public enum Type {
                 return GameBitmaps.wolfImgF;
             }
         }
-    },       //deer,  raccoon    *0
+    },       //deer,  raccoon Pig    *0
     LION {
         @Override
         public List<Type> getFoodList() {
-            return List.of(Type.PIG);
+            return List.of(Type.PIG, DEER);
         }
 
         @Override
@@ -134,12 +134,12 @@ public enum Type {
                 return GameBitmaps.lionImgF;
             }
         }
-    },       //pig               *0
+    },       //pig  ,deer             *0
     //OMNIVORE
     BEAR {
         @Override
         public List<Type> getFoodList() {
-            return List.of(Type.RABBIT, Type.OAT);
+            return List.of(Type.RABBIT, Type.OAT, PIG);
         }
 
         @Override
@@ -150,7 +150,7 @@ public enum Type {
                 return GameBitmaps.bearImgF;
             }
         }
-    },       //rabbit, oat       *0
+    },       //rabbit, oat, pig       *0
     PIG {
         @Override
         public List<Type> getFoodList() {

@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class Model {
+    private static Model model = null;
     public final Cell[][] cells;
     public final List<Animal> animals;
     public final List<Plant> plants;
@@ -53,7 +54,7 @@ public class Model {
     Rect rect = new Rect();
     private FamousAnimal famousAnimal;
 
-    public Model(Context context) {
+    private Model(Context context) {
         gameBitmaps = new GameBitmaps(context);
         explosionList = new ArrayList<>();
         generator = new Generator(this);
@@ -66,6 +67,12 @@ public class Model {
         bitmap = gameBitmaps.createPhotos();
     }
 
+    public static Model createObject(Context context) {
+        if (model == null) {
+            model = new Model(context);
+        }
+        return model;
+    }
 
     public void addOnePlant() {
         Plant randomPlant = plants.get(Utils.getRandom(0, plants.size()));
@@ -144,7 +151,7 @@ public class Model {
 
     public void update(Rect clipBoundsCanvas, float mScaleFactor) {
         updateGameParameters();
-        onScreenInfo.update(animals.size(),  plants.size(), clipBoundsCanvas, mScaleFactor);
+        onScreenInfo.update(animals.size(), plants.size(), clipBoundsCanvas, mScaleFactor);
         animals.forEach(Animal::update);
         if (famousAnimal != null)
             famousAnimal.update(mScaleFactor);
@@ -220,7 +227,9 @@ public class Model {
             for (int j = jStart; j < jEnd; ++j) {
                 List<GameObject> poorObjects = cells[i][j].getObjectResidingHere();
                 poorObjects.forEach(deadObject -> {
-                    if (deadObject instanceof Animal) {
+                    if (deadObject instanceof Animal &&
+                            !checkIfNoHomesHere(deadObject.getX(), deadObject.getY(),
+                                    GameObject.width, GameObject.height)) {
                         animals.remove(deadObject);
                         deadObject.isAlive = false;
                     } else if (deadObject instanceof Plant) {
@@ -276,7 +285,8 @@ public class Model {
     }
 
     public void addChild(Animal animal) {//should be added to concrete place on the map
-        animalsToAdd.add(animal);
+        if (animals.size() < 7000)
+            animalsToAdd.add(animal);
     }
 
     public void putMeHerePlease(int x, int y, GameObject gameObject) {

@@ -1,8 +1,5 @@
 package com.blogspot.soyamr.lifesimulation.model.game_elements.animals.person.state;
 
-import android.graphics.Rect;
-
-import com.blogspot.soyamr.lifesimulation.Const;
 import com.blogspot.soyamr.lifesimulation.Utils;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.GameObject;
 import com.blogspot.soyamr.lifesimulation.model.game_elements.Granary;
@@ -51,8 +48,6 @@ public class ChildHood implements State {
         }
     };
     State waitHome = new State() {
-        final Rect result = new Rect();
-
         @Override
         public void update(Person p) {
             if (p.hunger < Person.SEARCH_FOOD_THRESHOLD) {

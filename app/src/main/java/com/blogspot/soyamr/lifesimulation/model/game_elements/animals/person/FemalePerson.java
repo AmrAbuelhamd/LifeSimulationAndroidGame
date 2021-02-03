@@ -31,7 +31,7 @@ public class FemalePerson extends Person implements HusbandCallbacks {
                     .setHome(homeSweetHome)
                     .setGranary(granary)
                     .build();
-        } else
+        } else {
             child = new MalePerson.Builder()
                     .setModel(model)
                     .isFirstGeneration(false)
@@ -39,7 +39,7 @@ public class FemalePerson extends Person implements HusbandCallbacks {
                     .setHome(homeSweetHome)
                     .setGranary(granary)
                     .build();
-
+        }
         model.addChild(child);
     }
 
