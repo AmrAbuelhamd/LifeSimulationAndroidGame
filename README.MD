@@ -8,7 +8,8 @@ Simulate the life of eleven different species of animals on a map.
 <img src="https://github.com/AmrAbuelhamd/LifeSimulationAndroidGame/blob/master/DemoGifs/map.gif?raw=true" width="200" height="400"/>
 
 * A random explosion occurs on the map, killing every nearby animal.
-
+<img src="https://github.com/AmrAbuelhamd/LifeSimulationAndroidGame/blob/master/DemoGifs/explosion.gif?raw=true" width="200" height="400"/>
+                                                                                                                                        
 * An animal can search for and chase food.
 
 * An animal can search for a partner and give birth to children.
