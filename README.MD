@@ -4,7 +4,6 @@ Simulate the life of eleven different species of animals on a map.
 
 ## Features
 
-* The game generates differnt maps every time launched.
-
-![shows maps sample when lauching the game](https://github.com/AmrAbuelhamd/LifeSimulationAndroidGame/blob/master/DemoGifs/map.gif?raw=true)
-
+* The game generates different maps each time it is launched.
+<img src="https://github.com/AmrAbuelhamd/LifeSimulationAndroidGame/blob/master/DemoGifs/map.gif?raw=true" width="200" height="400"/>
+* The game generates different maps each time it is launched.
