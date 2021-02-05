@@ -23,8 +23,7 @@ Simulate the life of eleven different species of animals on a map.
 
 
 ## Installation
-you can download the application on google play.
-it's not publicaly published, here is the direct link on google play.
+[link to the apk file](https://github.com/AmrAbuelhamd/LifeSimulationAndroidGame/blob/master/app/release/app-release.apk)
 
 
 ## Highlits
