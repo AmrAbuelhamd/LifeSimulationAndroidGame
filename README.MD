@@ -29,8 +29,11 @@ Simulate the life of eleven different species of animals on a map.
 ## Highlits
 * I have tried to make the code maintable as much as possible.
 * used 
+
     Builder Design pattern
+    
     State Design pattern
+    
     Singleton Design pattern
 
 
