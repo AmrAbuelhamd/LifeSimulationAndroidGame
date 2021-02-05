@@ -26,8 +26,8 @@ Simulate the life of eleven different species of animals on a map.
 [link to the apk file](https://github.com/AmrAbuelhamd/LifeSimulationAndroidGame/blob/master/app/release/app-release.apk)
 
 
-## Highlits
-* I have tried to make the code maintable as much as possible.
+## Highlights
+* I have tried to make the code maintainable as much as possible.
 * used 
 
     Builder Design pattern
@@ -38,6 +38,6 @@ Simulate the life of eleven different species of animals on a map.
 
 
 ## Credits
-* The game idea was part oop subject which led by _Alexey Tsyganov_ at the first semester of second year of the university.
-* The game engin is based on the great tutrial by [Here](https://o7planning.org/10521/android-2d-game-tutorial-for-beginners#a1815713)
+* The game idea was part of OOP subject led by _Alexey Tsyganov_ in the first semester of the second year of the university.
+* The game engine is based on the great tutorial by [Here](https://o7planning.org/10521/android-2d-game-tutorial-for-beginners#a1815713)
 * for the complete list check [resources.txt](https://github.com/AmrAbuelhamd/LifeSimulationAndroidGame/blob/master/resources.txt) please.
